@@ -4,10 +4,19 @@ Future Heist's Texas 2026 early-vote page: the early-vote count with every numbe
 
 **Status: prototype.** Not yet published. Open items:
 
-- Restructure the top of the page: lead with measured turnout and the partisan environment, and move the process detail into a "Checking our work" section.
 - Write the publisher statement (marked "Draft · Saul to write" on the page).
-- Settle the Lt. Governor threshold in the benchmarks.
 - Source the 2024 lean of voters with no primary history before turning on that preset.
+- Check the 2022 total (8,095,174, summed from Ryan's voter-file categories) against the official Secretary of State figure.
+
+## Page order
+
+1. Turnout (measured), with the update schedule
+2. Where the races stand (our read): a typical Democrat against a typical Republican, then the five statewide races
+3. Who hasn't voted in a primary (our read)
+4. Scenario workbench
+5. How we'd know we're wrong
+6. Checking our work: the primary-voter lead, the superseded partial post, the three measures against their thresholds, daily counts
+7. Corrections and sources
 
 ## Files
 

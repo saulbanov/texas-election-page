@@ -107,6 +107,10 @@ p { margin: 0; max-width: 66ch; }
 .stampmark { justify-self: start; font: 600 11px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--stamp); border: 2px solid var(--stamp); padding: 4px 7px 3px; transform: rotate(-2deg); background: var(--paper); }
 
+/* races at the top */
+.env { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 24px; align-items: start; }
+@media (max-width: 900px) { .env { grid-template-columns: minmax(0, 1fr); } }
+
 /* measures */
 .measures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .measure { background: var(--paper); padding: 14px 16px 16px; display: grid; gap: 8px; min-width: 0; }
@@ -239,126 +243,55 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   </header>
 
   <div class="status" role="status" aria-label="When this was updated">
-    <div><b>Data as of</b>Thu., Oct. 29 · posted Fri. 12:52 p.m. CT <span class="rel" data-rel="2026-10-30T12:52:00-05:00"></span></div>
+    <div><b>Data as of</b>Thu., Oct. 29 · 244 of 254 counties · posted Fri. 12:52 p.m. CT <span class="rel" data-rel="2026-10-30T12:52:00-05:00"></span></div>
     <div class="pg"><b>Page updated</b>Fri., Oct. 30, 3:36 p.m. CT <span class="rel" data-rel="2026-10-30T15:36:00-05:00"></span></div>
     <div><b>Next update</b><span class="nx">Sat., Oct. 31, after 11 a.m. CT</span> <span class="rel" data-rel="2026-10-31T11:00:00-05:00"></span></div>
   </div>
 
-  <nav class="phases" aria-label="Where the count stands">
-    <div class="phase done"><b>Early vote</b><span>Oct. 19–30</span></div>
-    <div class="phase done"><b>Fri. trend check</b><span>Done: on trend</span></div>
-    <div class="phase next"><b>Sat. main read</b><span>Next: after 11 a.m.</span></div>
-    <div class="phase"><b>Sun. cleanup</b><span>Reliable-voter gap</span></div>
-    <div class="phase"><b>Tue. Election Day</b><span>Marker counties, count</span></div>
-  </nav>
-
-  <!-- HEADLINE -->
+  <!-- TURNOUT -->
   <section class="head" aria-labelledby="h-now">
     <div class="big">
-      <span class="label" id="h-now">Primary-voter lead among early voters</span>
-      <div class="fig"><button class="num" data-src="d11_margin"><span class="party">D</span> +45,173</button></div>
-      <div class="sub">Through Thu., Oct. 29 · <button class="num" data-src="d11_counties">244 of 254 counties</button> · posted Oct. 30, 12:52 p.m. CT</div>
-      <p class="what">Early voters who last voted in a Democratic primary, minus those who last voted in a Republican one. It counts past primary voting, not votes for anyone. It leaves out the <button class="num" data-src="d11_np">2,304,621</button> early voters with no primary history, who decide the race.</p>
+      <span class="label" id="h-now">Texans who have voted early</span>
+      <div class="fig"><button class="num" data-src="d11_votes">6,841,284</button></div>
+      <div class="sub">35.6% of registered voters · through Thu., Oct. 29</div>
+      <p class="what">That is already <button class="num" data-src="vs2022">84%</button> of everyone who voted in the whole 2022 midterm, with Friday's early vote and Election Day still to come. A third of them have never voted in a party primary.</p>
       <p class="legend-src">Dotted numbers open their source.</p>
     </div>
     <div class="side">
       <div class="card-quiet" id="since">
         <span class="label">Since your last visit</span>
-        <span id="since-body">Since Wednesday's complete post: +596,015 votes; lead down 14,534.</span>
-      </div>
-      <div class="prov">
-        <span class="stampmark">Provisional · superseded</span>
-        <span><b class="mono">10:37 a.m. post, 95 of 254 counties:</b> showed the lead at <button class="num" data-src="d11p_margin">D +81,624</button>. The 149 counties that came in by 12:52 p.m. split R +17 points, cutting it by 36,451. Big Democratic counties report first, so a partial post overstates the Democratic lead.</span>
+        <span id="since-body">Since Wednesday's complete post: +596,015 votes.</span>
       </div>
       <div class="card-quiet">
         <span class="label">Update schedule</span>
         <ul class="sched">
-          <li><b>Sat., Oct. 31, after 11 a.m. CT:</b> data through Friday, the last day of early voting. The first post may be partial. Thursday's went from 95 counties at 10:37 a.m. to 244 at 12:52 p.m.; Wednesday's reached 247 only at 6:40 p.m. We update once about 240 counties are in.</li>
-          <li><b>Sun., Nov. 1:</b> late counties and mail ballots. The Sunday read of the reliable-voter gap.</li>
-          <li><b>Tue., Nov. 3:</b> county Election Day check-in counts through the afternoon; results after 7 p.m. CT, 8 p.m. in El Paso.</li>
+          <li><b>Sat., Oct. 31, after 11 a.m. CT:</b> data through Friday, the last day of early voting. The first post often covers only some counties, so we update once about 240 of 254 are in.</li>
+          <li><b>Sun., Nov. 1:</b> late counties and mail ballots.</li>
+          <li><b>Tue., Nov. 3:</b> county Election Day check-ins through the afternoon; results after 7 p.m. CT, 8 p.m. in El Paso.</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- MEASURES -->
-  <section class="sec" aria-labelledby="h-meas">
+  <!-- RACES -->
+  <section class="sec" aria-labelledby="h-races">
     <div class="sec-head">
-      <span class="label">The three measures</span>
-      <h2 id="h-meas">Against the goalposts set before the data</h2>
-      <p>The Friday thresholds were committed at 9:50 p.m. Oct. 29 (<span class="mono">817b5fa</span>), before Thursday's data existed. Solid needle: now. Dashed: Wednesday. Dotted: the superseded partial post.</p>
+      <span class="label" style="color:var(--gold-text)">Our read · Future Heist</span>
+      <h2 id="h-races">Where the races stand</h2>
+      <p>A rough model built from the early vote and our assumptions about the voters it can't see. It is not a forecast. Every race moves point for point with the first line; change the assumptions in the <a href="#bench">workbench</a>.</p>
     </div>
-    <div class="measures">
-      <div class="measure">
-        <h3>Primary margin</h3>
-        <div class="val"><button class="num" data-src="d11_margin">D +45,173</button></div>
-        <svg class="gauge" id="g-margin" viewBox="0 0 300 64" role="img" aria-label="Primary margin against the Friday thresholds"></svg>
-        <p class="note">Friday line is D +45,000. It cleared by 173 votes, inside the noise of 10 missing counties. Read: on trend, no nudge.</p>
+    <div class="env">
+      <div class="verdict">
+        <span class="label">A typical Democrat against a typical Republican</span>
+        <div class="fig" id="env-fig">D +1.4</div>
+        <div class="p" id="env-p"></div>
       </div>
-      <div class="measure">
-        <h3>Reliable-voter gap</h3>
-        <div class="val"><button class="num" data-src="d11_relgap">R +174,183</button></div>
-        <svg class="gauge" id="g-gap" viewBox="0 0 300 64" role="img" aria-label="Reliable-voter gap against the Sunday bands"></svg>
-        <p class="note">Republicans who voted in 3 or 4 of the last four primaries and haven't voted yet, minus the same for Democrats. Under 150,000 by Sunday moves the Senate read up a row.</p>
-      </div>
-      <div class="measure">
-        <h3>Young-voter share</h3>
-        <div class="val"><button class="num" data-src="d11_young">18.7%</button></div>
-        <svg class="gauge" id="g-young" viewBox="0 0 300 64" role="img" aria-label="Young-voter share against the bands"></svg>
-        <p class="note">Voters 18 to 34 as a share of all votes cast. 19% or more moves the read toward Talarico; under 17.5% toward Paxton.</p>
+      <div class="panel">
+        <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Our central case</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
+        <p class="legend-src">Each race starts from the line above, then adjusts for its candidates (from their polls) and for new voters who skip races lower on the ballot.</p>
       </div>
     </div>
   </section>
-
-  <!-- SERIES -->
-  <section class="sec" aria-labelledby="h-series">
-    <div class="sec-head">
-      <span class="label">How the lead has moved</span>
-      <h2 id="h-series">Republicans are closing, more slowly each day</h2>
-    </div>
-    <div class="two">
-      <div class="panel">
-        <svg class="chart" viewBox="0 0 520 220" role="img" aria-label="Primary-voter lead by day: Day 8 D +99,615, Day 10 D +59,707, Day 11 D +45,173, projected Day 12 D +30,000">
-          <line class="grid" x1="50" x2="500" y1="180" y2="180"/>
-          <line class="grid" x1="50" x2="500" y1="143.6" y2="143.6"/>
-          <line class="grid" x1="50" x2="500" y1="107.3" y2="107.3"/>
-          <line class="grid" x1="50" x2="500" y1="70.9" y2="70.9"/>
-          <line class="grid" x1="50" x2="500" y1="34.5" y2="34.5"/>
-          <text x="42" y="184" text-anchor="end">0</text>
-          <text x="42" y="147.6" text-anchor="end">25K</text>
-          <text x="42" y="111.3" text-anchor="end">50K</text>
-          <text x="42" y="74.9" text-anchor="end">75K</text>
-          <text x="42" y="38.5" text-anchor="end">100K</text>
-          <line class="thr" x1="50" x2="500" y1="114.5" y2="114.5"/>
-          <text x="498" y="110" text-anchor="end">Friday line, D +45,000</text>
-          <path class="area" d="M50 35.1 L275 93.2 L387.5 114.3 L387.5 180 L50 180 Z"/>
-          <path class="line" d="M50 35.1 L275 93.2 L387.5 114.3"/>
-          <path class="proj" d="M387.5 114.3 L500 136.4"/>
-          <circle class="pt" cx="50" cy="35.1" r="4.5"/>
-          <circle class="pt" cx="275" cy="93.2" r="4.5"/>
-          <circle class="pt" cx="387.5" cy="114.3" r="5.5"/>
-          <circle class="ptp" cx="387.5" cy="61.3" r="5"/>
-          <circle class="ptg" cx="500" cy="136.4" r="4.5"/>
-          <text class="lbl" x="58" y="30">D +99,615</text>
-          <text class="lbl" x="283" y="88">D +59,707</text>
-          <text class="lbl" x="380" y="132" text-anchor="end">D +45,173</text>
-          <text x="397" y="58">partial: D +81,624</text>
-          <text x="496" y="156" text-anchor="end">our est. ~D +30,000</text>
-          <text x="50" y="204" text-anchor="middle">Day 8</text>
-          <text x="275" y="204" text-anchor="middle">Day 10</text>
-          <text x="387.5" y="204" text-anchor="middle">Day 11</text>
-          <text x="500" y="204" text-anchor="end">Day 12</text>
-        </svg>
-        <p class="legend-src">Day 8 is from Ryan Data &amp; Research; Days 10–11 from Transparency USA. Gold dashed: our estimate, assuming Friday splits like Thursday. Day 9 has no separate snapshot on file.</p>
-      </div>
-      <div class="panel">
-        <h3>In-person early voters by day</h3>
-        <div class="tbl-wrap"><table id="daily"><thead><tr><th>Day</th><th class="r">Voters</th><th style="width:40%"></th></tr></thead><tbody></tbody></table></div>
-        <p class="legend-src">From the 244-county snapshot. Thursday reads 587,471 there; the 95-county post had 374,527.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- OUR READ -->
   <section class="sec" aria-labelledby="h-read">
     <div class="sec-head">
@@ -421,7 +354,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   </section>
 
   <!-- WORKBENCH -->
-  <section class="sec" aria-labelledby="h-bench">
+  <section class="sec" id="bench-sec" aria-labelledby="h-bench">
     <div class="sec-head">
       <span class="label">Scenario workbench</span>
       <h2 id="h-bench">Game it out</h2>
@@ -501,7 +434,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 
       <div class="out">
         <div class="verdict">
-          <span class="label">U.S. Senate, this scenario</span>
+          <span class="label">Typical Democrat v. typical Republican, this scenario</span>
           <div class="fig" id="v-fig">Talarico +1.9</div>
           <div class="p" id="v-p">~79% Talarico if the assumptions hold (±2.3-pt spread)</div>
         </div>
@@ -535,6 +468,115 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <div class="tell"><span class="when">Tuesday afternoon</span><b>Marker counties</b><span>Compare each county's Election Day check-ins with its own early vote. <span class="chip">Light &lt;30%</span> <span class="chip">Normal</span> <span class="chip">Heavy &gt;40%</span>. Heavy in Montgomery, Comal and Midland is the Republican comeback sign.</span></div>
       <div class="tell"><span class="when">Tuesday night</span><b>The count</b><span>Early votes are counted first. Talarico up about 4 or more on them likely holds; up 1 to 2 likely doesn't.</span></div>
     </div>
+  </section>
+
+  <!-- CHECKING OUR WORK -->
+  <section class="sec" aria-labelledby="h-check">
+    <div class="sec-head">
+      <span class="label">Checking our work</span>
+      <h2 id="h-check">The counts behind the read</h2>
+      <p>For anyone checking our numbers: the primary-voter count the model starts from, the thresholds we set before the data arrived, and every post we read.</p>
+    </div>
+  <nav class="phases" aria-label="Where the count stands">
+    <div class="phase done"><b>Early vote</b><span>Oct. 19–30</span></div>
+    <div class="phase done"><b>Fri. trend check</b><span>Done: on trend</span></div>
+    <div class="phase next"><b>Sat. main read</b><span>Next: after 11 a.m.</span></div>
+    <div class="phase"><b>Sun. cleanup</b><span>Reliable-voter gap</span></div>
+    <div class="phase"><b>Tue. Election Day</b><span>Marker counties, count</span></div>
+  </nav>
+
+    <div class="head">
+      <div class="big">
+        <span class="label">Primary-voter lead among early voters</span>
+        <div class="fig"><button class="num" data-src="d11_margin"><span class="party">D</span> +45,173</button></div>
+        <div class="sub">Through Thu., Oct. 29 · <button class="num" data-src="d11_counties">244 of 254 counties</button> · posted Oct. 30, 12:52 p.m. CT</div>
+        <p class="what">Early voters who last voted in a Democratic primary, minus those who last voted in a Republican one. It counts past primary voting, not votes for anyone, and leaves out the <button class="num" data-src="d11_np">2,304,621</button> early voters with no primary history.</p>
+      </div>
+      <div class="side">
+        <div class="prov">
+          <span class="stampmark">Provisional · superseded</span>
+          <span><b class="mono">10:37 a.m. post, 95 of 254 counties:</b> showed the lead at <button class="num" data-src="d11p_margin">D +81,624</button>. The 149 counties that came in by 12:52 p.m. split R +17 points, cutting it by 36,451. Big Democratic counties report first, so a partial post overstates the Democratic lead.</span>
+        </div>
+      </div>
+    </div>
+  <!-- MEASURES -->
+  <section class="sec" aria-labelledby="h-meas">
+    <div class="sec-head">
+      <span class="label">The three measures</span>
+      <h2 id="h-meas">Against the goalposts set before the data</h2>
+      <p>The Friday thresholds were committed at 9:50 p.m. Oct. 29 (<span class="mono">817b5fa</span>), before Thursday's data existed. Solid needle: now. Dashed: Wednesday. Dotted: the superseded partial post.</p>
+    </div>
+    <div class="measures">
+      <div class="measure">
+        <h3>Primary margin</h3>
+        <div class="val"><button class="num" data-src="d11_margin">D +45,173</button></div>
+        <svg class="gauge" id="g-margin" viewBox="0 0 300 64" role="img" aria-label="Primary margin against the Friday thresholds"></svg>
+        <p class="note">Friday line is D +45,000. It cleared by 173 votes, inside the noise of 10 missing counties. Read: on trend, no nudge.</p>
+      </div>
+      <div class="measure">
+        <h3>Reliable-voter gap</h3>
+        <div class="val"><button class="num" data-src="d11_relgap">R +174,183</button></div>
+        <svg class="gauge" id="g-gap" viewBox="0 0 300 64" role="img" aria-label="Reliable-voter gap against the Sunday bands"></svg>
+        <p class="note">Republicans who voted in 3 or 4 of the last four primaries and haven't voted yet, minus the same for Democrats. Under 150,000 by Sunday moves the Senate read up a row.</p>
+      </div>
+      <div class="measure">
+        <h3>Young-voter share</h3>
+        <div class="val"><button class="num" data-src="d11_young">18.7%</button></div>
+        <svg class="gauge" id="g-young" viewBox="0 0 300 64" role="img" aria-label="Young-voter share against the bands"></svg>
+        <p class="note">Voters 18 to 34 as a share of all votes cast. 19% or more moves the read toward Talarico; under 17.5% toward Paxton.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERIES -->
+  <section class="sec" aria-labelledby="h-series">
+    <div class="sec-head">
+      <span class="label">How the lead has moved</span>
+      <h2 id="h-series">Republicans are closing, more slowly each day</h2>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <svg class="chart" viewBox="0 0 520 220" role="img" aria-label="Primary-voter lead by day: Day 8 D +99,615, Day 10 D +59,707, Day 11 D +45,173, projected Day 12 D +30,000">
+          <line class="grid" x1="50" x2="500" y1="180" y2="180"/>
+          <line class="grid" x1="50" x2="500" y1="143.6" y2="143.6"/>
+          <line class="grid" x1="50" x2="500" y1="107.3" y2="107.3"/>
+          <line class="grid" x1="50" x2="500" y1="70.9" y2="70.9"/>
+          <line class="grid" x1="50" x2="500" y1="34.5" y2="34.5"/>
+          <text x="42" y="184" text-anchor="end">0</text>
+          <text x="42" y="147.6" text-anchor="end">25K</text>
+          <text x="42" y="111.3" text-anchor="end">50K</text>
+          <text x="42" y="74.9" text-anchor="end">75K</text>
+          <text x="42" y="38.5" text-anchor="end">100K</text>
+          <line class="thr" x1="50" x2="500" y1="114.5" y2="114.5"/>
+          <text x="498" y="110" text-anchor="end">Friday line, D +45,000</text>
+          <path class="area" d="M50 35.1 L275 93.2 L387.5 114.3 L387.5 180 L50 180 Z"/>
+          <path class="line" d="M50 35.1 L275 93.2 L387.5 114.3"/>
+          <path class="proj" d="M387.5 114.3 L500 136.4"/>
+          <circle class="pt" cx="50" cy="35.1" r="4.5"/>
+          <circle class="pt" cx="275" cy="93.2" r="4.5"/>
+          <circle class="pt" cx="387.5" cy="114.3" r="5.5"/>
+          <circle class="ptp" cx="387.5" cy="61.3" r="5"/>
+          <circle class="ptg" cx="500" cy="136.4" r="4.5"/>
+          <text class="lbl" x="58" y="30">D +99,615</text>
+          <text class="lbl" x="283" y="88">D +59,707</text>
+          <text class="lbl" x="380" y="132" text-anchor="end">D +45,173</text>
+          <text x="397" y="58">partial: D +81,624</text>
+          <text x="496" y="156" text-anchor="end">our est. ~D +30,000</text>
+          <text x="50" y="204" text-anchor="middle">Day 8</text>
+          <text x="275" y="204" text-anchor="middle">Day 10</text>
+          <text x="387.5" y="204" text-anchor="middle">Day 11</text>
+          <text x="500" y="204" text-anchor="end">Day 12</text>
+        </svg>
+        <p class="legend-src">Day 8 is from Ryan Data &amp; Research; Days 10–11 from Transparency USA. Gold dashed: our estimate, assuming Friday splits like Thursday. Day 9 has no separate snapshot on file.</p>
+      </div>
+      <div class="panel">
+        <h3>In-person early voters by day</h3>
+        <div class="tbl-wrap"><table id="daily"><thead><tr><th>Day</th><th class="r">Voters</th><th style="width:40%"></th></tr></thead><tbody></tbody></table></div>
+        <p class="legend-src">From the 244-county snapshot. Thursday reads 587,471 there; the 95-county post had 374,527.</p>
+      </div>
+    </div>
+  </section>
+
   </section>
 
   <!-- LOG -->
@@ -591,6 +633,12 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     d11_margin: { title: 'Primary-voter lead, thru Oct. 29', val: 'D +45,173', file: 'tusa11', page: 'p. 1, Early voter previous history',
       math: '(DEM Only 2,166,768 + DEM Mixed 124,150)\n− (GOP Only 2,147,736 + GOP Mixed 98,009)\n= 2,290,918 − 2,245,745 = D +45,173',
       cite: 'Through Thursday, Oct. 29, early voters with Democratic primary history outnumbered those with Republican primary history by 45,173 (Transparency USA statewide snapshot, 244 of 254 counties reporting).' },
+    d11_votes: { title: 'Early votes cast, thru Oct. 29', val: '6,841,284', file: 'tusa11', page: 'p. 1, Overview',
+      math: 'As printed: 6,841,284 votes cast of 19,226,104 registered = 35.58%\n(mail 247,678 + early in person 6,593,606)',
+      cite: 'Through Thursday, Oct. 29, 6,841,284 Texans had voted early, 35.6% of registered voters (Transparency USA statewide snapshot).' },
+    vs2022: { title: 'Early vote as a share of the whole 2022 vote', val: '84%', file: 'ryan8', page: '2022 share of vote by history group (whole election)',
+      math: '2022 voters, whole election: 2,817,822 + 135,624 + 1,915,678\n+ 162,290 + 2,495,980 + 567,780 = 8,095,174\n6,841,284 ÷ 8,095,174 = 84.5%\n(Ryan counts from its voter file; the official 2022 total may differ slightly.)',
+      cite: "Texas's early vote through Oct. 29 already equals about 84% of the total 2022 midterm vote (Transparency USA; Ryan Data & Research)." },
     d11_counties: { title: 'Counties reporting', val: '244 of 254', file: 'tusa11', page: 'p. 1, header', math: 'As printed in the snapshot header.', cite: 'The through-Thursday snapshot posted at 12:52 p.m. Oct. 30 covered 244 of 254 Texas counties (Transparency USA).' },
     d11_np: { title: 'Early voters with no primary history', val: '2,304,621', file: 'tusa11', page: 'p. 1, General Only and No History',
       math: 'General Only 1,836,085 + No History 468,536 = 2,304,621\n÷ 6,841,284 votes cast = 33.7%',
@@ -678,7 +726,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     const base = SNAPS[seen] || SNAPS.d10;
     const dv = cur.votes - base.votes, dm = cur.margin - base.margin;
     $('#since-body').textContent = (SNAPS[seen] ? 'Since your last visit (' + base.label + '): ' : 'Since ' + base.label + ': ') +
-      '+' + fmt(dv) + ' votes; lead ' + (dm < 0 ? 'down ' : 'up ') + fmt(Math.abs(dm)) + '.';
+      '+' + fmt(dv) + ' votes. The primary-voter lead ' + (dm < 0 ? 'fell ' : 'rose ') + fmt(Math.abs(dm)) + '; our central case is unchanged.';
   }
   store.set('ledger.lastSnap', 'd11');
 
@@ -725,11 +773,11 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   // Talarico margin (pts) = 100 × [ (2·loyal − 1)·(early − ed) + size·lean ] ÷ total
   // Down-ballot: Dem margin = (Talarico − 0.5) − candidate adjustment − drop-off
   const RACES = [
-    { race: 'U.S. Senate', d: 'Talarico', r: 'Paxton', adj: null, drop: 0 },
-    { race: 'Governor', d: 'Hinojosa', r: 'Abbott', adj: 2, drop: 0 },
-    { race: 'Lt. Governor', d: 'Goodwin', r: 'Patrick', adj: -1, drop: 0.75 },
-    { race: 'Attorney General', d: 'Johnson', r: 'Middleton', adj: 1, drop: 0.75 },
-    { race: 'Agriculture', d: 'Tucker', r: 'Sheets', adj: 0, drop: 1 }
+    { race: 'U.S. Senate', d: 'Talarico', r: 'Paxton', adj: null, drop: 0, why: 'Paxton runs 0.5 behind a typical Republican' },
+    { race: 'Governor', d: 'Hinojosa', r: 'Abbott', adj: 2, drop: 0, why: 'Abbott 2 ahead: polls, incumbency, money' },
+    { race: 'Lt. Governor', d: 'Goodwin', r: 'Patrick', adj: -1, drop: 0.75, why: 'Goodwin 1 ahead in polls, halved; new voters skip 0.75' },
+    { race: 'Attorney General', d: 'Johnson', r: 'Middleton', adj: 1, drop: 0.75, why: 'Middleton 1 ahead in polls; new voters skip 0.75' },
+    { race: 'Agriculture', d: 'Tucker', r: 'Sheets', adj: 0, drop: 1, why: 'No general-election polls; new voters skip 1' }
   ];
   const SIGMA = 2.3;
   function erf(x) { const s = Math.sign(x); x = Math.abs(x); const t = 1 / (1 + 0.3275911 * x);
@@ -764,6 +812,33 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     if (T < 5) return 'Hinojosa likely; a real shot at 14 Texas Senate seats.';
     return 'Hinojosa; Texas House control comes into play.';
   }
+  // The environment (a typical Democrat v. a typical Republican) is the Senate margin less Paxton's 0.5.
+  const envTxt = T => { const e = T - 0.5; return Math.abs(e) < 0.05 ? 'Even' : (e > 0 ? 'D +' : 'R +') + Math.abs(e).toFixed(1); };
+  function envLine(T) {
+    const pT = phi(T / SIGMA);
+    return 'Senate: ' + raceLine(T, 'Talarico', 'Paxton') + ', ' + (pT >= 0.5 ? '~' + Math.round(pT * 100) + '% Talarico' : '~' + Math.round((1 - pT) * 100) + '% Paxton') +
+      ' if these assumptions hold (±' + SIGMA + '-pt spread). ' + legislature(T);
+  }
+  function fillRaces(tb, p, withWhy) {
+    tb.innerHTML = '';
+    RACES.forEach(R => {
+      const m = raceMargin(p, R); const pr = phi(m / SIGMA);
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td></td><td class="r"></td><td class="r"></td>';
+      tr.children[0].textContent = R.race + ' · ' + R.d + ' (D) v. ' + R.r + ' (R)';
+      if (withWhy) { const w = document.createElement('div'); w.className = 'legend-src'; w.textContent = R.why; tr.children[0].appendChild(w); }
+      const span = document.createElement('span'); span.className = m >= 0 ? 'D' : 'R'; span.textContent = raceLine(m, R.d, R.r);
+      tr.children[1].appendChild(span);
+      tr.children[2].textContent = pr >= 0.5 ? Math.round(pr * 100) + '% D' : Math.round((1 - pr) * 100) + '% R';
+      tb.appendChild(tr);
+    });
+  }
+  function renderTop() {
+    const p = parts(DEF);
+    $('#env-fig').textContent = envTxt(p.T);
+    $('#env-p').textContent = 'Our central case. ' + envLine(p.T);
+    fillRaces($('#races-top'), p, true);
+  }
   const pressed = (sel, attr, v) => $$(sel).forEach(b => b.setAttribute('aria-pressed', String(parseFloat(b.dataset[attr]) === v)));
   function render() {
     const s = read(); const p = parts(s);
@@ -780,21 +855,9 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     pressed('[data-split]', 'split', s.split); pressed('[data-early]', 'early', s.early);
 
     const T = p.T;
-    $('#v-fig').textContent = raceLine(T, 'Talarico', 'Paxton');
-    const pT = phi(T / SIGMA);
-    $('#v-p').textContent = (pT >= 0.5 ? '~' + Math.round(pT * 100) + '% Talarico' : '~' + Math.round((1 - pT) * 100) + '% Paxton') + ' if these assumptions hold (±' + SIGMA + '-pt spread). ' + legislature(T);
-
-    const tb = $('#races'); tb.innerHTML = '';
-    RACES.forEach(R => {
-      const m = raceMargin(p, R); const pr = phi(m / SIGMA);
-      const tr = document.createElement('tr');
-      tr.innerHTML = '<td></td><td class="r"></td><td class="r"></td>';
-      tr.children[0].textContent = R.race + ' · ' + R.d + ' (D) v. ' + R.r + ' (R)';
-      const span = document.createElement('span'); span.className = m >= 0 ? 'D' : 'R'; span.textContent = raceLine(m, R.d, R.r);
-      tr.children[1].appendChild(span);
-      tr.children[2].textContent = pr >= 0.5 ? Math.round(pr * 100) + '% D' : Math.round((1 - pr) * 100) + '% R';
-      tb.appendChild(tr);
-    });
+    $('#v-fig').textContent = envTxt(T);
+    $('#v-p').textContent = envLine(T);
+    fillRaces($('#races'), p, false);
     $('#leg').textContent = 'Down-ballot races move point for point with the Senate. Each carries a candidate adjustment from its polls and a drop-off for new voters who skip lower races; both are estimates.' +
       (s.split ? ' Ticket-splitting moves each of them ' + p.splitPts.toFixed(1) + ' pts ' + (s.split > 0 ? 'toward Republicans.' : 'toward Democrats.') : '');
 
@@ -873,6 +936,6 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     pins.push(read()); store.set('ledger.pins.v2', pins); renderPins(); $('#toast').textContent = 'Pinned as #' + pins.length + '.';
   });
 
-  render(); renderPins();
+  render(); renderPins(); renderTop();
 })();
 </script>
