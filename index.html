@@ -310,22 +310,25 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div><b>Next update</b><span class="nx">Sat., Oct. 31, after 11 a.m. CT</span> <span class="rel" data-rel="2026-10-31T11:00:00-05:00"></span></div>
   </div>
 
-  <!-- RACES -->
-  <section class="sec" aria-labelledby="h-races">
+  <!-- WHERE THE RACES STAND -->
+  <section class="sec" aria-labelledby="h-stand">
     <div class="sec-head">
       <span class="label" style="color:var(--gold-text)">Our read · Future Heist</span>
-      <h2 id="h-races">What could happen</h2>
-      <p>No recent Texas election looks like this one. At this point in 2022 and 2024, Republican primary voters led the early vote by hundreds of thousands. This year Democratic primary voters lead. Past years give a range, not an answer. Most of these races will turn on the 2.3 million early voters who have never voted in a primary, and the turnout data can't show how they are voting.</p>
+      <h2 id="h-stand">Where the races stand</h2>
     </div>
-    <div class="scen" id="scen"></div>
-    <p class="scen-more">These are three readings, not a forecast. The middle one is our best guess. The voters in the middle could break further than in any recent year, or turn out in larger numbers than we assume. <a href="#bench">Try your own assumptions in the workbench.</a></p>
-    <details class="panel">
-      <summary>Race by race, in our central read</summary>
-      <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Central read</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
-      <p class="legend-src">Each race starts from a typical Democrat against a typical Republican, then adjusts for its candidates (from their polls) and for new voters who skip races lower on the ballot. The odds assume the model can miss by about 2.3 points either way.</p>
-    </details>
+    <div class="env">
+      <div class="verdict">
+        <span class="label">U.S. Senate · our central read</span>
+        <div class="fig" id="env-fig"></div>
+        <div class="p" id="env-p"></div>
+      </div>
+      <div class="panel">
+        <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Central read</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
+        <p class="legend-src">Each race starts from the Senate figure, then adjusts for its candidates (from their polls) and for new voters who skip races lower on the ballot.</p>
+      </div>
+    </div>
+    <p class="scen-more">This is our best guess in an election that doesn't look like recent ones, and it could move several points either way. <a href="#h-scen">See how far it could swing</a>, or <a href="#bench">test your own assumptions</a>.</p>
   </section>
-
   <!-- WHO HAS VOTED -->
   <section class="sec opener" aria-labelledby="h-mix">
     <div class="mix-head">
@@ -416,6 +419,17 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- SCENARIOS -->
+  <section class="sec" aria-labelledby="h-scen">
+    <div class="sec-head">
+      <span class="label" style="color:var(--gold-text)">Our read · Future Heist</span>
+      <h2 id="h-scen">What could happen</h2>
+      <p>No recent Texas election looks like this one. At this point in 2022 and 2024, Republican primary voters led the early vote by hundreds of thousands. This year Democratic primary voters lead. Past years give a range, not an answer. Most of these races will turn on the 2.3 million early voters who have never voted in a primary, and the turnout data can't show how they are voting.</p>
+    </div>
+    <div class="scen" id="scen"></div>
+    <p class="scen-more">These are three readings, not a forecast. The middle one is our best guess. The voters in the middle could break further than in any recent year, or turn out in larger numbers than we assume. <a href="#bench">Try your own assumptions in the workbench.</a></p>
   </section>
 
   <!-- WORKBENCH -->
@@ -943,9 +957,9 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     note.textContent = (central ? 'Our central case. ' : 'This scenario. ') + 'The odds assume the model can miss by about ' + SIGMA + ' points either way.';
     box.appendChild(note);
   }
-  function fillRaces(tb, p, withWhy) {
+  function fillRaces(tb, p, withWhy, list) {
     tb.innerHTML = '';
-    RACES.forEach(R => {
+    (list || RACES).forEach(R => {
       const m = raceMargin(p, R); const pr = phi(m / SIGMA);
       const tr = document.createElement('tr');
       tr.innerHTML = '<td></td><td class="r"></td><td class="r"></td>';
@@ -981,7 +995,11 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       });
       box.appendChild(card);
     });
-    fillRaces($('#races-top'), parts(DEF), true);
+    const c = parts(DEF);
+    $('#env-fig').textContent = raceLine(c.T, 'Talarico', 'Paxton');
+    $('#env-fig').style.color = c.T >= 0 ? 'var(--dem)' : 'var(--rep)';
+    fillEnv($('#env-p'), c.T, true);
+    fillRaces($('#races-top'), c, true, RACES.slice(1));
   }
   const pressed = (sel, attr, v) => $$(sel).forEach(b => b.setAttribute('aria-pressed', String(parseFloat(b.dataset[attr]) === v)));
   function render() {
