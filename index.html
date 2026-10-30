@@ -109,6 +109,21 @@ p { margin: 0; max-width: 66ch; }
 .stampmark { justify-self: start; font: 600 11px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--stamp); border: 2px solid var(--stamp); padding: 4px 7px 3px; transform: rotate(-2deg); background: var(--paper); }
 
+/* three readings */
+.scen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.scard { background: var(--paper); padding: 16px; display: grid; gap: 6px; min-width: 0; }
+.scard.mid { background: var(--gold-wash); border-top: 4px solid var(--gold); }
+.scard .label { color: var(--ink); }
+.ssub { font: 12px/1.4 var(--mono); color: var(--muted); }
+.ssub.sen { margin-top: 6px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 11px; }
+.sfig { font: 400 3.2rem/0.95 var(--display); letter-spacing: 0.01em; }
+.slist { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; font: 13px/1.4 var(--mono); }
+.slist li { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--rule); padding-top: 4px; }
+.slist b { white-space: nowrap; }
+.scen-more { font-size: 15px; }
+details.panel summary { cursor: pointer; font: 600 13px/1.3 var(--mono); letter-spacing: 0.04em; }
+@media (max-width: 900px) { .scen { grid-template-columns: minmax(0, 1fr); } }
+
 /* lines under the environment figure */
 .verdict .p { display: grid; gap: 8px; margin-top: 6px; }
 .envline { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 10px; align-items: baseline; font: 15px/1.5 var(--serif); }
@@ -119,21 +134,22 @@ p { margin: 0; max-width: 66ch; }
 
 /* opener: who has voted */
 .mix-head { display: grid; gap: 8px; }
-.mix-title { font-size: clamp(2.2rem, 6vw, 3.4rem); }
+.mix-title { font-size: clamp(1.7rem, 4.4vw, 2.5rem); max-width: 34ch; }
+.mix-sub { font-size: 15px; }
 .mix-title .num { color: var(--dem); }
 .mix-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 12px/1.3 var(--mono); }
 .mix-key span { display: inline-flex; align-items: center; gap: 6px; }
 .sw { width: 12px; height: 12px; display: inline-block; }
 .sw.d { background: var(--dem); } .sw.n { background: var(--np); } .sw.r { background: var(--rep); }
-.mix { display: grid; gap: 10px; }
+.mix { display: grid; gap: 6px; }
 .mgrp { font: 600 11px/1.3 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); padding-top: 10px; border-top: 1px solid var(--rule); }
 .mgrp:first-child { border-top: 0; padding-top: 0; }
-.mrow { display: grid; grid-template-columns: 190px minmax(0, 1fr) 130px; gap: 14px; align-items: center; }
+.mrow { display: grid; grid-template-columns: 150px minmax(0, 1fr) 120px; gap: 12px; align-items: center; }
 .mlab { display: grid; font: 12px/1.35 var(--mono); min-width: 0; }
-.mlab b { font: 400 1.5rem/1 var(--display); letter-spacing: 0.02em; }
+.mlab b { font: 400 1.25rem/1 var(--display); letter-spacing: 0.02em; }
 .mlab span { color: var(--muted); }
-.mbar { display: flex; height: 30px; min-width: 0; }
-.mrow.strong .mbar { height: 44px; }
+.mbar { display: flex; height: 24px; min-width: 0; }
+.mrow.strong .mbar { height: 32px; }
 .seg { display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; font: 600 12px/1 var(--mono); font-variant-numeric: tabular-nums; min-width: 0; }
 .seg.d { background: var(--dem); color: var(--on-party); }
 .seg.r { background: var(--rep); color: var(--on-party); }
@@ -294,12 +310,28 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div><b>Next update</b><span class="nx">Sat., Oct. 31, after 11 a.m. CT</span> <span class="rel" data-rel="2026-10-31T11:00:00-05:00"></span></div>
   </div>
 
+  <!-- RACES -->
+  <section class="sec" aria-labelledby="h-races">
+    <div class="sec-head">
+      <span class="label" style="color:var(--gold-text)">Our read · Future Heist</span>
+      <h2 id="h-races">What could happen</h2>
+      <p>No recent Texas election looks like this one. At this point in 2022 and 2024, Republican primary voters led the early vote by hundreds of thousands. This year Democratic primary voters lead. Past years give a range, not an answer. Most of these races will turn on the 2.3 million early voters who have never voted in a primary, and the turnout data can't show how they are voting.</p>
+    </div>
+    <div class="scen" id="scen"></div>
+    <p class="scen-more">These are three readings, not a forecast. The middle one is our best guess. The voters in the middle could break further than in any recent year, or turn out in larger numbers than we assume. <a href="#bench">Try your own assumptions in the workbench.</a></p>
+    <details class="panel">
+      <summary>Race by race, in our central read</summary>
+      <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Central read</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
+      <p class="legend-src">Each race starts from a typical Democrat against a typical Republican, then adjusts for its candidates (from their polls) and for new voters who skip races lower on the ballot. The odds assume the model can miss by about 2.3 points either way.</p>
+    </details>
+  </section>
+
   <!-- WHO HAS VOTED -->
   <section class="sec opener" aria-labelledby="h-mix">
     <div class="mix-head">
-      <span class="label">Texas early voters, by the party primary they last voted in</span>
-      <h2 id="h-mix" class="mix-title">Democratic primary voters lead by <button class="num" data-src="d11_margin">45,173</button></h2>
-      <p>Through Thu., Oct. 29, <button class="num" data-src="d11_votes">6,841,284</button> Texans have voted early: 35.6% of registered voters, and already <button class="num" data-src="vs2022">84%</button> of the whole 2022 vote. At this point in 2022, Republican primary voters led by 436,528.</p>
+      <span class="label">Who has voted early, by the party primary they last voted in</span>
+      <h2 id="h-mix" class="mix-title">Democratic primary voters lead by <button class="num" data-src="d11_margin">45,173</button>. In 2022 and 2024, Republicans led.</h2>
+      <p class="mix-sub"><button class="num" data-src="d11_votes">6,841,284</button> Texans have voted early through Thu., Oct. 29, already <button class="num" data-src="vs2022">84%</button> of the whole 2022 vote.</p>
     </div>
     <div class="mix-key" aria-hidden="true">
       <span><i class="sw d"></i>Last voted in a Democratic primary</span>
@@ -307,7 +339,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <span><i class="sw r"></i>Last voted in a Republican primary</span>
     </div>
     <div class="mix" id="mix"></div>
-    <p class="mix-note">This counts which primary people last voted in, not how they are voting this year. The voters in the middle decide the race: in 2018, Republican primary voters outnumbered Democratic ones by 1.16 million, and Cruz won by only 2.6 points. The 2018 file also counts fewer Democratic primary voters than today's, because Democratic primaries were small before then.</p>
+    <p class="mix-note">This shows which primary people last voted in, not how they are voting now. The sand-colored middle decides the race.</p>
   </section>
 
   <section class="row2" aria-label="Updates">
@@ -325,25 +357,6 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
   </section>
 
-  <!-- RACES -->
-  <section class="sec" aria-labelledby="h-races">
-    <div class="sec-head">
-      <span class="label" style="color:var(--gold-text)">Our read · Future Heist</span>
-      <h2 id="h-races">Where the races stand</h2>
-      <p>A rough model built from the early vote and our assumptions about the voters it can't see. It is not a forecast. Every race moves point for point with the first line; change the assumptions in the <a href="#bench">workbench</a>.</p>
-    </div>
-    <div class="env">
-      <div class="verdict">
-        <span class="label">A typical Democrat against a typical Republican</span>
-        <div class="fig" id="env-fig">D +1.4</div>
-        <div class="p" id="env-p"></div>
-      </div>
-      <div class="panel">
-        <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Our central case</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
-        <p class="legend-src">Each race starts from the line above, then adjusts for its candidates (from their polls) and for new voters who skip races lower on the ballot.</p>
-      </div>
-    </div>
-  </section>
   <!-- OUR READ -->
   <section class="sec" aria-labelledby="h-read">
     <div class="sec-head">
@@ -486,7 +499,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 
       <div class="out">
         <div class="verdict">
-          <span class="label">Typical Democrat v. typical Republican, this scenario</span>
+          <span class="label">U.S. Senate, this scenario</span>
           <div class="fig" id="v-fig">Talarico +1.9</div>
           <div class="p" id="v-p">~79% Talarico if the assumptions hold (±2.3-pt spread)</div>
         </div>
@@ -745,12 +758,10 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 
   // ---------- opener: early voters by last primary, against past years ----------
   const MIX = [
-    { grp: 'Now', y: '2026', sub: 'through Thu., Oct. 29 · day 11', d: 2290918, n: 2304621, r: 2245745, strong: true, src: 'd11_margin' },
-    { grp: 'Same point in early voting · day 8', y: '2026', sub: 'midterm', d: 1840665, n: 1523905, r: 1741050, strong: true, src: 'mix_26' },
-    { y: '2024', sub: 'presidential', d: 1442089, n: 2540492, r: 2236411, src: 'mix_24' },
-    { y: '2022', sub: 'midterm', d: 1062600, n: 854677, r: 1499128, src: 'mix_22' },
-    { grp: 'Whole election, and how it ended', y: '2022', sub: 'Abbott won by 10.9', d: 2077968, n: 3063760, r: 2953446, src: 'mix_22f' },
-    { y: '2018', sub: 'Cruz won by 2.6', d: 1687443, n: 3849624, r: 2849698, src: 'mix_18f' }
+    { y: '2026', sub: 'now · through day 11', d: 2290918, n: 2304621, r: 2245745, strong: true, src: 'd11_margin' },
+    { y: '2026', sub: 'day 8', d: 1840665, n: 1523905, r: 1741050, strong: true, src: 'mix_26' },
+    { y: '2022', sub: 'day 8 · midterm', d: 1062600, n: 854677, r: 1499128, src: 'mix_22' },
+    { y: '2024', sub: 'day 8 · presidential', d: 1442089, n: 2540492, r: 2236411, src: 'mix_24' }
   ];
   (function buildMix() {
     const box = $('#mix');
@@ -923,9 +934,9 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       const dd = document.createElement('span'); build(dd);
       row.append(dt, dd); box.appendChild(row);
     };
-    line('U.S. Senate', dd => {
-      const b = document.createElement('b'); b.className = dem ? 'D' : 'R'; b.textContent = raceLine(T, 'Talarico', 'Paxton');
-      dd.append(b, document.createTextNode(', a ' + odds + '% chance ' + (dem ? 'Talarico' : 'Paxton') + ' wins'));
+    line('Chance', dd => {
+      const b = document.createElement('b'); b.className = dem ? 'D' : 'R'; b.textContent = odds + '%';
+      dd.append(b, document.createTextNode(' that ' + (dem ? 'Talarico' : 'Paxton') + ' wins'));
     });
     line('Legislature', dd => { dd.textContent = legislatureRead(T); });
     const note = document.createElement('div'); note.className = 'envnote';
@@ -946,12 +957,31 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       tb.appendChild(tr);
     });
   }
+  // Three readings side by side: the 2022 lean, our central read, the 2018 lean.
+  const SCEN = [
+    { t: 'If they vote like 2022', sub: 'Voters with no primary history lean R +4', lean: -4 },
+    { t: 'Our central read', sub: 'They lean D +8.5', lean: 8.5, mid: true },
+    { t: 'If they vote like 2018', sub: 'They lean D +12', lean: 12 }
+  ];
   function renderTop() {
-    const p = parts(DEF);
-    $('#env-fig').textContent = envTxt(p.T);
-    $('#env-fig').style.color = p.T - 0.5 >= 0 ? 'var(--dem)' : 'var(--rep)';
-    fillEnv($('#env-p'), p.T, true);
-    fillRaces($('#races-top'), p, true);
+    const box = $('#scen'); box.innerHTML = '';
+    SCEN.forEach(sc => {
+      const p = parts({ ...DEF, leanG: sc.lean, leanN: sc.lean });
+      const card = document.createElement('div'); card.className = 'scard' + (sc.mid ? ' mid' : '');
+      card.innerHTML = '<span class="label"></span><span class="ssub"></span><span class="ssub sen">U.S. Senate</span><div class="sfig"></div><ul class="slist"></ul>';
+      card.querySelector('.label').textContent = sc.t;
+      card.querySelector('.ssub').textContent = sc.sub;
+      const fig = card.querySelector('.sfig');
+      fig.textContent = raceLine(p.T, 'Talarico', 'Paxton'); fig.style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
+      RACES.slice(1).forEach(R => {
+        const m = raceMargin(p, R);
+        const li = document.createElement('li'); const nm = document.createElement('span'); nm.textContent = R.race;
+        const b = document.createElement('b'); b.className = m >= 0 ? 'D' : 'R'; b.textContent = raceLine(m, R.d, R.r);
+        li.append(nm, b); card.querySelector('.slist').appendChild(li);
+      });
+      box.appendChild(card);
+    });
+    fillRaces($('#races-top'), parts(DEF), true);
   }
   const pressed = (sel, attr, v) => $$(sel).forEach(b => b.setAttribute('aria-pressed', String(parseFloat(b.dataset[attr]) === v)));
   function render() {
@@ -969,8 +999,8 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     pressed('[data-split]', 'split', s.split); pressed('[data-early]', 'early', s.early);
 
     const T = p.T;
-    $('#v-fig').textContent = envTxt(T);
-    $('#v-fig').style.color = T - 0.5 >= 0 ? 'var(--dem)' : 'var(--rep)';
+    $('#v-fig').textContent = raceLine(T, 'Talarico', 'Paxton');
+    $('#v-fig').style.color = T >= 0 ? 'var(--dem)' : 'var(--rep)';
     fillEnv($('#v-p'), T, false);
     fillRaces($('#races'), p, false);
     $('#leg').textContent = 'Down-ballot races move point for point with the Senate. Each carries a candidate adjustment from its polls and a drop-off for new voters who skip lower races; both are estimates.' +
