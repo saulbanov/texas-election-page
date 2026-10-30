@@ -54,6 +54,7 @@
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
+.nowrap { white-space: nowrap; }
 html.loading .wrap { visibility: hidden; }
 body {
   background: var(--page); color: var(--ink);
@@ -400,7 +401,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   <section class="sec opener" aria-labelledby="h-mix">
     <div class="mix-head">
       <span class="label">Who has voted early, by the party primary they last voted in</span>
-      <h2 id="h-mix" class="mix-title"><span id="mix-head">Democratic primary voters lead by</span> <button class="num" id="mix-lead" data-src="d11_margin">45,173</button>. In 2022 and 2024, Republicans led.</h2>
+      <h2 id="h-mix" class="mix-title"><span id="mix-head">Democratic primary voters lead by</span> <span class="nowrap"><button class="num" id="mix-lead" data-src="d11_margin">45,173</button>.</span> In 2022 and 2024, Republicans led.</h2>
       <p class="mix-sub"><button class="num" id="mix-votes" data-src="d11_votes">6,841,284</button> Texans have voted early through <span id="mix-thru">Thu., Oct. 29</span>, already <button class="num" id="mix-pct" data-src="vs2022">84%</button> of the whole 2022 vote.</p>
     </div>
     <div class="mix-key" aria-hidden="true">
