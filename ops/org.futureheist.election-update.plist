@@ -12,6 +12,8 @@
     <string>-c</string>
     <string>import os; os.execv("/bin/zsh", ["zsh", "__RT__/code/run-update.sh"])</string>
   </array>
+  <key>EnvironmentVariables</key>
+  <dict><key>ELECTION_UPDATE_FETCH_ONLY</key><string>1</string></dict>
   <key>StartInterval</key><integer>900</integer>
   <key>RunAtLoad</key><false/>
   <key>StandardOutPath</key><string>__HOME__/Library/Logs/election-update.log</string>

@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Scheduled update of the Texas early-vote page. Runs every 15 minutes from launchd
+# Scheduled fetch (and, optionally, update) for the Texas early-vote page. Runs every 15 minutes from launchd
 # (ops/org.futureheist.election-update.plist) and does nothing outside Oct. 31 - Nov. 4.
 #
 # 1. Acquire: fetch each Transparency USA snapshot from Oct. 30 through yesterday; file new ones in election-2026.
@@ -44,7 +44,8 @@ if [[ -n $(git -C $E status --porcelain -- general-2026/early-vote) ]]; then
     && git -C $E push -q && log "pushed election-2026 ($thru)" || { log "FAILED: commit/push election-2026"; exit 1; }
 fi
 
-# 3. publish
+# 3. publish (skipped when GitHub Actions publishes the page; the plist sets ELECTION_UPDATE_FETCH_ONLY=1)
+if [[ ${ELECTION_UPDATE_FETCH_ONLY:-0} == 1 ]]; then log "fetch-only run done"; exit 0; fi
 upd=$(python3 $CODE/update.py --election-repo $E --site-repo $S) || { log "FAILED: update.py"; exit 1; }
 if [[ -n $(git -C $S status --porcelain -- data og page.html index.html) ]]; then
   git -C $S add data og page.html index.html \

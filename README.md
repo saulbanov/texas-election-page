@@ -63,9 +63,12 @@ The numbers come from three files in `data/`, which the page fetches fresh on ev
 
 **What changes only by hand:** the lean of voters with no primary history (`leanG`, `leanN`) and the Election Day turnout adjustment (`adj_ed`: +0.5 if the marker counties run light, −0.7 if heavy). Edit `data/assumptions.json`, add a line to its `log`, run `python3 tools/update.py`, commit and push.
 
-**The schedule runs on GitHub, not on a Mac.** Two GitHub Actions run every 15 minutes from Oct. 31 to Nov. 4, Central time:
-- `election-2026`'s **Fetch early-vote snapshots** (`.github/workflows/snapshots.yml`) fetches every Transparency USA snapshot from Oct. 29 through yesterday, files new ones with `tools/fetch_snapshot.py`, rebuilds the views with `tools/build_views.py`, and pushes.
-- This repo's **Update the page** (`.github/workflows/update.yml`, 7 minutes later) checks out `election-2026`, runs `tools/update.py`, pushes, and asks GitHub Pages to rebuild.
+**The schedule is split between a Mac and GitHub.** Transparency USA's downloads sit behind Cloudflare, which refuses requests from GitHub's servers (HTTP 403, seen Oct. 30) and allows them from an ordinary connection. We don't route around that. So:
+- **The Mac fetches.** A launchd job (`ops/org.futureheist.election-update.plist`, installed with `ops/deploy.sh --install`) runs `ops/run-update.sh` every 15 minutes, Oct. 31 to Nov. 4, in fetch-only mode: it fetches and files new snapshots in `election-2026`, rebuilds its views and pushes. It runs from a pinned copy in `~/Documents/runtime/election-update/code`, logs to `~/Library/Logs/election-update.log`, and only works while the Mac is awake and online.
+- **GitHub publishes.** This repo's **Update the page** workflow (`.github/workflows/update.yml`) runs every 15 minutes, checks out `election-2026`, runs `tools/update.py`, pushes, and asks GitHub Pages to rebuild. It needs no Mac.
+- `election-2026`'s own fetch workflow (`snapshots.yml`) is disabled because of the 403; re-enable it if Transparency USA allows server access.
+
+Run either workflow by hand from the Actions tab with "force" ticked to run outside the window. GitHub can start scheduled runs several minutes late.
 
 Either can be run by hand from the repo's Actions tab, with "force" ticked to run outside the window. GitHub can start scheduled runs several minutes late. `ops/` holds a launchd version of the same job for running it from a Mac instead; it is not installed.
 
