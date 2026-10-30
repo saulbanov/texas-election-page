@@ -65,3 +65,5 @@ The numbers come from three files in `data/`, which the page fetches fresh on ev
 
 **The schedule.** `ops/run-update.sh` runs every 15 minutes from launchd, Oct. 31 to Nov. 4. Each run fetches every snapshot from Oct. 30 through yesterday (`election-2026/tools/fetch_snapshot.py`), files new ones, rebuilds the views (`build_views.py`), pushes `election-2026`, then runs `tools/update.py` and pushes this repo. It runs from a pinned copy of the code in `~/Documents/runtime/election-update/code`, which only `ops/deploy.sh` moves; the log is `~/Library/Logs/election-update.log`. To test push access from launchd without changing anything: `touch ~/Documents/runtime/election-update/PROBE`.
 
+**After Nov. 4** the job does nothing but stays loaded. Remove it with `launchctl bootout gui/$(id -u)/org.futureheist.election-update` and delete `~/Library/LaunchAgents/org.futureheist.election-update.plist`; the runtime folder `~/Documents/runtime/election-update` can then go through the release script named in `~/Documents/HOMES.md`.
+
