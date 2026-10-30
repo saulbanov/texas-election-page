@@ -1,0 +1,56 @@
+# Mirror election-2026's views into the page, apply the pre-set rules, rebuild and publish.
+# Runs every 15 minutes, offset from the snapshot fetch, Oct. 31 - Nov. 4 (Central time).
+name: Update the page
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Run outside the Oct. 31 - Nov. 4 window
+        type: boolean
+        default: false
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: page-update
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the window
+        id: win
+        run: |
+          today=$(TZ=America/Chicago date +%F)
+          if [[ "${{ inputs.force }}" == "true" ]] || [[ ! "$today" < "2026-10-31" && ! "$today" > "2026-11-04" ]]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Outside the update window ($today); nothing to do."
+          fi
+      - uses: actions/checkout@v4
+        if: steps.win.outputs.go == 'true'
+      - uses: actions/checkout@v4
+        if: steps.win.outputs.go == 'true'
+        with:
+          repository: saulbanov/election-2026
+          path: election-2026
+      - name: Update from the views
+        if: steps.win.outputs.go == 'true'
+        run: python3 tools/update.py --election-repo election-2026 --site-repo .
+      - name: Commit, push and publish
+        if: steps.win.outputs.go == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ -n "$(git status --porcelain -- data og page.html index.html)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data og page.html index.html
+            git commit -m "Scheduled update: $(python3 -c "import json; a=json.load(open('data/assumptions.json')); print('page updated', a['page_updated'])")"
+            git push
+            gh api -X POST "repos/${{ github.repository }}/pages/builds" >/dev/null && echo "Pages build requested."
+          else
+            echo "No change."
+          fi

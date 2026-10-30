@@ -127,7 +127,7 @@ def main() -> int:
                    .replace('{{SENATE}}', race(after)).replace('{{SENATE_COLOR}}', 'var(--dem)' if after >= 0 else 'var(--rep)'))
         (site / 'og' / 'card.html').write_text(html)
         render = next(p for p in (HERE / 'render.sh', site / 'og' / 'render.sh') if p.exists())
-        subprocess.run(['/bin/zsh', str(render), f"{latest['through']}-{latest['counties']}", str(site / 'og')], check=True)
+        subprocess.run(['bash', str(render), f"{latest['through']}-{latest['counties']}", str(site / 'og')], check=True)
         changes.append(f'rendered og/{card_name}')
     if (site / 'og' / card_name).exists():
         page = re.sub(r'(<meta property="og:image" content="[^"]*/og/)[^"]+(")', rf'\g<1>{card_name}\2', page)

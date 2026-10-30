@@ -63,7 +63,11 @@ The numbers come from three files in `data/`, which the page fetches fresh on ev
 
 **What changes only by hand:** the lean of voters with no primary history (`leanG`, `leanN`) and the Election Day turnout adjustment (`adj_ed`: +0.5 if the marker counties run light, −0.7 if heavy). Edit `data/assumptions.json`, add a line to its `log`, run `python3 tools/update.py`, commit and push.
 
-**The schedule.** `ops/run-update.sh` runs every 15 minutes from launchd, Oct. 31 to Nov. 4. Each run fetches every snapshot from Oct. 30 through yesterday (`election-2026/tools/fetch_snapshot.py`), files new ones, rebuilds the views (`build_views.py`), pushes `election-2026`, then runs `tools/update.py` and pushes this repo. It runs from a pinned copy of the code in `~/Documents/runtime/election-update/code`, which only `ops/deploy.sh` moves; the log is `~/Library/Logs/election-update.log`. To test push access from launchd without changing anything: `touch ~/Documents/runtime/election-update/PROBE`.
+**The schedule runs on GitHub, not on a Mac.** Two GitHub Actions run every 15 minutes from Oct. 31 to Nov. 4, Central time:
+- `election-2026`'s **Fetch early-vote snapshots** (`.github/workflows/snapshots.yml`) fetches every Transparency USA snapshot from Oct. 29 through yesterday, files new ones with `tools/fetch_snapshot.py`, rebuilds the views with `tools/build_views.py`, and pushes.
+- This repo's **Update the page** (`.github/workflows/update.yml`, 7 minutes later) checks out `election-2026`, runs `tools/update.py`, pushes, and asks GitHub Pages to rebuild.
 
-**After Nov. 4** the job does nothing but stays loaded. Remove it with `launchctl bootout gui/$(id -u)/org.futureheist.election-update` and delete `~/Library/LaunchAgents/org.futureheist.election-update.plist`; the runtime folder `~/Documents/runtime/election-update` can then go through the release script named in `~/Documents/HOMES.md`.
+Either can be run by hand from the repo's Actions tab, with "force" ticked to run outside the window. GitHub can start scheduled runs several minutes late. `ops/` holds a launchd version of the same job for running it from a Mac instead; it is not installed.
+
+**After Nov. 4** the workflows do nothing; disable them in each repo's Actions tab. The unused pinned copy at `~/Documents/runtime/election-update` (made while testing the launchd version) can go through the release script named in `~/Documents/HOMES.md`.
 
