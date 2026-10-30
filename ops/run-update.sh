@@ -1,6 +1,7 @@
 #!/bin/zsh
-# Scheduled fetch (and, optionally, update) for the Texas early-vote page. Runs every 15 minutes from launchd
-# (ops/org.futureheist.election-update.plist) and does nothing outside Oct. 31 - Nov. 4.
+# Scheduled fetch (and, optionally, update) for the Texas early-vote page. launchd wakes it every 3 minutes
+# (ops/org.futureheist.election-update.plist); it fetches snapshots at most every 15 minutes and does nothing
+# outside Oct. 31 - Nov. 4. Election-night results reading is added here once built.
 #
 # 1. Acquire: fetch each Transparency USA snapshot from Oct. 30 through yesterday; file new ones in election-2026.
 # 2. Analyze: rebuild election-2026's views; commit and push election-2026 if anything changed.
@@ -26,7 +27,10 @@ if [[ $today < $start || $today > 2026-11-04 ]]; then log "outside the update wi
 for d in $CODE $E $S; do [[ -d $d ]] || { log "SKIPPED - no checkout at $d; run ops/deploy.sh"; exit 1; }; done
 for d in $E $S; do git -C $d pull -q --ff-only || { log "FAILED: git pull --ff-only in $d"; exit 1; }; done
 
-# 1. acquire
+# 1. acquire, at most every 15 minutes
+stamp=$RT/.last-snapshot-run
+if [[ -f $stamp && $(( $(date +%s) - $(stat -f %m $stamp) )) -lt 840 ]]; then exit 0; fi
+touch $stamp
 d=2026-10-30; yesterday=$(TZ=America/Chicago date -v-1d +%F)
 while [[ ! $d > $yesterday ]]; do
   out=$(python3 $CODE/fetch_snapshot.py --repo $E --date $d); rc=$?

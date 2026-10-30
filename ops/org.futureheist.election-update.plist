@@ -14,7 +14,7 @@
   </array>
   <key>EnvironmentVariables</key>
   <dict><key>ELECTION_UPDATE_FETCH_ONLY</key><string>1</string></dict>
-  <key>StartInterval</key><integer>900</integer>
+  <key>StartInterval</key><integer>180</integer>
   <key>RunAtLoad</key><false/>
   <key>StandardOutPath</key><string>__HOME__/Library/Logs/election-update.log</string>
   <key>StandardErrorPath</key><string>__HOME__/Library/Logs/election-update.log</string>
