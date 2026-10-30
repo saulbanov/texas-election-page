@@ -1,0 +1,20 @@
+{
+ "central": {
+  "leanG": 8.5,
+  "leanN": 8.5,
+  "size": 4.0,
+  "early": 30000,
+  "basis": "estimate",
+  "ed": 200000,
+  "loyal": 95,
+  "total": 10.0,
+  "adj_gap": 0.0,
+  "adj_ed": 0.0,
+  "adj": 0.0
+ },
+ "hand_set": "leanG, leanN and adj_ed are set by hand; tools/update.py logs every change it makes to the rest.",
+ "page_updated": "2026-10-30T16:39-05:00",
+ "next_update": "Sat., Oct. 31, after 11 a.m. CT",
+ "next_update_iso": "2026-10-31T11:00:00-05:00",
+ "log": []
+}

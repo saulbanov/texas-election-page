@@ -47,3 +47,21 @@ Other races = (Senate − 0.5) − candidate adjustment − drop-off − ticket-
 ```
 
 Central case: leans of D +8.5, 4.0M voters with no primary history split 80/20, an early margin of D +30,000, an Election Day reserve of R +200,000, 95% loyalty and 10M votes. That gives Talarico +1.9. It is a rough model, not a forecast.
+
+## How it updates
+
+The numbers come from three files in `data/`, which the page fetches fresh on every load (and `build.py` also inlines as a fallback):
+
+| File | Written by | What it holds |
+|---|---|---|
+| `data/latest.json`, `data/series.json` | `tools/update.py`, copied verbatim from `election-2026`'s `general-2026/early-vote/views/` | Every parsed Transparency USA snapshot, each naming its source PDF and SHA-256 |
+| `data/assumptions.json` | `tools/update.py` for the rules below; Saul by hand for the rest | The central read's inputs and a dated log of every change to it |
+
+**What changes on its own,** by the rules committed in advance in `election-2026/general-2026/early-vote/benchmarks.md`:
+- once a complete post (240+ counties) through Oct. 30 exists, the measured final early-vote margin replaces our estimate;
+- from then on, a reliable-voter gap under 150,000 adds 0.4 points to the Senate read, and one over 225,000 takes 0.4 off.
+
+**What changes only by hand:** the lean of voters with no primary history (`leanG`, `leanN`) and the Election Day turnout adjustment (`adj_ed`: +0.5 if the marker counties run light, −0.7 if heavy). Edit `data/assumptions.json`, add a line to its `log`, run `python3 tools/update.py`, commit and push.
+
+**The schedule.** `ops/run-update.sh` runs every 15 minutes from launchd, Oct. 31 to Nov. 4. Each run fetches every snapshot from Oct. 30 through yesterday (`election-2026/tools/fetch_snapshot.py`), files new ones, rebuilds the views (`build_views.py`), pushes `election-2026`, then runs `tools/update.py` and pushes this repo. It runs from a pinned copy of the code in `~/Documents/runtime/election-update/code`, which only `ops/deploy.sh` moves; the log is `~/Library/Logs/election-update.log`. To test push access from launchd without changing anything: `touch ~/Documents/runtime/election-update/PROBE`.
+

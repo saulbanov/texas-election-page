@@ -10,9 +10,10 @@ host's small reset. Run it after every edit to page.html:
 
     python3 build.py
 """
+import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent  # overridden by --root
 SPLIT = '<div class="wrap">'
 
 RESET = (
@@ -24,10 +25,24 @@ RESET = (
 
 
 def main() -> None:
+    global ROOT
+    import argparse
+    ap = argparse.ArgumentParser(); ap.add_argument('--root', default=str(ROOT), help='the texas-election-page checkout to build')
+    ROOT = Path(ap.parse_args().root)
     src = (ROOT / 'page.html').read_text(encoding='utf-8')
     if SPLIT not in src:
         raise SystemExit(f'page.html has no {SPLIT!r}; cannot tell head from body')
     head, body = src.split(SPLIT, 1)
+    # Inline the data files as a fallback; the page fetches them fresh on load.
+    data = {}
+    for name in ('latest', 'series', 'assumptions'):
+        f = ROOT / 'data' / f'{name}.json'
+        if not f.exists():
+            raise SystemExit(f'missing data/{name}.json; run tools/update.py first')
+        data[name] = json.loads(f.read_text(encoding='utf-8'))
+    blob = json.dumps(data, separators=(',', ':')).replace('</', '<\\/')
+    i = body.rindex('<script>')
+    body = body[:i] + f'<script id="ledger-data" type="application/json">{blob}</script>\n' + body[i:]
     out = (
         '<!doctype html>\n<html lang="en">\n<head>\n'
         '<meta charset="utf-8">\n'

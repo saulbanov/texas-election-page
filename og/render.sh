@@ -1,9 +1,9 @@
 #!/bin/zsh
 # Render og/card.html to the 1200x630 link-preview PNG with headless Chrome.
-# Usage: og/render.sh 2026-10-29   -> og/card-2026-10-29.png
+# Usage: og/render.sh 2026-10-29 [og-dir]   -> <og-dir>/card-2026-10-29.png
 # Use a new date in the file name for each update: X, Slack and iMessage cache preview images by URL.
 set -e
-here="${0:A:h}"
+here="${2:-${0:A:h}}"   # the og/ folder to render in; defaults to this script's folder
 stamp="${1:?give the data date, e.g. 2026-10-29}"
 out="$here/card-$stamp.png"
 profile="$(mktemp -d)"

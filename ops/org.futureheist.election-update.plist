@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Template; ops/deploy.sh fills __RT__ and __HOME__. python3 is the launched binary because it holds
+     this Mac's Documents access; it execs the runner. Logs stay in ~/Library/Logs (a log path under
+     ~/Documents makes launchd fail the spawn). -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>org.futureheist.election-update</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/python3</string>
+    <string>-c</string>
+    <string>import os; os.execv("/bin/zsh", ["zsh", "__RT__/code/run-update.sh"])</string>
+  </array>
+  <key>StartInterval</key><integer>900</integer>
+  <key>RunAtLoad</key><false/>
+  <key>StandardOutPath</key><string>__HOME__/Library/Logs/election-update.log</string>
+  <key>StandardErrorPath</key><string>__HOME__/Library/Logs/election-update.log</string>
+</dict>
+</plist>
