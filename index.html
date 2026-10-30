@@ -1,3 +1,9 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Texas Early-Vote Ledger</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,6 +114,10 @@ p { margin: 0; max-width: 66ch; }
   border: 1px dashed var(--muted); }
 .stampmark { justify-self: start; font: 600 11px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--stamp); border: 2px solid var(--stamp); padding: 4px 7px 3px; transform: rotate(-2deg); background: var(--paper); }
+
+/* about */
+.about { display: grid; gap: 12px; font-size: 16px; }
+.tk { background: var(--gold-wash); color: var(--ink); font: 600 13px/1 var(--mono); padding: 2px 4px; }
 
 /* three readings */
 .scen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
@@ -293,7 +303,8 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
-
+</head>
+<body>
 <div class="wrap">
 
   <header class="mast">
@@ -413,9 +424,9 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
           <span class="label">Not yet sourced</span>
           <span>How the 2024 surge of new voters split. The workbench leaves that preset off until we have a filed figure.</span>
         </div>
-        <div class="draft">
-          <span class="label">Draft · Saul to write</span>
-          <span>Who publishes this: Future Heist's stance and campaign work, and how the projections are kept separate from it.</span>
+        <div class="card-quiet">
+          <span class="label">Who publishes this</span>
+          <span>Future Heist, a Texas-based organization that tells stories with data. <a href="#about">Read our statement</a>.</span>
         </div>
       </div>
     </div>
@@ -583,7 +594,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div class="sec-head">
       <span class="label">The three measures</span>
       <h2 id="h-meas">Against the goalposts set before the data</h2>
-      <p>The Friday thresholds were committed at 9:50 p.m. Oct. 29 (<span class="mono">817b5fa</span>), before Thursday's data existed. Solid needle: now. Dashed: Wednesday. Dotted: the superseded partial post.</p>
+      <p>The Friday thresholds were committed at 9:50 p.m. Oct. 29 (<a class="mono" href="https://github.com/saulbanov/election-2026/commit/817b5fa">817b5fa</a>), before Thursday's data existed. Solid needle: now. Dashed: Wednesday. Dotted: the superseded partial post.</p>
     </div>
     <div class="measures">
       <div class="measure">
@@ -669,10 +680,23 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <tbody>
         <tr><td>Oct. 30</td><td>The 2022-style risk now names its lean, R +4, and the shift it produces: about 5 points toward Republicans. It first said "slightly Republican" and 3.5 points.</td></tr>
         <tr><td>Oct. 30</td><td>Wednesday's margin: the snapshot PDF gives D +59,707. We first used D +59,761 from an earlier version of the web page.</td></tr>
-        <tr><td>Oct. 30</td><td>Senate confidence revised from about 55/45 to 70–75%, after reviewing evidence that 2024's shift among occasional voters has reversed. Committed 9:40 a.m. (<span class="mono">40cecc0</span>), before Thursday's data posted.</td></tr>
+        <tr><td>Oct. 30</td><td>Senate confidence revised from about 55/45 to 70–75%, after reviewing evidence that 2024's shift among occasional voters has reversed. Committed 9:40 a.m. (<a class="mono" href="https://github.com/saulbanov/election-2026/commit/40cecc0">40cecc0</a>), before Thursday's data posted.</td></tr>
         <tr><td>Oct. 29–30</td><td>Earlier: the governor call moved from Abbott +3 to 6 to Abbott 0 to 3; the effect of the early margin was cut to about 1 point per 100,000 votes.</td></tr>
       </tbody>
     </table></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="sec" id="about" aria-labelledby="h-about">
+    <div class="sec-head">
+      <span class="label">About this page</span>
+      <h2 id="h-about">Who publishes this</h2>
+    </div>
+    <div class="about">
+      <p>Future Heist is a Texas-based organization that tells stories with data, particularly about the oil and gas industry, which is on the ballot this year more than any other industry <mark class="tk">[coverage link TK]</mark>. We built this page to show a historic election in action, and to show what the early vote can and can't tell us. Counts come from Texas Secretary of State voter records, compiled by Transparency USA and Ryan Data &amp; Research. Our read comes from our synthesis of past elections and of other experts' reads. Gold marks our assumptions. This is a rough model, not a forecast. We are in uncharted territory, folks.</p>
+      <p>No one who worked on this page has worked for, advised, endorsed or been paid by any candidate or party in these races.</p>
+      <p>To keep ourselves honest, and to avoid claiming we saw something coming that we didn't, we committed our predictions and assumptions to a repository before the data arrived, with timestamps, and that repository is now <a href="https://github.com/saulbanov/election-2026/commits/main">public</a>. We keep a corrections log, our model and code are <a href="https://github.com/saulbanov/texas-election-page">public</a>, and the page uses aggregate counts only. Send corrections to <mark class="tk">TK</mark>.</p>
+    </div>
   </section>
 
   <!-- SOURCES -->
@@ -701,6 +725,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 <script>
 (function () {
   // ---------- source registry: every displayed number names its file ----------
+  const REPO = 'https://github.com/saulbanov/election-2026/blob/main/general-2026/early-vote/';
   const FILES = {
     tusa11: { name: 'Transparency USA statewide snapshot', covers: 'Thru Thu. Oct. 29 · as of Oct. 30, 12:52 p.m. CT · 244 of 254 counties', path: 'sources/reports/2026-10-29_transparency-usa_statewide-snapshot_244-counties.pdf', sha: '2f91da9a4442' },
     tusa11p: { name: 'Transparency USA statewide snapshot (partial, superseded)', covers: 'Thru Thu. Oct. 29 · as of Oct. 30, 10:37 a.m. CT · 95 of 254 counties', path: 'sources/reports/2026-10-29_transparency-usa_statewide-snapshot_95-counties.pdf', sha: 'd45c1252b68d' },
@@ -809,6 +834,10 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = v;
       $('#dr-dl').append(dt, dd);
     });
+    const dt = document.createElement('dt'); dt.textContent = 'Open';
+    const dd = document.createElement('dd'); const a = document.createElement('a');
+    a.href = REPO + f.path; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'the file on GitHub';
+    dd.appendChild(a); $('#dr-dl').append(dt, dd);
     $('#dr-toast').textContent = ''; drawer.hidden = false; $('#dr-close').focus();
   }
   function closeSrc() { drawer.hidden = true; if (lastFocus) lastFocus.focus(); }
@@ -1102,3 +1131,5 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   render(); renderPins(); renderTop();
 })();
 </script>
+</body>
+</html>
