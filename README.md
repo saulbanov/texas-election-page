@@ -4,7 +4,7 @@ Future Heist's Texas 2026 early-vote page: the early-vote count with every numbe
 
 **Status: live** at https://saulbanov.github.io/texas-election-page/, with data through Thu., Oct. 29. Open items:
 
-- Fill the two TK marks in the publisher statement: the oil and gas donation coverage link and the corrections contact.
+- Fill the TK mark in the publisher statement: the corrections contact.
 - Source the 2024 lean of voters with no primary history before turning on that preset.
 - Check the 2022 total (8,095,174, summed from Ryan's voter-file categories) against the official Secretary of State figure.
 
