@@ -131,7 +131,7 @@ p { margin: 0; max-width: 66ch; }
 .tk { background: var(--gold-wash); color: var(--ink); font: 600 13px/1 var(--mono); padding: 2px 4px; }
 
 /* three readings */
-.scen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+.scen { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; align-items: start; }
 .scard { background: var(--paper); padding: 16px; display: grid; gap: 6px; min-width: 0; }
 .scard.mid { background: var(--gold-wash); border-top: 4px solid var(--gold); }
 .scard .label { color: var(--ink); }
@@ -283,6 +283,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 .wfbar.br { background: var(--rep); }
 .wfbar.bg { background: var(--gold); }
 .wfrow.net .wfl { font-weight: 600; }
+.wfl .v.D { color: var(--dem); font-weight: 600; } .wfl .v.R { color: var(--rep); font-weight: 600; }
 .breakeven { display: grid; gap: 4px; font: 13px/1.5 var(--mono); }
 .breakeven b { color: var(--gold-text); }
 .pins { display: grid; gap: 8px; }
@@ -357,7 +358,12 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
         <p class="legend-src">Each race starts from the Senate figure, then adjusts for its candidates (from their polls) and for new voters who skip races lower on the ballot.</p>
       </div>
     </div>
-    <p class="scen-more">This is our best guess in an election that doesn't look like recent ones, and it could move several points either way. <a href="#h-scen">See how far it could swing</a>, or <a href="#bench">test your own assumptions</a>.</p>
+    <div class="panel">
+      <h3>How far the Senate race could swing</h3>
+      <div id="range" class="wf"></div>
+      <p class="legend-src">Every row uses the same early vote. Only how voters with no primary history vote, and in the last row how many of them vote, changes.</p>
+    </div>
+    <p class="scen-more">Our central read is the conservative one. Nothing in the early vote caps Democrats at their 2018 level, and if a blowout is coming, the turnout numbers won't show it before the votes are counted. <a href="#h-scen">See every race in each scenario</a>, or <a href="#bench">set up your own</a>.</p>
   </section>
   <!-- WHO HAS VOTED -->
   <section class="sec opener" aria-labelledby="h-mix">
@@ -411,6 +417,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
           </tbody>
         </table></div>
         <p>The group is above the last midterm and below the last presidential year. Over a whole election, 2018 had 3.85M of these voters and 2022 had 3.06M. We expect about 4M, a little past 2018.</p>
+        <p><span class="tag measured">Measured</span> Ryan's 2018 report covers only the 15 largest counties, which allows one direct comparison at day 8. In those counties, Republican primary voters led in 2018, <button class="num" data-src="r18_15">32.5% to 29.4%</button>. In the same counties in 2026, Democratic primary voters lead, <button class="num" data-src="r26_15">41.5% to 26.3%</button>. Part of that swing is relabeling: Democratic primaries were small before 2018, and the record primaries since then moved many Democrats out of the no-primary group. The counts can't separate the two.</p>
 
         <h3>Two groups that get confused</h3>
         <p><span class="tag measured">Measured</span> Through Thursday, <button class="num" data-src="d11_nh">468,536</button> early voters have no record of voting anywhere. Another <button class="num" data-src="d11_go">1,836,085</button> have voted in general elections but never in a primary. Together they are 33.7% of the early vote, and 49% of Thursday's voters.</p>
@@ -431,7 +438,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
         <h3>How it could be wilder than any recent year</h3>
         <ul class="plain">
           <li><b>Size.</b> At presidential scale, 5M of these voters, every point of lean is worth 50,000 votes instead of 40,000.</li>
-          <li><b>Lean.</b> It could run past our range either way: the Hispanic swing Univision measured points one way, Trump's occasional voters the other.</li>
+          <li><b>Lean.</b> It could run past our range either way. 2018 is not a ceiling: Hispanic polling this year runs as high as D +18, past anything in our central read. Trump's occasional voters pull the other way.</li>
           <li><b>Splitting.</b> New voters skip down-ballot races more often, and Texas has no straight-ticket option. The Senate and the races below it can diverge.</li>
         </ul>
       </div>
@@ -460,7 +467,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <p>No recent Texas election looks like this one. At this point in 2022 and 2024, Republican primary voters led the early vote by hundreds of thousands. This year Democratic primary voters lead. Past years give a range, not an answer. Most of these races will turn on the 2.3 million early voters who have never voted in a primary, and the turnout data can't show how they are voting.</p>
     </div>
     <div class="scen" id="scen"></div>
-    <p class="scen-more">These are three readings, not a forecast. The middle one is our best guess. The voters in the middle could break further than in any recent year, or turn out in larger numbers than we assume. <a href="#bench">Try your own assumptions in the workbench.</a></p>
+    <p class="scen-more">These are four readings, not a forecast. Our central read is the conservative one. Nothing in the early vote caps Democrats at their 2018 level, and a blowout like the last card would not show in the turnout numbers before the count. <a href="#bench">Try your own assumptions in the workbench.</a></p>
   </section>
 
   <!-- WORKBENCH -->
@@ -478,6 +485,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
             <button type="button" class="btn" data-both="8.5">Our central read</button>
             <button type="button" class="btn" data-both="12">Like 2018</button>
             <button type="button" class="btn" data-both="-4">Like 2022</button>
+            <button type="button" class="btn" data-both="16">A blowout</button>
             <button type="button" class="btn" disabled title="No sourced figure on file yet">Like 2024</button>
           </div>
           <span class="hint">Applies to both groups below. 2018 adjusted for today's primary classification ran D +10 to +14; 2022 ran about R +4. Lean is the margin within the group: D +100 means every one of them votes Democratic.</span>
@@ -751,6 +759,8 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     tusa11p: { name: 'Transparency USA statewide snapshot (partial, superseded)', covers: 'Thru Thu. Oct. 29 · as of Oct. 30, 10:37 a.m. CT · 95 of 254 counties', path: 'sources/reports/2026-10-29_transparency-usa_statewide-snapshot_95-counties.pdf', sha: 'd45c1252b68d' },
     tusa10: { name: 'Transparency USA statewide snapshot', covers: 'Thru Wed. Oct. 28 · as of Oct. 29, 8:51 p.m. CT · 247 of 254 counties', path: 'sources/reports/2026-10-28_transparency-usa_statewide-snapshot.pdf', sha: 'bde98d1c2e38' },
     ryan8: { name: 'Ryan Data & Research, Early Voting Report: Texas, Day 8', covers: 'Thru Mon. Oct. 26, with 2022 and 2024 same-day comparisons', path: 'sources/reports/2026-10-26_ryan-data-research_day8-report.pdf', sha: 'fbf1b864f372' },
+    ryan18: { name: 'Ryan Data & Research, 2018 General Election Early Voting Analysis', covers: 'Oct. 30, 2018 · through day 8 · 15 largest counties only (Travis one day behind)', path: 'sources/reports/2018-10-29_ryan-data-research_day8-15-counties.pdf', sha: 'dd2ee306db93' },
+    county8: { name: 'County day 8 party-history table (Ryan data)', covers: 'Thru Mon. Oct. 26, 2026 · all 254 counties, shares rounded to whole percents', path: 'sources/reports/2026-10-26_county-day8_party-history.pdf', sha: '9c31bebb7aca' },
     texpolls: { name: 'TexPolls county early-voting CSV', covers: 'Thru Wed. Oct. 28, by county, with 2022 same-day turnout', path: 'sources/data/texpolls_2026-general-early-voting-by-county_thru-2026-10-28.csv', sha: '2352dbaa3b44' }
   };
   const SRC = {
@@ -778,6 +788,12 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     mix_18f: { title: 'All 2018 voters by last primary', val: 'R +1,162,255', file: 'ryan8', page: '2018 Share of Vote (whole election)',
       math: 'Democratic: 1,583,969 + 103,474 = 1,687,443\nRepublican: 2,751,482 + 98,216 = 2,849,698\nNever in a primary: 2,795,595 + 1,054,029 = 3,849,624\nResult: Cruz +2.6, as cited in election-2026 analysis.md; the official canvass is not filed in the repo.',
       cite: 'Among all 2018 Texas voters, Republican primary voters outnumbered Democratic ones by 1,162,255, yet Cruz won by only 2.6 points (Ryan Data & Research).' },
+    r18_15: { title: '2018, 15 largest counties, day 8', val: 'R 32.5% · D 29.4%', file: 'ryan18', page: 'p. 1, Early Voters by Previous Election History',
+      math: 'Republican: 31.5% (R, no D) + 1.0% (mixed, last R) = 32.5%\nDemocratic: 27.7% (D, no R) + 1.7% (mixed, last D) = 29.4%\nNo primary history: 28.6% + 9.5% = 38.1%\n15 counties only; 2,823,784 early votes.',
+      cite: 'In the 15 largest Texas counties at day 8 of early voting in 2018, voters with Republican primary history made up 32.5% of early voters and those with Democratic history 29.4% (Ryan Data & Research).' },
+    r26_15: { title: '2026, same 15 counties, day 8', val: 'D 41.5% · R 26.3%', file: 'county8', page: 'County rows: Bexar, Cameron, Collin, Dallas, Denton, El Paso, Fort Bend, Galveston, Harris, Hidalgo, Montgomery, Nueces, Tarrant, Travis, Williamson',
+      math: 'Each county\u2019s shares weighted by its early votes (3,484,039 in all).\nDemocratic (D, no R + mixed, last D): 41.5%\nRepublican (R, no D + mixed, last R): 26.3%\nNo primary history: 31.7%\nCounty shares are rounded to whole percents, so each total carries about half a point of error.',
+      cite: 'In the same 15 counties at day 8 of early voting in 2026, voters with Democratic primary history made up about 41.5% of early voters and those with Republican history about 26.3% (FH calculation from Ryan county data).' },
     d11_counties: { title: 'Counties reporting', val: '244 of 254', file: 'tusa11', page: 'p. 1, header', math: 'As printed in the snapshot header.', cite: 'The through-Thursday snapshot posted at 12:52 p.m. Oct. 30 covered 244 of 254 Texas counties (Transparency USA).' },
     d11_np: { title: 'Early voters with no primary history', val: '2,304,621', file: 'tusa11', page: 'p. 1, General Only and No History',
       math: 'General Only 1,836,085 + No History 468,536 = 2,304,621\n÷ 6,841,284 votes cast = 33.7%',
@@ -1032,12 +1048,28 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   const SCEN = [
     { t: 'If they vote like 2022', sub: 'Voters with no primary history lean R +4', lean: -4 },
     { t: 'Our central read', sub: 'They lean D +8.5', lean: 8.5, mid: true },
-    { t: 'If they vote like 2018', sub: 'They lean D +12', lean: 12 }
+    { t: 'If they vote like 2018', sub: 'They lean D +12', lean: 12 },
+    { t: 'A blowout', sub: 'They lean D +16, and 5 million of them vote', lean: 16, size: 5 }
   ];
+  function renderRange() {
+    const box = $('#range'); box.innerHTML = '';
+    const rows = SCEN.map(sc => ({ sc, T: parts({ ...DEF, leanG: sc.lean, leanN: sc.lean, size: sc.size || DEF.size }).T }));
+    const maxAbs = Math.max(8, ...rows.map(r => Math.abs(r.T)));
+    rows.forEach(({ sc, T }) => {
+      const row = document.createElement('div'); row.className = 'wfrow' + (sc.mid ? ' net' : '');
+      row.innerHTML = '<div class="wfl"><span></span><span class="v"></span></div><div class="wftrack"><div class="wfbar"></div></div>';
+      row.querySelector('.wfl span').textContent = sc.t + ' · ' + sc.sub.replace(/^They lean/, 'lean').replace(/^Voters with no primary history lean/, 'lean');
+      const v = row.querySelector('.v'); v.textContent = raceLine(T, 'Talarico', 'Paxton'); v.className = 'v ' + (T >= 0 ? 'D' : 'R');
+      const b = row.querySelector('.wfbar'); b.classList.add(T >= 0 ? 'bd' : 'br');
+      b.style.width = Math.min(50, Math.abs(T) / maxAbs * 50) + '%'; if (T >= 0) b.style.left = '50%'; else b.style.right = '50%';
+      box.appendChild(row);
+    });
+  }
   function renderTop() {
+    renderRange();
     const box = $('#scen'); box.innerHTML = '';
     SCEN.forEach(sc => {
-      const p = parts({ ...DEF, leanG: sc.lean, leanN: sc.lean });
+      const p = parts({ ...DEF, leanG: sc.lean, leanN: sc.lean, size: sc.size || DEF.size });
       const card = document.createElement('div'); card.className = 'scard' + (sc.mid ? ' mid' : '');
       card.innerHTML = '<span class="label"></span><span class="ssub"></span><span class="ssub sen">U.S. Senate</span><div class="sfig"></div><ul class="slist"></ul>';
       card.querySelector('.label').textContent = sc.t;
