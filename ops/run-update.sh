@@ -14,17 +14,17 @@ RT=${ELECTION_UPDATE_ROOT:-$HOME/Documents/runtime/election-update}
 CODE=$RT/code E=$RT/election-2026 S=$RT/texas-election-page
 log() { print -r -- "$(TZ=America/Chicago date '+%Y-%m-%d %H:%M:%S CT') $*"; }
 
+# Auth probe (runs even outside the window): touch $RT/PROBE to test pushes from launchd without changing anything.
+if [[ -f $RT/PROBE ]]; then
+  for d in $E $S; do git -C $d push --dry-run -q 2>&1 && log "probe: push auth OK in $d" || log "probe: push FAILED in $d"; done
+  rm -f $RT/PROBE
+fi
+
 today=$(TZ=America/Chicago date +%F)
 start=${ELECTION_UPDATE_START:-2026-10-31}
 if [[ $today < $start || $today > 2026-11-04 ]]; then log "outside the update window ($start to 2026-11-04); nothing to do"; exit 0; fi
 for d in $CODE $E $S; do [[ -d $d ]] || { log "SKIPPED - no checkout at $d; run ops/deploy.sh"; exit 1; }; done
 for d in $E $S; do git -C $d pull -q --ff-only || { log "FAILED: git pull --ff-only in $d"; exit 1; }; done
-
-# Auth probe: touch $RT/PROBE to test pushes from launchd without changing anything.
-if [[ -f $RT/PROBE ]]; then
-  for d in $E $S; do git -C $d push --dry-run -q 2>&1 && log "probe: push auth OK in $d" || log "probe: push FAILED in $d"; done
-  rm -f $RT/PROBE
-fi
 
 # 1. acquire
 d=2026-10-30; yesterday=$(TZ=America/Chicago date -v-1d +%F)
