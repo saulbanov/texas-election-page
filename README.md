@@ -24,6 +24,7 @@ Future Heist's Texas 2026 early-vote page: the early-vote count with every numbe
 |---|---|
 | `page.html` | The page source: HTML, CSS and the scenario model. Edit this one. |
 | `build.py` | Wraps `page.html` in a full HTML document (doctype, charset, viewport) and writes `index.html`. Run `python3 build.py` after every edit. |
+| `og/card.html`, `og/render.sh` | The link-preview card. After each data update, edit the card's numbers and run `og/render.sh <data date>`, then point `og:image` in `page.html` at the new PNG. Platforms cache preview images by URL, so each update needs a new file name. |
 | `index.html` | What GitHub Pages serves at https://saulbanov.github.io/texas-election-page/. Generated; don't edit by hand. |
 
 `page.html` has no doctype or `<head>` because the Claude artifact host adds them when it publishes the private preview. GitHub Pages serves files as they are, so without `build.py` phones would lay the page out at desktop width.

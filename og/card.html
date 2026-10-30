@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Link preview card</title>
+<!-- Source for the 1200x630 link-preview image. Render with og/render.sh; the PNG is what og:image points to. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=League+Gothic&family=Unbounded:wght@600&display=swap">
+<style>
+:root { --page: #f0e8d4; --paper: #FAF8F2; --ink: #1A1208; --muted: #625D52; --rule: #D0C4AE; --gold: #C9901A; --gold-wash: #F5EBCB;
+  --dem: #355C93; --rep: #A0382E; --np: #CFC3A3; --fh-red: #C44B22;
+  --display: 'League Gothic', 'Arial Narrow', Impact, sans-serif; --mono: 'IBM Plex Mono', Menlo, monospace; --logo: 'Unbounded', Arial, sans-serif; }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: var(--page); color: var(--ink); }
+.card { width: 1200px; height: 630px; padding: 46px 60px 0; display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 18px; }
+.top { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px solid var(--ink); padding-bottom: 12px; }
+.stamp { font: 600 15px/1 var(--logo); letter-spacing: 0.08em; text-transform: uppercase; display: inline-flex; gap: 10px; align-items: center; }
+.stamp::before { content: ""; width: 14px; height: 14px; background: var(--fh-red); }
+.name { font: 400 34px/1 var(--display); letter-spacing: 0.02em; }
+h1 { margin: 0; font: 400 78px/0.95 var(--display); letter-spacing: 0.01em; }
+h1 b { font-weight: 400; color: var(--dem); }
+.sub { font: 20px/1.35 var(--mono); color: var(--muted); }
+.bars { display: grid; gap: 12px; align-content: start; }
+.cap { font: 600 14px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.row { display: grid; grid-template-columns: 190px 1fr; gap: 14px; align-items: center; }
+.lab { font: 400 30px/1 var(--display); display: flex; gap: 10px; align-items: center; }
+.tag { font: 600 12px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 6px 3px; }
+.tag.mid { background: var(--ink); color: var(--paper); }
+.tag.pres { border: 1.5px solid var(--ink); }
+.track { display: flex; align-items: center; gap: 12px; }
+.bar { display: flex; height: 36px; }
+.bar span { display: block; height: 100%; }
+.pale .d { background: color-mix(in srgb, var(--dem) 38%, var(--paper)); }
+.pale .n { background: color-mix(in srgb, var(--np) 50%, var(--paper)); }
+.pale .r { background: color-mix(in srgb, var(--rep) 38%, var(--paper)); }
+.strong .bar { height: 46px; }
+.strong .d { background: var(--dem); } .strong .n { background: var(--np); } .strong .r { background: var(--rep); }
+.lead { font: 600 22px/1 var(--mono); }
+.lead.D { color: var(--dem); } .lead.R { color: var(--rep); }
+.foot { margin: 0 -60px; padding: 18px 60px 22px; background: var(--gold-wash); border-top: 5px solid var(--gold);
+  display: flex; justify-content: space-between; align-items: baseline; }
+.foot .k { font: 600 15px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #8A5A0B; }
+.foot .v { font: 400 44px/1 var(--display); color: var(--dem); }
+.foot .s { font: 18px/1 var(--mono); color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top"><span class="stamp">Future Heist</span><span class="name">Texas Early-Vote Ledger</span></div>
+  <h1>Democratic primary voters lead Texas's early vote by <b>45,173</b></h1>
+  <div class="sub">6.84 million early votes through Oct. 29. At this point in 2022 and 2024, Republicans led.</div>
+  <!-- Day 8 of early voting, bar length scaled to early voters (2024 = 6,218,992 = full width of 700px) -->
+  <div class="bars">
+    <div class="cap">Same point in early voting, day 8 · bar length = early voters</div>
+    <div class="row pale"><div class="lab">2022 <span class="tag mid">Midterm</span></div>
+      <div class="track"><div class="bar" style="width:385px"><span class="d" style="flex:31.1"></span><span class="n" style="flex:25.0"></span><span class="r" style="flex:43.9"></span></div><span class="lead R">R +436,528</span></div></div>
+    <div class="row strong"><div class="lab">2026 <span class="tag mid">Midterm</span></div>
+      <div class="track"><div class="bar" style="width:575px"><span class="d" style="flex:36.1"></span><span class="n" style="flex:29.8"></span><span class="r" style="flex:34.1"></span></div><span class="lead D">D +99,615</span></div></div>
+    <div class="row pale"><div class="lab">2024 <span class="tag pres">Presidential</span></div>
+      <div class="track"><div class="bar" style="width:700px"><span class="d" style="flex:23.2"></span><span class="n" style="flex:40.9"></span><span class="r" style="flex:36.0"></span></div><span class="lead R">R +794,322</span></div></div>
+  </div>
+  <div class="foot"><span class="k">U.S. Senate · our central read</span><span class="v">Talarico +1.9</span><span class="s">rough model, not a forecast</span></div>
+</div>
+</body>
+</html>
