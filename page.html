@@ -160,6 +160,8 @@ details.panel summary { cursor: pointer; font: 600 13px/1.3 var(--mono); letter-
 .ybar { display: flex; height: 26px; flex: none; min-width: 0; }
 .yrow.strong .ybar { height: 34px; }
 .ylead { font: 600 14px/1.2 var(--mono); white-space: nowrap; }
+.ynote { grid-column: 2; margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+@media (max-width: 620px) { .ynote { grid-column: 1; } }
 .ylead.D { color: var(--dem); } .ylead.R { color: var(--rep); }
 .yrow.pale .seg.d { background: color-mix(in srgb, var(--dem) 38%, var(--paper)); color: var(--ink); }
 .yrow.pale .seg.r { background: color-mix(in srgb, var(--rep) 38%, var(--paper)); color: var(--ink); }
@@ -797,9 +799,12 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 
   // ---------- opener: early voters by last primary, against past years ----------
   const MIX = [
-    { y: '2022', type: 'Midterm', d: 1062600, n: 854677, r: 1499128, src: 'mix_22' },
-    { y: '2026', type: 'Midterm', d: 1840665, n: 1523905, r: 1741050, strong: true, src: 'mix_26' },
-    { y: '2024', type: 'Presidential', d: 1442089, n: 2540492, r: 2236411, apart: true, src: 'mix_24' }
+    { y: '2022', type: 'Midterm', d: 1062600, n: 854677, r: 1499128, src: 'mix_22',
+      note: 'A Republican midterm under a Democratic president. Abbott beat Beto O\u2019Rourke by 10.9 points.' },
+    { y: '2026', type: 'Midterm', d: 1840665, n: 1523905, r: 1741050, strong: true, src: 'mix_26',
+      note: 'A midterm under a Republican president. Democratic primary voters lead the early vote; in 2022 and 2024 they trailed.' },
+    { y: '2024', type: 'Presidential', d: 1442089, n: 2540492, r: 2236411, apart: true, src: 'mix_24',
+      note: 'Trump won Texas by about 14 points, with his biggest gains in the Hispanic border counties.' }
   ];
   (function buildMix() {
     const box = $('#mix');
@@ -824,6 +829,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       });
       const lb = row.querySelector('.ylead'); lb.dataset.src = m.src; lb.classList.add(lead >= 0 ? 'D' : 'R');
       lb.textContent = (lead >= 0 ? 'D +' : 'R +') + fmt(Math.abs(lead));
+      if (m.note) { const nt = document.createElement('p'); nt.className = 'ynote'; nt.textContent = m.note; row.appendChild(nt); }
       box.appendChild(row);
     });
   })();
