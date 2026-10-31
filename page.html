@@ -662,7 +662,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <div class="tell"><span class="when">Saturday</span><b>Final early margin</b><span>A finish of D +25,000 or better leans Talarico. Between R +50,000 and D +25,000, Talarico leads narrowly. Worse than R +150,000 leans Paxton.</span></div>
       <div class="tell"><span class="when">Sunday</span><b>Reliable-voter gap</b><span>Under 150,000 moves the read up a row; over 225,000 moves it down.</span></div>
       <div class="tell"><span class="when">Tuesday afternoon</span><b>Marker counties</b><span>Compare each county's Election Day check-ins with its own early vote. <span class="chip">Light &lt;30%</span> <span class="chip">Normal</span> <span class="chip">Heavy &gt;40%</span>. Heavy in Montgomery, Comal and Midland is the Republican comeback sign.</span></div>
-      <div class="tell"><span class="when">Tuesday night</span><b>The count</b><span>Early votes are counted first. Talarico up about 4 or more on them likely holds; up 1 to 2 likely doesn't.</span></div>
+      <div class="tell"><span class="when">Tuesday night</span><b>The count</b><span>Polls close at 7 p.m. Central (8 in El Paso). The first results, usually within the hour, are early and mail votes only, which lean Democratic this year. If Talarico leads those by about 4 points or more, he likely holds on as Election Day votes come in through the night. A lead of 1 to 2 likely doesn't last.</span></div>
     </div>
   </section>
 
@@ -977,7 +977,7 @@ function main(D) {
   // live banner: what comes next and when the read sharpens
   const todayCT = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
   setT('live-text', todayCT >= '2026-11-03'
-    ? 'Polls close at 7 p.m. CT. Early votes are counted first, so the first returns lean Democratic.'
+    ? 'Polls close at 7 p.m. Central. The first results, usually within the hour, are early and mail votes only, so they lean Democratic. Election Day votes come in through the night.'
     : FINAL
       ? 'Early voting is over. Election Day turnout on Tuesday is the next thing that can move this projection.'
       : todayCT < '2026-10-30' ? 'Early voting ends Friday. Its final count should post Saturday evening.'
