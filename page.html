@@ -545,7 +545,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
     <div class="lede after">
       <h2 id="h-stand">What the projection assumes</h2>
-      <p class="frame"><span id="fr-pace">Texans are voting at a pace usually seen only in presidential years</span>, and voters with a primary record <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button>. <b>We assume the <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> with no primary record favor <span id="fr-side">Democrats</span> by <span id="fr-lean">8.5</span> points</b>&mdash;<a href="#step-4">and here&rsquo;s why</a>. <span id="fr-kick">If they vote the way they did in 2022, Paxton wins by 3.1 points.</span></p>
+      <p class="frame"><span id="fr-pace">Texans are voting at a pace usually seen only in presidential years</span>, and voters with a primary record <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button>. <b>We assume the <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> with no primary record favor <span id="fr-side">Democrats</span> by <span id="fr-lean">8.5</span> points</b>&mdash;<a href="#step-4">and here&rsquo;s why</a>.</p>
     </div>
 
     <div class="card-quiet" id="read-log" hidden>
@@ -1355,10 +1355,6 @@ function main(D) {
     setT('fr-split', gapPct < 0.02 ? 'split almost evenly' : 'lean ' + (C.primary_margin > 0 ? 'Democratic' : 'Republican'));
     setT('fr-np', (C.no_primary / 1e6).toFixed(1) + ' million');
     setT('fr-side', AC.leanG >= 0 ? 'Democrats' : 'Republicans'); setT('fr-lean', String(Math.abs(AC.leanG)));
-    // the kicker: the same race if the no-primary voters break the way they did in 2022 (the "Like 2022" scenario)
-    const T22 = scenParts(SCEN.find(x => x.t === 'Like 2022'), EDS.find(x => x.mid)).T, by22 = Math.abs(T22).toFixed(1) + ' points.';
-    setT('fr-kick', Math.abs(T22) < 0.5 ? 'If they vote the way they did in 2022, the race is a tossup.'
-      : T22 < 0 ? 'If they vote the way they did in 2022, Paxton wins by ' + by22 : 'Even if they vote the way they did in 2022, Talarico wins by ' + by22);
   }
   // the seven steps
   (function stepper() {
