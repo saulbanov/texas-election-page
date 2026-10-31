@@ -127,6 +127,22 @@ p { margin: 0; max-width: 66ch; }
 .about { display: grid; gap: 12px; font-size: 16px; }
 .tk { background: var(--gold-wash); color: var(--ink); font: 600 13px/1 var(--mono); padding: 2px 4px; }
 
+/* top: purpose, assumption, central card, switcher */
+.lede { display: grid; gap: 8px; }
+.lede h2 { font-size: clamp(2.2rem, 6vw, 3.2rem); }
+.assume { font-size: 17px; line-height: 1.55; max-width: 68ch; }
+.verdict.main .fig { font-size: clamp(3.6rem, 10vw, 5.4rem); }
+.verdict.main.alt { background: var(--paper); border-left-color: var(--muted); }
+.switch { display: grid; gap: 10px; }
+.switch-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.chips { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.chip-scen { display: grid; gap: 4px; text-align: left; padding: 10px 12px; background: var(--paper); color: var(--ink); border: 1px solid var(--rule); border-top: 3px solid var(--rule); cursor: pointer; font: 12px/1.3 var(--mono); }
+.chip-scen b { font: 400 1.35rem/1 var(--display); letter-spacing: 0.01em; }
+.chip-scen:hover { border-color: var(--muted); }
+.chip-scen[aria-pressed="true"] { border-top-color: var(--gold) !important; background: var(--gold-wash); }
+.scen-note { font-size: 15px; min-height: 1.5em; }
+@media (max-width: 760px) { .chips { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 /* three readings */
 .scen { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; align-items: start; }
 .scard { background: var(--paper); padding: 16px; display: grid; gap: 6px; min-width: 0; }
@@ -370,62 +386,30 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 
 
   <!-- WHERE THE RACES STAND -->
-  <section class="sec" aria-labelledby="h-stand">
-    <div class="sec-head">
-      <span class="label" style="color:var(--gold-text)">Our read · Future Heist</span>
-      <h2 id="h-stand">Where the races stand</h2>
+  <section class="sec top" aria-labelledby="h-stand">
+    <div class="lede">
+      <span class="label" style="color:var(--gold-text)">A projection by Future Heist</span>
+      <h2 id="h-stand">Who wins Texas&rsquo;s midterm races</h2>
+      <p class="assume"><b>The main assumption.</b> <span id="assume-line">The 2.3 million early voters who have never voted in a party primary, the no-primary voters, favor Democrats by 8.5 points. That is more than the 5.4 points they gave the Democrat in the 2024 Senate race, because elections since then have moved toward Democrats.</span></p>
     </div>
-    <p class="spec-intro">The Senate race turns on one unknown: how the <span id="spec-np">2.3 million</span> early voters who have never voted in a party primary, the no-primary voters, are voting. Each card runs the same early vote through a different answer, most of them taken from a past election.</p>
-    <div class="spec-axis" aria-hidden="true"><span>&larr; Better for Republicans</span><span>Better for Democrats &rarr;</span></div>
-    <div class="spectrum">
-      <div class="tail" id="tail-left"></div>
-      <div class="verdict center">
-        <span class="label">Our central read for the U.S. Senate</span>
-        <div class="fig" id="env-fig"></div>
-        <div class="p" id="env-p"></div>
-      </div>
-      <div class="tail" id="tail-right"></div>
+    <div class="verdict main" id="main-card">
+      <span class="label" id="main-label">Our central read for the U.S. Senate</span>
+      <div class="fig" id="env-fig"></div>
+      <div class="p" id="env-p"></div>
     </div>
-    <p class="scen-more">The middle card is our central read, and it is the conservative one. The cards on either side are the tails, with the same early vote and a different break among voters with no primary history. Nothing in the early vote caps Democrats at their 2018 level, and if a blowout is coming, the turnout numbers won't show it before the votes are counted. <a href="#h-scen">See every race in each scenario</a>, or <a href="#bench">set up your own</a>.</p>
+    <div class="panel">
+      <h3 id="races-title">The other statewide races, in our central read</h3>
+      <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Projection</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
+    </div>
+    <div class="switch">
+      <div class="switch-head"><h3>Try another scenario</h3><span class="legend-src">&larr; Better for Republicans &middot; Better for Democrats &rarr;</span></div>
+      <div class="chips" id="scen-chips" role="group" aria-label="Scenarios"></div>
+      <p class="scen-note" id="scen-note"></p>
+      <p class="legend-src">Each scenario runs the same early vote through a different answer about the no-primary voters. Nothing caps Democrats at their 2018 level, and a blowout would not show in the turnout numbers before the votes are counted. <a href="#bench">Set up your own scenario</a>.</p>
+    </div>
     <div class="card-quiet" id="read-log" hidden>
       <span class="label">How our central read has moved</span>
       <ul class="sched" id="read-log-list"></ul>
-    </div>
-    <div class="panel">
-      <h3>The other statewide races, in our central read</h3>
-      <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Central read</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
-      <p class="legend-src">Each race starts from the Senate figure, then adjusts for its candidates, from their polls, and for new voters who skip races lower on the ballot.</p>
-    </div>
-  </section>
-  <!-- WHO HAS VOTED -->
-  <section class="sec opener" aria-labelledby="h-mix">
-    <div class="mix-head">
-      <span class="label">Who has voted early, by the party primary they last voted in</span>
-      <h2 id="h-mix" class="mix-title"><span id="mix-head">Democratic primary voters lead by</span> <span class="nowrap"><button class="num" id="mix-lead" data-src="d11_margin">45,173</button>.</span> In 2022 and 2024, Republicans led.</h2>
-      <p class="mix-sub"><button class="num" id="mix-votes" data-src="d11_votes">6,841,284</button> Texans have voted early through <span id="mix-thru">Thu., Oct. 29</span>, already <button class="num" id="mix-pct" data-src="vs2022">84%</button> of the whole 2022 vote.</p>
-    </div>
-    <div class="mix-key" aria-hidden="true">
-      <span><i class="sw d"></i>Last voted in a Democratic primary</span>
-      <span><i class="sw n"></i>Never voted in a primary</span>
-      <span><i class="sw r"></i>Last voted in a Republican primary</span>
-    </div>
-    <p class="mix-cap">At the same point in early voting, day 8. Bar length is the number of early voters.</p>
-    <div class="mix" id="mix"></div>
-    <p class="mix-note">This shows which primary people last voted in, not how they are voting now. The sand-colored middle decides the race.</p>
-  </section>
-
-  <section class="row2" aria-label="Updates">
-    <div class="card-quiet" id="since">
-      <span class="label">Since your last visit</span>
-      <span id="since-body">Since Wednesday's complete post, 596,015 more Texans have voted early.</span>
-    </div>
-    <div class="card-quiet">
-      <span class="label">Update schedule</span>
-      <ul class="sched">
-        <li><b>Sat., Oct. 31, after 11 a.m. CT.</b> Data through Friday, the last day of early voting, arrives. The first post often covers only some counties, so we update once about 240 of 254 are in.</li>
-        <li><b>Sun., Nov. 1.</b> Late counties and mail ballots come in.</li>
-        <li><b>Tue., Nov. 3.</b> Counties post Election Day check-ins through the afternoon. Results start after 7 p.m. CT, and after 8 p.m. in El Paso.</li>
-      </ul>
     </div>
   </section>
 
@@ -433,7 +417,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   <section class="sec" aria-labelledby="h-read">
     <div class="sec-head">
       <span class="label" style="color:var(--gold-text)">Our read · Future Heist</span>
-      <h2 id="h-read">Who hasn't voted in a primary, and why the race turns on them</h2>
+      <h2 id="h-read">What drives the projection</h2>
       <p class="legend-src"><span class="tag measured">Measured</span> from a filed source · <span class="tag derived">Derived</span> arithmetic on measured numbers · <span class="tag assumed">Assumed</span> our judgment</p>
     </div>
     <div class="read">
@@ -491,15 +475,36 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
   </section>
 
-  <!-- SCENARIOS -->
-  <section class="sec" aria-labelledby="h-scen">
-    <div class="sec-head">
-      <span class="label" style="color:var(--gold-text)">Our read · Future Heist</span>
-      <h2 id="h-scen">What could happen</h2>
-      <p>No recent Texas election looks like this one. At this point in 2022 and 2024, Republican primary voters led the early vote by hundreds of thousands. This year Democratic primary voters lead. Past years give a range, not an answer. Most of these races will turn on the <span id="sc-np">2.3 million</span> early voters who have never voted in a primary, and the turnout data can't show how they are voting.</p>
+  <!-- WHO HAS VOTED -->
+  <section class="sec opener" aria-labelledby="h-mix">
+    <div class="mix-head">
+      <span class="label">Who has voted early, by the party primary they last voted in</span>
+      <h2 id="h-mix" class="mix-title"><span id="mix-head">Democratic primary voters lead by</span> <span class="nowrap"><button class="num" id="mix-lead" data-src="d11_margin">45,173</button>.</span> In 2022 and 2024, Republicans led.</h2>
+      <p class="mix-sub"><button class="num" id="mix-votes" data-src="d11_votes">6,841,284</button> Texans have voted early through <span id="mix-thru">Thu., Oct. 29</span>, already <button class="num" id="mix-pct" data-src="vs2022">84%</button> of the whole 2022 vote.</p>
     </div>
-    <div class="scen" id="scen"></div>
-    <p class="scen-more">These are five readings, not a forecast. Our central read is the conservative one. Nothing in the early vote caps Democrats at their 2018 level, and a blowout like the last card would not show in the turnout numbers before the count. <a href="#bench">Try your own assumptions in the workbench.</a></p>
+    <div class="mix-key" aria-hidden="true">
+      <span><i class="sw d"></i>Last voted in a Democratic primary</span>
+      <span><i class="sw n"></i>Never voted in a primary</span>
+      <span><i class="sw r"></i>Last voted in a Republican primary</span>
+    </div>
+    <p class="mix-cap">At the same point in early voting, day 8. Bar length is the number of early voters.</p>
+    <div class="mix" id="mix"></div>
+    <p class="mix-note">This shows which primary people last voted in, not how they are voting now. The sand-colored middle decides the race.</p>
+  </section>
+
+  <section class="row2" aria-label="Updates">
+    <div class="card-quiet" id="since">
+      <span class="label">Since your last visit</span>
+      <span id="since-body">Since Wednesday's complete post, 596,015 more Texans have voted early.</span>
+    </div>
+    <div class="card-quiet">
+      <span class="label">Update schedule</span>
+      <ul class="sched">
+        <li><b>Sat., Oct. 31, after 11 a.m. CT.</b> Data through Friday, the last day of early voting, arrives. The first post often covers only some counties, so we update once about 240 of 254 are in.</li>
+        <li><b>Sun., Nov. 1.</b> Late counties and mail ballots come in.</li>
+        <li><b>Tue., Nov. 3.</b> Counties post Election Day check-ins through the afternoon. Results start after 7 p.m. CT, and after 8 p.m. in El Paso.</li>
+      </ul>
+    </div>
   </section>
 
   <!-- WORKBENCH -->
@@ -1238,49 +1243,34 @@ function main(D) {
     { t: 'Like 2018', sub: 'No-primary voters lean D +12: the 2018 Senate race, adjusted for how primary history was counted then.', lean: 12 },
     { t: 'A blowout', sub: 'No-primary voters lean D +16, and 5 million of them vote.', lean: 16, size: 5 }
   ];
-  function tailCard(sc) {
-    const p = parts({ ...DEF, leanG: sc.lean, leanN: sc.lean, size: sc.size || DEF.size });
-    const c = document.createElement('div'); c.className = 'tcard';
-    c.innerHTML = '<span class="label"></span><span class="ssub"></span><div class="tfig"></div><div class="tgov"><span class="envlabel">Governor</span> <b></b></div>';
-    c.querySelector('.label').textContent = sc.t;
-    c.querySelector('.ssub').textContent = sc.sub;
-    const f = c.querySelector('.tfig'); f.textContent = raceLine(p.T, 'Talarico', 'Paxton'); f.style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
-    c.style.borderTopColor = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
-    const g = raceMargin(p, RACES[1]), gb = c.querySelector('.tgov b');
-    gb.textContent = raceLine(g, 'Hinojosa', 'Abbott'); gb.className = g >= 0 ? 'D' : 'R';
-    return c;
-  }
-  function renderRange() {
-    const L = $('#tail-left'), R = $('#tail-right'); L.innerHTML = ''; R.innerHTML = '';
-    SCEN.filter(sc => !sc.mid).forEach(sc => {
-      const T = parts({ ...DEF, leanG: sc.lean, leanN: sc.lean, size: sc.size || DEF.size }).T;
-      (T < parts(DEF).T ? L : R).appendChild(tailCard(sc));
-    });
+  const scenParts = sc => parts({ ...DEF, leanG: sc.lean, leanN: sc.lean, size: sc.size || DEF.size });
+  function showScenario(sc) {
+    const p = scenParts(sc), central = !!sc.mid;
+    setT('main-label', central ? 'Our central read for the U.S. Senate' : 'Scenario: ' + sc.t + ', for the U.S. Senate');
+    $('#env-fig').textContent = raceLine(p.T, 'Talarico', 'Paxton'); $('#env-fig').style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
+    fillEnv($('#env-p'), p.T, central);
+    if (!central) $('#env-p .envnote').textContent = 'This is one scenario, not our central read. The odds assume the model can miss by about ' + SIGMA + ' points either way.';
+    fillRaces($('#races-top'), p, true, RACES.slice(1));
+    setT('races-title', central ? 'The other statewide races, in our central read' : 'The other statewide races, in this scenario');
+    setT('scen-note', sc.sub);
+    $('#main-card').classList.toggle('alt', !central);
+    $$('#scen-chips .chip-scen').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.k === sc.t)));
   }
   function renderTop() {
-    renderRange();
-    const box = $('#scen'); box.innerHTML = '';
-    SCEN.forEach(sc => {
-      const p = parts({ ...DEF, leanG: sc.lean, leanN: sc.lean, size: sc.size || DEF.size });
-      const card = document.createElement('div'); card.className = 'scard' + (sc.mid ? ' mid' : '');
-      card.innerHTML = '<span class="label"></span><span class="ssub"></span><span class="ssub sen">U.S. Senate</span><div class="sfig"></div><ul class="slist"></ul>';
-      card.querySelector('.label').textContent = sc.t;
-      card.querySelector('.ssub').textContent = sc.sub;
-      const fig = card.querySelector('.sfig');
-      fig.textContent = raceLine(p.T, 'Talarico', 'Paxton'); fig.style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
-      RACES.slice(1).forEach(R => {
-        const m = raceMargin(p, R);
-        const li = document.createElement('li'); const nm = document.createElement('span'); nm.textContent = R.race;
-        const b = document.createElement('b'); b.className = m >= 0 ? 'D' : 'R'; b.textContent = raceLine(m, R.d, R.r);
-        li.append(nm, b); card.querySelector('.slist').appendChild(li);
-      });
-      box.appendChild(card);
+    const box = $('#scen-chips'); box.innerHTML = '';
+    SCEN.map(sc => ({ sc, T: scenParts(sc).T })).sort((x, y) => x.T - y.T).forEach(({ sc, T }) => {
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'chip-scen'; btn.dataset.k = sc.t;
+      btn.innerHTML = '<span></span><b></b>'; btn.querySelector('span').textContent = sc.t;
+      const v = btn.querySelector('b'); v.textContent = raceLine(T, 'Talarico', 'Paxton'); v.className = T >= 0 ? 'D' : 'R';
+      btn.style.borderTopColor = T >= 0 ? 'var(--dem)' : 'var(--rep)';
+      btn.addEventListener('click', () => showScenario(sc));
+      box.appendChild(btn);
     });
-    const c = parts(DEF);
-    $('#env-fig').textContent = raceLine(c.T, 'Talarico', 'Paxton');
-    $('#env-fig').style.color = c.T >= 0 ? 'var(--dem)' : 'var(--rep)';
-    fillEnv($('#env-p'), c.T, true);
-    fillRaces($('#races-top'), c, true, RACES.slice(1));
+    showScenario(SCEN.find(x => x.mid));
+    const L = AC.leanG, np = (C.no_primary / 1e6).toFixed(1);
+    setT('assume-line', 'The ' + np + ' million early voters who have never voted in a party primary, the no-primary voters, favor Democrats by ' + L + ' points. ' +
+      (L > 6 ? 'That is more than the 5.4 points they gave the Democrat in the 2024 Senate race, because elections since then have moved toward Democrats.'
+             : 'That is close to the 5.4 points they gave the Democrat in the 2024 Senate race.'));
   }
   const pressed = (sel, attr, v) => $$(sel).forEach(b => b.setAttribute('aria-pressed', String(parseFloat(b.dataset[attr]) === v)));
   function render() {
