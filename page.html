@@ -173,6 +173,14 @@ details.fold[open] > summary { border-bottom: 1px solid var(--rule); margin-bott
   .step-tabs button[aria-pressed="true"] { border-bottom-color: var(--gold); }
 }
 
+/* scenario explanations and result */
+.dial-help { font-size: 15px; max-width: 68ch; margin: 0; }
+.dial-help.small { font-size: 13.5px; color: var(--muted); }
+.chip-scen i { font: normal 11px/1.3 var(--mono); color: var(--muted); }
+.scen-result { display: grid; gap: 6px; background: var(--paper); border: 1px dashed var(--muted); padding: 14px 16px; }
+.scen-result .sfig { font: 400 clamp(2.4rem, 7vw, 3.2rem)/0.95 var(--display); }
+.scen-result.same { opacity: 0.85; }
+
 /* three readings */
 .scen { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; align-items: start; }
 .scard { background: var(--paper); padding: 16px; display: grid; gap: 6px; min-width: 0; }
@@ -435,12 +443,20 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
     <div class="switch">
       <div class="switch-head"><h3>Try another scenario</h3><span class="legend-src">&larr; Better for Republicans &middot; Better for Democrats &rarr;</span></div>
-      <span class="dial-label">How the no-primary voters break</span>
+      <p class="dial-help">Our projection rests on two unknowns. Change either one and see what happens to the Senate race. Every scenario starts from the same early vote.</p>
+      <span class="dial-label">1. How the no-primary voters break</span>
+      <p class="dial-help small">Each choice is how these voters actually broke in a past Texas election, plus our read and a blowout. <a href="#step-4">Where these numbers come from</a></p>
       <div class="chips" id="scen-chips" role="group" aria-label="How the no-primary voters break"></div>
-      <span class="dial-label">How many reliable Republicans vote on Tuesday</span>
+      <span class="dial-label">2. How many reliable Republicans vote on Tuesday</span>
+      <p class="dial-help small">Net Republican primary voters added on Election Day. We expect about 200,000, roughly the Republicans' lead among reliable voters who have not voted yet. <a href="#step-3">Why</a></p>
       <div class="chips three" id="ed-chips" role="group" aria-label="How many reliable Republicans vote on Tuesday"></div>
-      <p class="scen-note" id="scen-note"></p>
-      <p class="legend-src">Every scenario starts from the same early vote. <a href="#behind">How the projection works</a>, or <a href="#bench">set up your own</a>.</p>
+      <div class="scen-result" id="scen-result" aria-live="polite">
+        <span class="label" id="scen-label">Your scenario for the U.S. Senate</span>
+        <div class="sfig" id="scen-fig"></div>
+        <p class="scen-note" id="scen-note"></p>
+        <ul class="slist" id="scen-races"></ul>
+      </div>
+      <p class="legend-src"><a href="#behind">How the projection works</a>, or <a href="#bench">set up your own scenario in the workbench</a>.</p>
     </div>
     <div class="card-quiet" id="read-log" hidden>
       <span class="label">How our central read has moved</span>
@@ -1318,17 +1334,17 @@ function main(D) {
   }
   // Three readings side by side: the 2022 lean, our central read, the 2018 lean.
   const SCEN = [
-    { t: 'Like 2022', sub: 'No-primary voters lean R +4, as in the 2022 governor\u2019s race.', lean: -4 },
-    { t: 'Like 2024', sub: 'No-primary voters lean D +5.4, as in the 2024 Senate race. A rough estimate; for president they leaned R +4.', lean: 5.4 },
-    { t: 'Our central read', sub: 'No-primary voters lean D +8.5.', lean: 8.5, mid: true },
-    { t: 'Like 2018', sub: 'No-primary voters lean D +12: the 2018 Senate race, adjusted for how primary history was counted then.', lean: 12 },
-    { t: 'A blowout', sub: 'No-primary voters lean D +16, and 5 million of them vote.', lean: 16, size: 5 }
+    { t: 'Like 2022', tag: 'R +4 \u00b7 2022 governor\u2019s race', sub: 'No-primary voters lean R +4, as they did in the 2022 governor\u2019s race.', lean: -4 },
+    { t: 'Like 2024', tag: 'D +5.4 \u00b7 2024 Senate race', sub: 'No-primary voters lean D +5.4, as they did in the 2024 Senate race (a rough estimate; for president they leaned R +4).', lean: 5.4 },
+    { t: 'Our central read', tag: 'D +8.5 \u00b7 2024 plus the shift since', sub: 'No-primary voters lean D +8.5, our central read. That is the 2024 Senate figure plus part of the shift toward Democrats since.', lean: 8.5, mid: true },
+    { t: 'Like 2018', tag: 'D +12 \u00b7 2018 Senate race, adjusted', sub: 'No-primary voters lean D +12, as in the 2018 Senate race once adjusted for how primary history was counted then.', lean: 12 },
+    { t: 'A blowout', tag: 'D +16, with 5 million voting', sub: 'No-primary voters lean D +16, past any recent year, and 5 million of them vote.', lean: 16, size: 5 }
   ];
   // Two dials: how the no-primary voters break (SCEN) and how many reliable Republicans vote Tuesday (EDS).
   const EDS = [
-    { t: 'Fewer', sub: 'Republicans net 100,000 more primary voters than Democrats on Election Day.', ed: 100000 },
-    { t: 'As expected', sub: 'Republicans net 200,000 more primary voters than Democrats on Election Day.', ed: 200000, mid: true },
-    { t: 'More', sub: 'Republicans net 350,000 more primary voters than Democrats on Election Day.', ed: 350000 }
+    { t: 'Fewer', tag: 'R +100,000', sub: 'Election Day adds a net 100,000 Republican primary voters.', ed: 100000 },
+    { t: 'As expected', tag: 'R +200,000', sub: 'Election Day adds a net 200,000 Republican primary voters, as we expect.', ed: 200000, mid: true },
+    { t: 'More', tag: 'R +350,000', sub: 'Election Day adds a net 350,000 Republican primary voters.', ed: 350000 }
   ];
   const sel = { lean: SCEN.find(x => x.mid), ed: EDS.find(x => x.mid) };
   const scenParts = (lv, edv) => parts({ ...DEF, leanG: lv.lean, leanN: lv.lean, size: lv.size || DEF.size, ed: edv.ed });
@@ -1340,16 +1356,25 @@ function main(D) {
       btn.setAttribute('aria-pressed', String(item === sel[key]));
     });
   }
+  function showCentral() {
+    const p = scenParts(SCEN.find(x => x.mid), EDS.find(x => x.mid));
+    setT('main-label', 'Our central read for the U.S. Senate');
+    $('#env-fig').textContent = raceLine(p.T, 'Talarico', 'Paxton'); $('#env-fig').style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
+    fillEnv($('#env-p'), p.T, true);
+    fillRaces($('#races-top'), p, false, RACES.slice(1));
+  }
   function showScenario() {
     const p = scenParts(sel.lean, sel.ed), central = !!(sel.lean.mid && sel.ed.mid);
-    setT('main-label', central ? 'Our central read for the U.S. Senate' : 'A scenario for the U.S. Senate');
-    $('#env-fig').textContent = raceLine(p.T, 'Talarico', 'Paxton'); $('#env-fig').style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
-    fillEnv($('#env-p'), p.T, central);
-    if (!central) $('#env-p .envnote').textContent = 'This is one scenario, not our central read. The odds assume the model can miss by about ' + SIGMA + ' points either way.';
-    fillRaces($('#races-top'), p, false, RACES.slice(1));
-    setT('races-title', central ? 'The other statewide races, in our central read' : 'The other statewide races, in this scenario');
-    setT('scen-note', sel.lean.sub + ' ' + sel.ed.sub);
-    $('#main-card').classList.toggle('alt', !central);
+    setT('scen-label', central ? 'Selected: our central read, the same as the top of the page' : 'Your scenario for the U.S. Senate');
+    const f = $('#scen-fig'); f.textContent = raceLine(p.T, 'Talarico', 'Paxton'); f.style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
+    const pT = phi(p.T / SIGMA);
+    setT('scen-note', sel.lean.sub + ' ' + sel.ed.sub + ' ' + (p.T >= 0 ? 'Talarico' : 'Paxton') + ' would have about a ' + Math.round(100 * (p.T >= 0 ? pT : 1 - pT)) + '% chance of winning.');
+    const ul = $('#scen-races'); ul.innerHTML = '';
+    RACES.slice(1).forEach(R => {
+      const m = raceMargin(p, R), li = document.createElement('li'), nm = document.createElement('span'), bb = document.createElement('b');
+      nm.textContent = R.race; bb.className = m >= 0 ? 'D' : 'R'; bb.textContent = raceLine(m, R.d, R.r); li.append(nm, bb); ul.appendChild(li);
+    });
+    $('#scen-result').classList.toggle('same', central);
     paintChips($('#scen-chips'), LEANS, 'lean', sel.ed); paintChips($('#ed-chips'), EDS, 'ed', sel.lean);
   }
   let LEANS = [];
@@ -1357,7 +1382,7 @@ function main(D) {
     box.innerHTML = '';
     list.forEach(item => {
       const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'chip-scen';
-      btn.innerHTML = '<span></span><b></b>'; btn.querySelector('span').textContent = item.t;
+      btn.innerHTML = '<span></span><i></i><b></b>'; btn.querySelector('span').textContent = item.t; btn.querySelector('i').textContent = item.tag;
       btn.addEventListener('click', () => { sel[key] = item; showScenario(); });
       box.appendChild(btn);
     });
@@ -1365,7 +1390,7 @@ function main(D) {
   function renderTop() {
     LEANS = SCEN.slice().sort((x, y) => scenParts(x, sel.ed).T - scenParts(y, sel.ed).T);
     buildChips($('#scen-chips'), LEANS, 'lean'); buildChips($('#ed-chips'), EDS, 'ed');
-    showScenario();
+    showCentral(); showScenario();
     // the framing paragraph's numbers
     const shareNP = C.no_primary / C.votes, sharePrim = 1 - shareNP;
     setT('fr-votes', (C.votes / 1e6).toFixed(1) + ' million'); setT('fr-pct', Math.round(100 * C.votes / 8095174) + '%');
