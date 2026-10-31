@@ -60,8 +60,8 @@ fi
 # 3. publish (skipped when GitHub Actions publishes the page; the plist sets ELECTION_UPDATE_FETCH_ONLY=1)
 if [[ ${ELECTION_UPDATE_FETCH_ONLY:-0} == 1 ]]; then log "fetch-only run done"; exit 0; fi
 upd=$(python3 $CODE/update.py --election-repo $E --site-repo $S) || { log "FAILED: update.py"; exit 1; }
-if [[ -n $(git -C $S status --porcelain -- data og page.html index.html version.json) ]]; then
-  git -C $S add data og page.html index.html version.json \
+if [[ -n $(git -C $S status --porcelain -- data og page.html index.html version.json live) ]]; then
+  git -C $S add data og page.html index.html version.json live \
     && git -C $S commit -q -m "Scheduled update: $(print -r -- $upd | tail -1 | cut -c1-120)" \
     && git -C $S push -q && log "pushed texas-election-page: $(print -r -- $upd | tr '\n' ';')" || { log "FAILED: commit/push texas-election-page"; exit 1; }
 else

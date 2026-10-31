@@ -14,6 +14,10 @@ hash of the page, and the page carries the same hash: on load it fetches
 version.json uncached and, if the hash differs, reloads at ?v=<new hash>,
 a URL the browser has not cached.
 
+Messaging apps cache a link's preview by its address, so a new card does not show
+in a thread that already has the link. live/index.html is a second address for
+the page: it carries the same preview tags and sends the reader to the page.
+
 
 
     python3 build.py
@@ -65,6 +69,19 @@ def main() -> None:
     )
     (ROOT / 'index.html').write_text(out, encoding='utf-8')
     (ROOT / 'version.json').write_text(json.dumps({'build': build}) + '\n', encoding='utf-8')
+    tags = [l for l in head.splitlines() if l.startswith(('<meta name="description"', '<meta property="og:', '<meta name="twitter:'))]
+    tags = [l.replace('content="https://saulbanov.github.io/texas-election-page/"', 'content="https://saulbanov.github.io/texas-election-page/live/"') for l in tags]
+    title = next((l.split('content="')[1].split('"')[0] for l in tags if 'og:title' in l), 'Texas Early-Vote Ledger')
+    live = (
+        '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        f'<title>{title}</title>\n' + '\n'.join(tags) + '\n'
+        '<meta http-equiv="refresh" content="0; url=../">\n'
+        "<script>location.replace('../' + location.hash)</script>\n"
+        '</head>\n<body><p><a href="../">Open the projection</a></p></body>\n</html>\n'
+    )
+    (ROOT / 'live').mkdir(exist_ok=True)
+    (ROOT / 'live' / 'index.html').write_text(live, encoding='utf-8')
     print(f'wrote index.html ({len(out):,} bytes) from page.html')
 
 
