@@ -11,7 +11,7 @@
   --display: 'League Gothic', 'Arial Narrow', Impact, sans-serif; --mono: 'IBM Plex Mono', Menlo, monospace; --logo: 'Unbounded', Arial, sans-serif; }
 * { box-sizing: border-box; }
 html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: var(--page); color: var(--ink); }
-.card { width: 1200px; height: 630px; padding: 44px 60px 0; display: grid; grid-template-rows: auto auto 1fr auto; gap: 14px; }
+.card { width: 1200px; height: 630px; padding: 44px 60px 0; display: grid; grid-template-rows: auto 1fr auto; gap: 14px; }
 .top { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--ink); padding-bottom: 12px; }
 .stamp { font: 600 15px/1 var(--logo); letter-spacing: 0.08em; text-transform: uppercase; display: inline-flex; gap: 10px; align-items: center; }
 .stamp::before { content: ""; width: 14px; height: 14px; background: var(--fh-red); }
@@ -21,9 +21,10 @@ h1 { margin: 0; font: 400 74px/0.95 var(--display); letter-spacing: 0.01em; }
 .main { display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: center; }
 .read { display: grid; gap: 6px; border-left: 6px solid var(--gold); padding-left: 22px; }
 .read .k { font: 600 15px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.read .v { font: 400 132px/0.9 var(--display); letter-spacing: 0.01em; }
+.read .v { white-space: nowrap; font: 400 150px/0.9 var(--display); letter-spacing: 0.01em; }
 .read .c { font: 22px/1.2 var(--mono); }
-.races { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font: 22px/1.2 var(--mono); }
+.races { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; font: 23px/1.2 var(--mono); }
+.races li { white-space: nowrap; }
 .races li { display: flex; justify-content: space-between; gap: 18px; border-top: 1px solid var(--rule); padding-top: 9px; }
 .races b { font-weight: 600; }
 .foot { margin: 0 -60px; padding: 16px 60px 20px; background: var(--gold-wash); border-top: 5px solid var(--gold);
@@ -34,7 +35,6 @@ h1 { margin: 0; font: 400 74px/0.95 var(--display); letter-spacing: 0.01em; }
 <body>
 <div class="card">
   <div class="top"><span class="stamp">Future Heist</span><span class="live">Live &middot; data through {{THRU}}</span></div>
-  <h1>Who wins Texas&rsquo;s midterm races</h1>
   <div class="main">
     <div class="read"><span class="k">Our central read &middot; U.S. Senate</span><span class="v" style="color:{{SENATE_COLOR}}">{{SENATE}}</span><span class="c">{{CHANCE}}</span></div>
     <ul class="races">{{RACES}}</ul>

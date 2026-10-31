@@ -35,7 +35,7 @@ def senate(c: dict, latest: dict) -> float:
     return 100 * (k * (c['early'] - c['ed']) + c['size'] * 1e6 * lean / 100) / (c['total'] * 1e6) + c.get('adj', 0)
 
 
-CARD_DESIGN = 'b'  # bump when og/card.template.html changes, so the card gets a new file name
+CARD_DESIGN = 'e'  # bump when og/card.template.html changes, so the card gets a new file name
 SIGMA = 2.3
 RACES = [('Governor', 'Hinojosa', 'Abbott', 2, 0), ('Lt. Governor', 'Goodwin', 'Patrick', -1, 0.75),
          ('Attorney General', 'Johnson', 'Middleton', 1, 0.75), ('Agriculture', 'Tucker', 'Sheets', 0, 1)]
