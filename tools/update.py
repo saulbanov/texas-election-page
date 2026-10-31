@@ -17,7 +17,7 @@
 
 Prints what changed and exits 0; prints "no change" when there is nothing to do.
 """
-import argparse, datetime as dt, json, re, subprocess, sys
+import argparse, datetime as dt, json, math, re, subprocess, sys
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -33,6 +33,25 @@ def senate(c: dict, latest: dict) -> float:
     k = 2 * c['loyal'] / 100 - 1
     lean = g_share * c['leanG'] + (1 - g_share) * c['leanN']
     return 100 * (k * (c['early'] - c['ed']) + c['size'] * 1e6 * lean / 100) / (c['total'] * 1e6) + c.get('adj', 0)
+
+
+CARD_DESIGN = 'b'  # bump when og/card.template.html changes, so the card gets a new file name
+SIGMA = 2.3
+RACES = [('Governor', 'Hinojosa', 'Abbott', 2, 0), ('Lt. Governor', 'Goodwin', 'Patrick', -1, 0.75),
+         ('Attorney General', 'Johnson', 'Middleton', 1, 0.75), ('Agriculture', 'Tucker', 'Sheets', 0, 1)]
+SCENARIO_LEANS = [(-4, None), (5.4, None), (8.5, None), (12, None), (16, 5.0)]
+
+
+def card_numbers(c: dict, latest: dict) -> tuple[str, str]:
+    """The four other races as card list items, and the Senate range across the scenario buttons."""
+    t = senate(c, latest)
+    items = []
+    for name, d, r, adj, drop in RACES:
+        m = (t - 0.5) - adj - drop
+        who, col = (d, 'dem') if m >= 0 else (r, 'rep')
+        items.append(f'<li><span>{name}</span><b style="color:var(--{col})">{who} +{abs(m):.1f}</b></li>')
+    ts = [senate({**c, 'leanG': l, 'leanN': l, 'size': z or c['size']}, latest) for l, z in SCENARIO_LEANS]
+    return ''.join(items), f'{race(min(ts))} to {race(max(ts))}'
 
 
 def race(t: float) -> str:
@@ -108,32 +127,36 @@ def main() -> int:
     nxt, nxt_iso = next_update(latest, now)
     if (nxt, nxt_iso) != (A.get('next_update'), A.get('next_update_iso')):
         A['next_update'], A['next_update_iso'] = nxt, nxt_iso; changes.append(f'next update: {nxt}')
-    if not changes:
+    # 3. link-preview card and tags (a new card whenever the numbers or the card design change)
+    races, rng = card_numbers(c, latest)
+    card_name = f"card-{latest['through']}-{latest['counties']}-{CARD_DESIGN}-{'d' if after >= 0 else 'r'}{round(abs(after) * 10)}.png"
+    card_missing = not a.no_card and not (site / 'og' / card_name).exists()
+    if not changes and not card_missing:
         print('no change'); return 0
     A['page_updated'] = now.isoformat(timespec='minutes')
     af.write_text(json.dumps(A, indent=1) + '\n')
 
-    # 3. link-preview card and tags
     page = (site / 'page.html').read_text()
-    lead = latest['primary_margin']; party = 'Democratic' if lead >= 0 else 'Republican'
-    title = f"{party} primary voters lead Texas's early vote by {abs(lead):,}"
-    desc = (f"{latest['votes'] / 1e6:.2f} million early votes through {md(latest['through'])}. At this point in 2022 and 2024, Republicans led. "
-            f"Our central read: {race(after)}, a rough model, not a forecast. Every number sourced; test your own assumptions.")
-    card_name = f"card-{latest['through']}-{latest['counties']}.png"
-    if not a.no_card and not (site / 'og' / card_name).exists():
+    pT = 0.5 * (1 + math.erf(abs(after) / SIGMA / math.sqrt(2)))
+    title = "Who wins Texas\u2019s midterm races"
+    desc = (f"Future Heist\u2019s live projection from the early vote. Our central read has {race(after)} for the Senate, "
+            f"a {round(100 * pT)}% chance; scenarios run from {rng}. Updated as counts arrive, with every number sourced.")
+    if card_missing:
         tpl = (site / 'og' / 'card.template.html').read_text()
-        html = (tpl.replace('{{HEAD}}', f"{party} primary voters lead Texas's early vote by <b style=\"color:var(--{'dem' if lead >= 0 else 'rep'})\">{abs(lead):,}</b>")
-                   .replace('{{SUB}}', f"{latest['votes'] / 1e6:.2f} million early votes through {md(latest['through'])}. At this point in 2022 and 2024, Republicans led.")
-                   .replace('{{SENATE}}', race(after)).replace('{{SENATE_COLOR}}', 'var(--dem)' if after >= 0 else 'var(--rep)'))
+        html = (tpl.replace('{{THRU}}', md(latest['through']))
+                   .replace('{{SENATE}}', race(after)).replace('{{SENATE_COLOR}}', 'var(--dem)' if after >= 0 else 'var(--rep)')
+                   .replace('{{CHANCE}}', f"a {round(100 * pT)}% chance of winning")
+                   .replace('{{RACES}}', races).replace('{{RANGE}}', rng))
         (site / 'og' / 'card.html').write_text(html)
         render = next(p for p in (HERE / 'render.sh', site / 'og' / 'render.sh') if p.exists())
-        subprocess.run(['bash', str(render), f"{latest['through']}-{latest['counties']}", str(site / 'og')], check=True)
+        subprocess.run(['bash', str(render), card_name[len('card-'):-len('.png')], str(site / 'og')], check=True)
         changes.append(f'rendered og/{card_name}')
     if (site / 'og' / card_name).exists():
         page = re.sub(r'(<meta property="og:image" content="[^"]*/og/)[^"]+(")', rf'\g<1>{card_name}\2', page)
     page = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda m: m.group(1) + title + m.group(2), page)
     page = re.sub(r'(<meta property="og:description" content=")[^"]*(")', lambda m: m.group(1) + desc + m.group(2), page)
     page = re.sub(r'(<meta name="description" content=")[^"]*(")', lambda m: m.group(1) + desc + m.group(2), page)
+    page = re.sub(r'(<meta property="og:image:alt" content=")[^"]*(")', lambda m: m.group(1) + f"{title}. Our central read has {race(after)} for the Senate, with the other statewide races beside it." + m.group(2), page)
     (site / 'page.html').write_text(page)
 
     # 4. rebuild
