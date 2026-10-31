@@ -422,21 +422,6 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <h2 id="h-stand">Who wins Texas&rsquo;s midterm races</h2>
       <p class="frame">Texans have cast <button class="num" id="fr-votes" data-src="d11_votes">6.8 million</button> early votes in this midterm, <button class="num" id="fr-pct" data-src="vs2022">85%</button> of all the votes cast in 2022, a pace much closer to a presidential year. <span id="fr-two">Two-thirds</span> of these voters have voted in party primaries before, and they <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button> between the parties. The other <span id="fr-third">third</span>, <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> people, never have. So the race turns on how many <button class="num" data-src="d11_relgap">reliable Republicans</button> still vote on Tuesday and on how that <span id="fr-third2">third</span> breaks. <b>We assume they favor Democrats by <span id="fr-lean">8.5</span> points.</b> <a href="#step-4" class="why">Why we think so</a></p>
     </div>
-  <section class="opener" aria-labelledby="h-mix">
-    <div class="mix-head">
-      <span class="label">What the early vote shows</span>
-      <h3 id="h-mix" class="mix-title"><span id="mix-head">Democratic primary voters lead by</span> <span class="nowrap"><button class="num" id="mix-lead" data-src="d11_margin">45,173</button>.</span> In 2022 and 2024, Republicans led.</h3>
-      <p class="mix-sub" hidden><button class="num" id="mix-votes" data-src="d11_votes">6,841,284</button> Texans have voted early through <span id="mix-thru">Thu., Oct. 29</span>, already <button class="num" id="mix-pct" data-src="vs2022">84%</button> of the whole 2022 vote.</p>
-    </div>
-    <div class="mix-key" aria-hidden="true">
-      <span><i class="sw d"></i>Last voted in a Democratic primary</span>
-      <span><i class="sw n"></i>Never voted in a primary</span>
-      <span><i class="sw r"></i>Last voted in a Republican primary</span>
-    </div>
-    <p class="mix-cap">At the same point in early voting, day 8. Bar length is the number of early voters.</p>
-    <div class="mix" id="mix"></div>
-    <p class="mix-note">This shows which primary people last voted in, not how they are voting now. The sand-colored middle decides the race.</p>
-  </section>
 
     <div class="verdict main" id="main-card">
       <span class="label" id="main-label">Our central read for the U.S. Senate</span>
@@ -461,6 +446,21 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <span class="label">How our central read has moved</span>
       <ul class="sched" id="read-log-list"></ul>
     </div>
+  <section class="opener" aria-labelledby="h-mix">
+    <div class="mix-head">
+      <span class="label">What the early vote shows</span>
+      <h3 id="h-mix" class="mix-title"><span id="mix-head">Democratic primary voters lead by</span> <span class="nowrap"><button class="num" id="mix-lead" data-src="d11_margin">45,173</button>.</span> In 2022 and 2024, Republicans led.</h3>
+      <p class="mix-sub" hidden><button class="num" id="mix-votes" data-src="d11_votes">6,841,284</button> Texans have voted early through <span id="mix-thru">Thu., Oct. 29</span>, already <button class="num" id="mix-pct" data-src="vs2022">84%</button> of the whole 2022 vote.</p>
+    </div>
+    <div class="mix-key" aria-hidden="true">
+      <span><i class="sw d"></i>Last voted in a Democratic primary</span>
+      <span><i class="sw n"></i>Never voted in a primary</span>
+      <span><i class="sw r"></i>Last voted in a Republican primary</span>
+    </div>
+    <p class="mix-cap">At the same point in early voting, day 8. Bar length is the number of early voters.</p>
+    <div class="mix" id="mix"></div>
+    <p class="mix-note">This shows which primary people last voted in, not how they are voting now. The sand-colored middle decides the race.</p>
+  </section>
     <div class="row2" aria-label="Updates">
     <div class="card-quiet" id="since">
       <span class="label">Since your last visit</span>
