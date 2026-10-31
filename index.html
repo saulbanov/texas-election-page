@@ -83,13 +83,12 @@ a { color: var(--link); }
 
 /* sticky update strip */
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
-.status { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--ink); color: var(--paper);
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px 18px; padding: 9px 14px; font: 12.5px/1.4 var(--mono); font-variant-numeric: tabular-nums; }
-.status > div { min-width: 0; }
-.status b { display: block; font-weight: 600; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
-.status .rel { opacity: 0.75; }
-.status .nx { color: var(--gold); }
-@media (max-width: 620px) { .status { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .status .pg { display: none; } }
+.status { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--page); border-bottom: 1px solid var(--rule);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; padding: 8px 0; font: 12px/1.4 var(--mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+.status b { color: var(--fh-red); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.status #st-page, .status #st-data, .status #st-next { color: var(--ink); }
+.status .live-dot { margin-top: 0; }
+.phase-line { font: 600 14px/1.45 var(--mono); color: var(--gold-text); max-width: 70ch; }
 .sched { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
 
 .label { font: 600 11px/1.3 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
@@ -413,15 +412,11 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div class="meta">2026 general election, Nov. 3<br>Built from the election-2026 repo</div>
   </header>
 
-  <div class="live" role="note">
-    <span class="live-dot" aria-hidden="true"></span>
-    <p><b>This page updates itself as new counts arrive.</b> <span id="live-text">We check for new early-vote counts every 15 minutes, and our read gets more precise as early voting ends and ballots are counted.</span> Tap any dotted number for its source, or <a href="#bench">test your own assumptions</a>.</p>
-  </div>
-
   <div class="status" role="status" aria-label="When this was updated">
-    <div><b>Data as of</b><span id="st-data">Thu., Oct. 29 · 244 of 254 counties · posted Fri. 12:52 p.m. CT</span> <span class="rel" id="st-data-rel" data-rel="2026-10-30T12:52:00-05:00"></span></div>
-    <div class="pg"><b>Page updated</b><span id="st-page">Fri., Oct. 30, 3:36 p.m. CT</span> <span class="rel" id="st-page-rel" data-rel="2026-10-30T15:36:00-05:00"></span></div>
-    <div><b>Next update</b><span class="nx" id="st-next">Sat., Oct. 31, after 11 a.m. CT</span> <span class="rel" id="st-next-rel" data-rel="2026-10-31T11:00:00-05:00"></span></div>
+    <span class="live-dot" aria-hidden="true"></span><b>Live</b>
+    <span>Updated <span id="st-page">Fri. 4:39 p.m.</span></span>
+    <span class="st-sep" aria-hidden="true">&middot;</span><span>Data through <span id="st-data">Thu., Oct. 29</span></span>
+    <span class="st-sep" aria-hidden="true">&middot;</span><span>Next update <span id="st-next">Sat., after 11 a.m.</span></span>
   </div>
 
   <div class="prov" id="live-prov" hidden>
@@ -436,6 +431,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <span class="label" style="color:var(--gold-text)">A projection by Future Heist</span>
       <h2 id="h-stand">Who wins Texas&rsquo;s midterm races</h2>
       <p class="frame">Texans have cast <button class="num" id="fr-votes" data-src="d11_votes">6.8 million</button> early votes in this midterm, <button class="num" id="fr-pct" data-src="vs2022">85%</button> of all the votes cast in 2022, a pace much closer to a presidential year. <span id="fr-two">Two-thirds</span> of these voters have voted in party primaries before, and they <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button> between the parties. The other <span id="fr-third">third</span>, <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> people, never have. So the race turns on how many <button class="num" data-src="d11_relgap">reliable Republicans</button> still vote on Tuesday and on how that <span id="fr-third2">third</span> breaks. <b>We assume they favor Democrats by <span id="fr-lean">8.5</span> points.</b> <a href="#step-4" class="why">Why we think so</a></p>
+      <p class="phase-line" id="live-text">Early voting ends today. When its final count posts, likely Saturday, this projection gets sharper.</p>
     </div>
 
     <div class="verdict main" id="main-card">
@@ -1019,12 +1015,10 @@ function main(D) {
     cite: 'Through ' + thru + ', women outnumbered men among Texas early voters by ' + fmt(C.women_lead) + ' (Transparency USA).' };
 
   // status strip
-  setT('st-data', dShort(C.through) + ' · ' + C.counties + ' of 254 counties · posted ' + posted.short);
-  if (posted.iso) $('#st-data-rel').dataset.rel = posted.iso;
+  setT('st-data', dShort(C.through));
   if (A.page_updated) { const u = new Date(A.page_updated);
-    setT('st-page', DOW[u.getDay()] + ', ' + MON[u.getMonth()] + ' ' + u.getDate() + ', ' + u.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago' }).replace('AM', 'a.m.').replace('PM', 'p.m.') + ' CT');
-    $('#st-page-rel').dataset.rel = A.page_updated; }
-  setT('st-next', A.next_update); if (A.next_update_iso) $('#st-next-rel').dataset.rel = A.next_update_iso; else $('#st-next-rel').textContent = '';
+    setT('st-page', DOW[u.getDay()] + ' ' + u.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago' }).replace('AM', 'a.m.').replace('PM', 'p.m.')); }
+  setT('st-next', (A.next_update || '').replace(/, (Oct|Nov)\. \d+,/, ',').replace(/ CT$/, ''));
   if (PART) {
     const pp = asOf(PART.as_of);
     setT('live-prov-text', 'A newer post, through ' + dShort(PART.through) + ' with ' + PART.counties + ' of 254 counties as of ' + pp.short + ', shows ' + mtxt(PART.primary_margin) +
@@ -1035,11 +1029,11 @@ function main(D) {
   // live banner: what comes next and when the read sharpens
   const todayCT = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
   setT('live-text', todayCT >= '2026-11-03'
-    ? 'Polls close at 7 p.m. CT, 8 p.m. in El Paso. Early votes are counted first, so the first returns will lean Democratic; Election Day votes come in after.'
+    ? 'Polls close at 7 p.m. CT. Early votes are counted first, so the first returns lean Democratic.'
     : FINAL
-      ? 'Early voting is over and the final early count is in. Election Day turnout on Tuesday moves our read again, and the count Tuesday night settles it.'
-      : 'We check for new early-vote counts every 15 minutes. Early voting ends ' + (todayCT >= '2026-10-30' ? 'today' : 'Friday, Oct. 30') +
-        '; once its final count posts, likely Saturday, our read gets more precise. Ballots are counted Tuesday night.');
+      ? 'Early voting is over. Election Day turnout on Tuesday is the next thing that can move this projection.'
+      : (todayCT < '2026-10-30' ? 'Early voting ends Friday.' : todayCT === '2026-10-30' ? 'Early voting ends today.' : 'Early voting has ended.') +
+        ' When its final count posts, likely Saturday, this projection gets sharper.');
 
   // headline and the numbers in the text
   setT('mix-head', leader + ' primary voters lead by'); setT('mix-lead', fmt(Math.abs(lead))); $('#mix-lead').style.color = pcol(lead);
