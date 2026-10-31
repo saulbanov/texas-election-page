@@ -69,9 +69,10 @@ def md(iso: str) -> str:
 
 def next_update(latest: dict, now: dt.datetime) -> tuple[str, str]:
     if latest['through'] < FINAL_DAY:
-        return 'Sat., Oct. 31, after 11 a.m. CT', '2026-10-31T11:00:00-05:00'
+        # every report this cycle posted the next day between about 2 and 10 p.m., most after 8
+        return 'Sat., Oct. 31, after 6 p.m. CT', '2026-10-31T18:00:00-05:00'
     if now.date() <= dt.date(2026, 11, 1):
-        return 'Sun., Nov. 1, after 11 a.m. CT', '2026-11-01T11:00:00-06:00'
+        return 'Sun., Nov. 1, after 6 p.m. CT', '2026-11-01T18:00:00-06:00'
     return 'Tue., Nov. 3, through the day', '2026-11-03T12:00:00-06:00'
 
 
@@ -81,7 +82,7 @@ def main() -> int:
     ap.add_argument('--site-repo', default=str(Path(__file__).resolve().parents[1]))
     ap.add_argument('--no-card', action='store_true', help='skip the headless-Chrome preview card')
     a = ap.parse_args()
-    site, views = Path(a.site_repo), Path(a.election_repo) / 'general-2026' / 'early-vote' / 'views'
+    site, views = Path(a.site_repo).resolve(), Path(a.election_repo).resolve() / 'general-2026' / 'early-vote' / 'views'
     data = site / 'data'; data.mkdir(exist_ok=True)
     now = dt.datetime.now(CT)
     changes = []
