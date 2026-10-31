@@ -4,6 +4,7 @@
 # outside Oct. 31 - Nov. 4. Election-night results reading is added here once built.
 #
 # 1. Acquire: fetch each Transparency USA snapshot from Oct. 30 through yesterday; file new ones in election-2026.
+#    Also fetch the Secretary of State's county turnout files (Friday's early vote, Election Day) through BrowserOS.
 # 2. Analyze: rebuild election-2026's views; commit and push election-2026 if anything changed.
 # 3. Publish: mirror the views into the page, apply the pre-set rules, rebuild; commit and push the page.
 #
@@ -38,13 +39,21 @@ while [[ ! $d > $yesterday ]]; do
   [[ $out == *'"new": true'* ]] && log "filed: $out"
   d=$(date -j -v+1d -f %F $d +%F)
 done
+# the state's turnout app, read through BrowserOS (it must be running with its MCP server on)
+out=$(python3 $CODE/fetch_sos_turnout.py --repo $E); rc=$?
+case $rc in
+  0) print -r -- "$out" | grep -q '"new": true' && log "filed SOS turnout: $(print -r -- "$out" | grep '"new": true' | tr '\n' ' ')" ;;
+  3) log "SKIPPED SOS turnout - BrowserOS is not running at 127.0.0.1:9010; open BrowserOS" ;;
+  4) log "SKIPPED SOS turnout - the turnout app shows a check in BrowserOS; clear it there: $out" ;;
+  *) log "FAILED: fetch_sos_turnout rc=$rc $out" ;;
+esac
 
 # 2. analyze
 python3 $CODE/build_views.py --repo $E >/dev/null || { log "FAILED: build_views"; exit 1; }
-if [[ -n $(git -C $E status --porcelain -- general-2026/early-vote) ]]; then
+if [[ -n $(git -C $E status --porcelain -- general-2026/early-vote turnout) ]]; then
   thru=$(python3 -c "import json,sys; l=json.load(open(sys.argv[1]))['latest']; print(l['through'], l['counties'], 'counties')" $E/general-2026/early-vote/views/latest.json)
-  git -C $E add general-2026/early-vote/sources general-2026/early-vote/views \
-    && git -C $E commit -q -m "Scheduled: file new Transparency USA snapshot; views through $thru" \
+  git -C $E add general-2026/early-vote/sources general-2026/early-vote/views turnout \
+    && git -C $E commit -q -m "Scheduled: file new snapshot or SOS turnout; views through $thru" \
     && git -C $E push -q && log "pushed election-2026 ($thru)" || { log "FAILED: commit/push election-2026"; exit 1; }
 fi
 
