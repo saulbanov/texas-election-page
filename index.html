@@ -552,7 +552,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
     <div class="lede after">
       <h2 id="h-stand">What the projection assumes</h2>
-      <p class="frame"><span id="fr-pace">Texans are voting at a pace usually seen only in presidential years.</span> They have cast <button class="num" id="fr-votes" data-src="d11_votes">6.8 million</button> early votes, <button class="num" id="fr-pct" data-src="vs2022">85%</button> of all the votes cast in 2022. Voters who have voted in party primaries <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button>, so the race turns on the <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> who never have. <b>We assume those voters favor <span id="fr-side">Democrats</span> by <span id="fr-lean">8.5</span> points.</b> <span id="fr-end">That puts Talarico narrowly ahead.</span> <a href="#step-4" class="why">Why we think so</a></p>
+      <p class="frame"><span id="fr-pace">Texans are voting at a pace usually seen only in presidential years</span>, and voters with a primary record <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button>. <b>We assume the <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> with no primary record favor <span id="fr-side">Democrats</span> by <span id="fr-lean">8.5</span> points</b>&mdash;<a href="#step-4">and here&rsquo;s why</a>. <span id="fr-kick">If they vote the way they did in 2022, Paxton wins by 3.1 points.</span></p>
     </div>
 
     <div class="card-quiet" id="read-log" hidden>
@@ -1358,15 +1358,15 @@ function main(D) {
     showCentral(); showScenario();
     // the framing paragraph: every claim in it is written from the data
     const pct2022 = C.votes / 8095174;
-    setT('fr-pace', pct2022 >= 0.75 ? 'Texans are voting at a pace usually seen only in presidential years.' : 'Texans are voting at a faster pace than in the last midterm.');
-    setT('fr-votes', (C.votes / 1e6).toFixed(1) + ' million'); setT('fr-pct', Math.round(100 * pct2022) + '%');
+    setT('fr-pace', pct2022 >= 0.75 ? 'Texans are voting at a pace usually seen only in presidential years' : 'Texans are voting at a faster pace than in the last midterm');
     const gapPct = Math.abs(C.primary_margin) / (C.dem_primary + C.gop_primary);
     setT('fr-split', gapPct < 0.02 ? 'split almost evenly' : 'lean ' + (C.primary_margin > 0 ? 'Democratic' : 'Republican'));
     setT('fr-np', (C.no_primary / 1e6).toFixed(1) + ' million');
     setT('fr-side', AC.leanG >= 0 ? 'Democrats' : 'Republicans'); setT('fr-lean', String(Math.abs(AC.leanG)));
-    // the conclusion follows our central read: within half a point is a tossup, 4 or more (about 96% odds) is comfortable
-    const Tc = scenParts(SCEN.find(x => x.mid), EDS.find(x => x.mid)).T, lead = Tc >= 0 ? 'Talarico' : 'Paxton';
-    setT('fr-end', Math.abs(Tc) < 0.5 ? 'That leaves the Senate race a tossup.' : 'That puts ' + lead + (Math.abs(Tc) < 4 ? ' narrowly' : ' comfortably') + ' ahead.');
+    // the kicker: the same race if the no-primary voters break the way they did in 2022 (the "Like 2022" scenario)
+    const T22 = scenParts(SCEN.find(x => x.t === 'Like 2022'), EDS.find(x => x.mid)).T, by22 = Math.abs(T22).toFixed(1) + ' points.';
+    setT('fr-kick', Math.abs(T22) < 0.5 ? 'If they vote the way they did in 2022, the race is a tossup.'
+      : T22 < 0 ? 'If they vote the way they did in 2022, Paxton wins by ' + by22 : 'Even if they vote the way they did in 2022, Talarico wins by ' + by22);
   }
   // the seven steps
   (function stepper() {
