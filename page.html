@@ -436,7 +436,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div class="lede">
       <span class="label" style="color:var(--gold-text)">A projection by Future Heist</span>
       <h2 id="h-stand">Who wins Texas&rsquo;s midterm races</h2>
-      <p class="frame">Texans have cast <button class="num" id="fr-votes" data-src="d11_votes">6.8 million</button> early votes in this midterm, <button class="num" id="fr-pct" data-src="vs2022">85%</button> of all the votes cast in 2022, a pace much closer to a presidential year. <span id="fr-two">Two-thirds</span> of these voters have voted in party primaries before, and they <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button> between the parties. The other <span id="fr-third">third</span>, <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> people, never have. So the race turns on how many <button class="num" data-src="d11_relgap">reliable Republicans</button> still vote on Tuesday and on how that <span id="fr-third2">third</span> breaks. <b>We assume they favor Democrats by <span id="fr-lean">8.5</span> points.</b> <a href="#step-4" class="why">Why we think so</a></p>
+      <p class="frame"><span id="fr-pace">Texans are voting at a pace usually seen only in presidential years.</span> They have cast <button class="num" id="fr-votes" data-src="d11_votes">6.8 million</button> early votes, <button class="num" id="fr-pct" data-src="vs2022">85%</button> of all the votes cast in 2022. Voters who have voted in party primaries <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button>, so the race turns on the <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> who never have. <b>We assume those voters favor <span id="fr-side">Democrats</span> by <span id="fr-lean">8.5</span> points.</b> <span id="fr-end">That puts Talarico narrowly ahead.</span> <a href="#step-4" class="why">Why we think so</a></p>
       <p class="phase-line" id="live-text">Early voting ends today. When its final count posts, likely Saturday, this projection gets sharper.</p>
     </div>
 
@@ -1287,14 +1287,14 @@ function main(D) {
   const SCEN = [
     { t: 'Like 2022', tag: 'R +4 \u00b7 2022 governor\u2019s race', sub: 'No-primary voters lean R +4, as they did in the 2022 governor\u2019s race.', lean: -4 },
     { t: 'Like 2024', tag: 'D +5.4 \u00b7 2024 Senate race', sub: 'No-primary voters lean D +5.4, as they did in the 2024 Senate race (a rough estimate; for president they leaned R +4).', lean: 5.4 },
-    { t: 'Our central read', tag: 'D +8.5 \u00b7 2024 plus the shift since', sub: 'No-primary voters lean D +8.5, our central read. That is the 2024 Senate figure plus part of the shift toward Democrats since.', lean: 8.5, mid: true },
+    { t: 'Our central read', tag: leanTxt(AC.leanG) + ' \u00b7 2024 plus the shift since', sub: 'No-primary voters lean ' + leanTxt(AC.leanG) + ', our central read. That is the 2024 Senate figure plus part of the shift toward Democrats since.', lean: AC.leanG, mid: true },
     { t: 'Like 2018', tag: 'D +12 \u00b7 2018 Senate race, adjusted', sub: 'No-primary voters lean D +12, as in the 2018 Senate race once adjusted for how primary history was counted then.', lean: 12 },
     { t: 'A blowout', tag: 'D +16, with 5 million voting', sub: 'No-primary voters lean D +16, past any recent year, and 5 million of them vote.', lean: 16, size: 5 }
   ];
   // Two dials: how the no-primary voters break (SCEN) and how many reliable Republicans vote Tuesday (EDS).
   const EDS = [
     { t: 'More', tag: 'R +350,000', sub: 'Election Day adds a net 350,000 Republican primary voters.', ed: 350000 },
-    { t: 'As expected', tag: 'R +200,000', sub: 'Election Day adds a net 200,000 Republican primary voters, as we expect.', ed: 200000, mid: true },
+    { t: 'As expected', tag: 'R +' + AC.ed.toLocaleString('en-US'), sub: 'Election Day adds a net ' + AC.ed.toLocaleString('en-US') + ' Republican primary voters, as we expect.', ed: AC.ed, mid: true },
     { t: 'Fewer', tag: 'R +100,000', sub: 'Election Day adds a net 100,000 Republican primary voters.', ed: 100000 }
   ];
   const sel = { lean: SCEN.find(x => x.mid), ed: EDS.find(x => x.mid) };
@@ -1345,15 +1345,17 @@ function main(D) {
     LEANS = SCEN.slice().sort((x, y) => scenParts(x, sel.ed).T - scenParts(y, sel.ed).T);
     buildChips($('#scen-chips'), LEANS, 'lean'); buildChips($('#ed-chips'), EDS, 'ed');
     showCentral(); showScenario();
-    // the framing paragraph's numbers
-    const shareNP = C.no_primary / C.votes, sharePrim = 1 - shareNP;
-    setT('fr-votes', (C.votes / 1e6).toFixed(1) + ' million'); setT('fr-pct', Math.round(100 * C.votes / 8095174) + '%');
-    const frac = x => Math.abs(x - 2 / 3) < 0.04 ? 'Two-thirds' : Math.abs(x - 0.6) < 0.03 ? 'Three in five' : Math.round(100 * x) + '%';
-    const fracL = x => Math.abs(x - 1 / 3) < 0.04 ? 'third' : Math.round(100 * x) + '%';
-    setT('fr-two', frac(sharePrim)); setT('fr-third', fracL(shareNP)); setT('fr-third2', fracL(shareNP) === 'third' ? 'third' : 'group');
+    // the framing paragraph: every claim in it is written from the data
+    const pct2022 = C.votes / 8095174;
+    setT('fr-pace', pct2022 >= 0.75 ? 'Texans are voting at a pace usually seen only in presidential years.' : 'Texans are voting at a faster pace than in the last midterm.');
+    setT('fr-votes', (C.votes / 1e6).toFixed(1) + ' million'); setT('fr-pct', Math.round(100 * pct2022) + '%');
     const gapPct = Math.abs(C.primary_margin) / (C.dem_primary + C.gop_primary);
     setT('fr-split', gapPct < 0.02 ? 'split almost evenly' : 'lean ' + (C.primary_margin > 0 ? 'Democratic' : 'Republican'));
-    setT('fr-np', (C.no_primary / 1e6).toFixed(1) + ' million'); setT('fr-lean', String(AC.leanG));
+    setT('fr-np', (C.no_primary / 1e6).toFixed(1) + ' million');
+    setT('fr-side', AC.leanG >= 0 ? 'Democrats' : 'Republicans'); setT('fr-lean', String(Math.abs(AC.leanG)));
+    // the conclusion follows our central read: within half a point is a tossup, 4 or more (about 96% odds) is comfortable
+    const Tc = scenParts(SCEN.find(x => x.mid), EDS.find(x => x.mid)).T, lead = Tc >= 0 ? 'Talarico' : 'Paxton';
+    setT('fr-end', Math.abs(Tc) < 0.5 ? 'That leaves the Senate race a tossup.' : 'That puts ' + lead + (Math.abs(Tc) < 4 ? ' narrowly' : ' comfortably') + ' ahead.');
   }
   // the seven steps
   (function stepper() {
