@@ -7,7 +7,7 @@
 <meta property="og:url" content="https://saulbanov.github.io/texas-election-page/">
 <meta property="og:title" content="Who wins Texas’s midterm races">
 <meta property="og:description" content="Future Heist’s live projection from the early vote. Our central read has Talarico +1.9 for the Senate, a 79% chance; scenarios run from Paxton +3.1 to Talarico +6.5. Updated as counts arrive, with every number sourced.">
-<meta property="og:image" content="https://saulbanov.github.io/texas-election-page/og/card-2026-10-29-251-e-d19.png">
+<meta property="og:image" content="https://saulbanov.github.io/texas-election-page/og/card-2026-10-29-251-g-d19.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Who wins Texas’s midterm races. Our central read has Talarico +1.9 for the Senate, with the other statewide races beside it.">
@@ -635,8 +635,9 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <section class="step" id="step-6" data-step="6" hidden>
         <div class="step-head"><span class="label">Step 6 of 7</span><h3>From the Senate to the other races</h3></div>
         <div class="step-use"><span class="tag assumed">Assumed</span> <span>We use</span> <b>candidate adjustments and drop-off</b></div>
-        <p>Each statewide race starts from the Senate figure. Paxton runs about half a point behind a typical Republican, so a typical Democrat-versus-Republican race sits half a point less Democratic than the Senate. Each race then moves by its candidates' polling: Abbott runs about 2 points ahead, Goodwin about 1 ahead after halving, Middleton about 1 ahead. Agriculture has no general-election polling.</p>
-        <p>New voters skip races lower on the ballot more often, and Texas has no straight-ticket option, so the Lt. Governor, Attorney General and Agriculture races each lose 0.75 to 1 point for Democrats. The workbench also lets you set ticket-splitting.</p>
+        <p>Each statewide race starts from the Senate figure. Paxton runs about half a point behind a typical Republican, so a typical Democrat-versus-Republican race sits half a point less Democratic than the Senate. Each race then moves by its candidates' polling: Abbott runs about 2 points ahead, Goodwin about 1 ahead after halving, Middleton about 1 ahead. Agriculture and the Railroad Commission have no general-election polling.</p>
+        <p>New voters skip races lower on the ballot more often, and Texas has no straight-ticket option, so the Lt. Governor, Attorney General, Agriculture and Railroad Commission races each lose 0.75 to 1 point for Democrats. The workbench also lets you set ticket-splitting.</p>
+        <p>For the Texas House and Senate, each district starts from its 2024 result: its own House race where a Democrat ran against a Republican, and the 2024 U.S. Senate race everywhere else. Every district then moves by the same amount as the statewide races, with the same 1-point drop-off as Agriculture. Some Republican incumbents ran well ahead of Cruz in 2024, and starting from their own races keeps that edge where they are running again. The 26 open seats, where no incumbent is on the ballot, lose it and start from the Senate race. With no shift from 2024, this gives Democrats 63 House seats; they hold 62. Senate districts start from the 2024 Senate race, which puts Taylor Rehmet&rsquo;s SD-9 on the Republican side in our central read, though he won it in a special election in January. Seats with no Republican on the ballot count for Democrats. District figures come from the <a href="https://data.capitol.texas.gov/dataset/planh2316">Texas Legislative Council</a>.</p>
       </section>
       <section class="step" id="step-7" data-step="7" hidden>
         <div class="step-head"><span class="label">Step 7 of 7</span><h3>How sure we are</h3></div>
@@ -1211,7 +1212,8 @@ function main(D) {
     { race: 'Governor', short: 'Gov.', d: 'Hinojosa', r: 'Abbott', adj: 2, drop: 0, why: 'Abbott runs 2 points ahead on polls, incumbency and money.' },
     { race: 'Lt. Governor', short: 'Lt. Gov.', d: 'Goodwin', r: 'Patrick', adj: -1, drop: 0.75, why: 'Goodwin runs 1 point ahead in the polls, after halving. New voters who skip the race cost him 0.75.' },
     { race: 'Attorney General', short: 'AG', d: 'Johnson', r: 'Middleton', adj: 1, drop: 0.75, why: 'Middleton runs 1 point ahead in the polls. New voters who skip the race cost Johnson 0.75.' },
-    { race: 'Agriculture', short: 'Ag. Comm.', d: 'Tucker', r: 'Sheets', adj: 0, drop: 1, why: 'No general-election polls. New voters who skip the race cost Tucker 1 point.' }
+    { race: 'Agriculture', short: 'Ag. Comm.', d: 'Tucker', r: 'Sheets', adj: 0, drop: 1, why: 'No general-election polls. New voters who skip the race cost Tucker 1 point.' },
+    { race: 'Railroad Commission', short: 'RRC', d: 'Rosenthal', r: 'French', adj: 0, drop: 1, why: 'No general-election polls. New voters who skip the race cost Rosenthal 1 point.' }
   ];
   const SIGMA = 2.3;
   function erf(x) { const s = Math.sign(x); x = Math.abs(x); const t = 1 / (1 + 0.3275911 * x);
@@ -1243,16 +1245,27 @@ function main(D) {
   function leanNeeded(s, targetT) { const p = parts(s); return 100 * (targetT * p.total / 100 - p.a - p.b) / (s.size * 1e6); }
   // The environment (a typical Democrat v. a typical Republican) is the Senate margin less Paxton's 0.5.
   const envTxt = T => { const e = T - 0.5; return Math.abs(e) < 0.05 ? 'Even' : (e > 0 ? 'D +' : 'R +') + Math.abs(e).toFixed(1); };
-  function legislatureRead(T) {
-    if (T < 0) return 'Democrats make small gains. Republicans keep both chambers.';
-    if (T < 2) return 'Democrats gain some Texas House seats. Republicans keep both chambers.';
-    if (T < 3) return 'Democrats gain 4 to 8 House seats. A 14th Democratic seat in the Texas Senate, enough to block bills from reaching the floor, is about a coin flip.';
-    if (T < 5) return 'A real shot at 14 Democratic seats in the Texas Senate. Republicans keep the House.';
-    return 'Control of the Texas House comes into play.';
+  // Texas House and Senate seats. Each district starts from its 2024 margin (data/seats.json, built by
+  // tx-district-intel/tools/build_seat_baseline.py: the district's own House race where a Democrat faced a
+  // Republican, otherwise the 2024 U.S. Senate race) and moves by the same amount as the statewide
+  // environment, with the 1-point drop-off used for Agriculture. A seat with no Republican on the ballot
+  // goes to the Democrat. Senate seats not up in 2026 stay with the party that holds them.
+  const LEG = { adj: 0, drop: 1 };
+  function seats(p) {
+    const S = D.seats; if (!S) return null;
+    const shift = (p.T - 0.5) - LEG.adj - LEG.drop - p.splitPts - S.statewide_2024_senate.d_margin;
+    const n = { house: 0, senate: S.senate_not_up.D };
+    S.districts.forEach(x => { if (x.chamber === 'senate' && !x.up) return; if (!x.r_cand || (x.d_cand && x.base + shift > 0)) n[x.chamber]++; });
+    return n;
   }
-  // Labeled lines under the headline: Senate result in party color, then the Legislature, then what the odds mean.
-  function fillEnv(box, T, central) {
-    box.innerHTML = '';
+  function chamberLine(ch, n) {
+    const d = n - D.seats.seats_before[ch].D, delta = d > 0 ? 'a gain of ' + d : d < 0 ? 'a loss of ' + (-d) : 'no change';
+    if (ch === 'house') return 'Democrats win ' + n + ' of 150 seats, ' + delta + (n >= 76 ? ', and take the majority.' : '. A majority takes 76.');
+    return 'Democrats hold ' + n + ' of 31 seats, ' + delta + (n >= 16 ? ', and take the majority.' : n >= 14 ? ', enough to block bills from reaching the floor.' : '. Blocking bills takes 14.');
+  }
+  // Labeled lines under the headline: the Senate odds, then the Texas House and Senate, then what the odds mean.
+  function fillEnv(box, p, central) {
+    const T = p.T; box.innerHTML = '';
     const pT = phi(T / SIGMA), dem = T >= 0;
     const odds = Math.round((dem ? pT : 1 - pT) * 100);
     const line = (label, build) => {
@@ -1266,7 +1279,8 @@ function main(D) {
       const b = document.createElement('b'); b.className = dem ? 'D' : 'R'; b.textContent = odds + '%';
       dd.append(b, document.createTextNode(' chance of winning.'));
     });
-    line('Legislature', dd => { dd.textContent = legislatureRead(T); });
+    const n = seats(p);
+    if (n) { line('Texas House', dd => { dd.textContent = chamberLine('house', n.house); }); line('Texas Senate', dd => { dd.textContent = chamberLine('senate', n.senate); }); }
     if (central) return;  // the top card carries no note; step 7 explains the odds
     const note = document.createElement('div'); note.className = 'envnote';
     note.textContent = (central ? 'This is our central case. ' : 'This is the scenario you set. ') + 'The odds assume the model can miss by about ' + SIGMA + ' points either way.';
@@ -1314,7 +1328,7 @@ function main(D) {
     const p = scenParts(SCEN.find(x => x.mid), EDS.find(x => x.mid));
     setT('main-label', 'Our central read for the U.S. Senate');
     $('#env-fig').textContent = raceLine(p.T, 'Talarico', 'Paxton'); $('#env-fig').style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
-    fillEnv($('#env-p'), p.T, true);
+    fillEnv($('#env-p'), p, true);
     fillRaces($('#races-top'), p, false, RACES.slice(1));
   }
   function showScenario() {
@@ -1327,6 +1341,11 @@ function main(D) {
     RACES.slice(1).forEach(R => {
       const m = raceMargin(p, R), li = document.createElement('li'), nm = document.createElement('span'), bb = document.createElement('b');
       nm.textContent = R.short; bb.className = m >= 0 ? 'D' : 'R'; bb.textContent = raceLine(m, R.d, R.r); li.append(nm, bb); ul.appendChild(li);
+    });
+    const ns = seats(p);
+    if (ns) [['Texas House', ns.house, 'house'], ['Texas Senate', ns.senate, 'senate']].forEach(([lab, k, ch]) => {
+      const li = document.createElement('li'), nm = document.createElement('span'), bb = document.createElement('b'), dd = k - D.seats.seats_before[ch].D;
+      nm.textContent = lab; bb.className = 'D'; bb.textContent = k + ' D (' + (dd >= 0 ? '+' : '\u2212') + Math.abs(dd) + ')'; li.append(nm, bb); ul.appendChild(li);
     });
     $('#scen-result').hidden = central; $('#scen-prompt').hidden = !central;
     // the folded workbench starts from the chosen scenario
@@ -1388,7 +1407,7 @@ function main(D) {
     const T = p.T;
     $('#v-fig').textContent = raceLine(T, 'Talarico', 'Paxton');
     $('#v-fig').style.color = T >= 0 ? 'var(--dem)' : 'var(--rep)';
-    fillEnv($('#v-p'), T, false);
+    fillEnv($('#v-p'), p, false);
     fillRaces($('#races'), p, false);
     $('#leg').textContent = 'Down-ballot races move point for point with the Senate. Each carries a candidate adjustment from its polls and a drop-off for new voters who skip lower races; both are estimates.' +
       (s.split ? ' Ticket-splitting moves each of them ' + p.splitPts.toFixed(1) + ' pts ' + (s.split > 0 ? 'toward Republicans.' : 'toward Democrats.') : '');
@@ -1481,8 +1500,8 @@ function main(D) {
     try { const r = await fetch('data/' + name + '?t=' + Date.now(), { cache: 'no-store', signal: ctl.signal }); return r.ok ? await r.json() : null; }
     catch (e) { return null; } finally { clearTimeout(t); }
   };
-  const [latest, series, assumptions] = await Promise.all([get('latest.json'), get('series.json'), get('assumptions.json')]);
-  const D = latest && series && assumptions ? { latest, series, assumptions } : inline;
+  const [latest, series, assumptions, seats] = await Promise.all([get('latest.json'), get('series.json'), get('assumptions.json'), get('seats.json')]);
+  const D = latest && series && assumptions ? { latest, series, assumptions, seats: seats || (inline && inline.seats) } : inline;
   document.documentElement.classList.remove('loading');
   if (D) main(D);
 })();

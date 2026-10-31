@@ -43,7 +43,7 @@ def main() -> None:
     head, body = src.split(SPLIT, 1)
     # Inline the data files as a fallback; the page fetches them fresh on load.
     data = {}
-    for name in ('latest', 'series', 'assumptions'):
+    for name in ('latest', 'series', 'assumptions', 'seats'):
         f = ROOT / 'data' / f'{name}.json'
         if not f.exists():
             raise SystemExit(f'missing data/{name}.json; run tools/update.py first')

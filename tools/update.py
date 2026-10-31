@@ -35,21 +35,41 @@ def senate(c: dict, latest: dict) -> float:
     return 100 * (k * (c['early'] - c['ed']) + c['size'] * 1e6 * lean / 100) / (c['total'] * 1e6) + c.get('adj', 0)
 
 
-CARD_DESIGN = 'e'  # bump when og/card.template.html changes, so the card gets a new file name
+CARD_DESIGN = 'g'  # bump when og/card.template.html changes, so the card gets a new file name
 SIGMA = 2.3
 RACES = [('Governor', 'Hinojosa', 'Abbott', 2, 0), ('Lt. Governor', 'Goodwin', 'Patrick', -1, 0.75),
-         ('Attorney General', 'Johnson', 'Middleton', 1, 0.75), ('Agriculture', 'Tucker', 'Sheets', 0, 1)]
+         ('Attorney General', 'Johnson', 'Middleton', 1, 0.75), ('Agriculture', 'Tucker', 'Sheets', 0, 1),
+         ('Railroad Comm.', 'Rosenthal', 'French', 0, 1)]
+LEG = (0, 1)  # Texas House and Senate seats: the Agriculture adjustment and drop-off, as on the page
 SCENARIO_LEANS = [(-4, None), (5.4, None), (8.5, None), (12, None), (16, 5.0)]
 
 
-def card_numbers(c: dict, latest: dict) -> tuple[str, str]:
-    """The four other races as card list items, and the Senate range across the scenario buttons."""
+def seat_counts(t: float, seats: dict) -> dict:
+    """Democratic seats in each chamber, the page's seats() in Python (data/seats.json from tx-district-intel)."""
+    shift = (t - 0.5) - LEG[0] - LEG[1] - seats['statewide_2024_senate']['d_margin']
+    n = {'house': 0, 'senate': seats['senate_not_up']['D']}
+    for x in seats['districts']:
+        if x['chamber'] == 'senate' and not x['up']:
+            continue
+        if not x['r_cand'] or (x['d_cand'] and x['base'] + shift > 0):
+            n[x['chamber']] += 1
+    return n
+
+
+def card_numbers(c: dict, latest: dict, seats=None) -> tuple:
+    """The other statewide races and the two chambers as card list items, and the Senate range across the scenario buttons."""
     t = senate(c, latest)
     items = []
     for name, d, r, adj, drop in RACES:
         m = (t - 0.5) - adj - drop
         who, col = (d, 'dem') if m >= 0 else (r, 'rep')
         items.append(f'<li><span>{name}</span><b style="color:var(--{col})">{who} +{abs(m):.1f}</b></li>')
+    if seats:
+        n = seat_counts(t, seats)
+        for name, ch in (('Texas House', 'house'), ('Texas Senate', 'senate')):
+            d = n[ch] - seats['seats_before'][ch]['D']
+            sign = '+' if d >= 0 else '\u2212'
+            items.append(f'<li><span>{name}</span><b style="color:var(--dem)">{n[ch]} Dems ({sign}{abs(d)})</b></li>')
     ts = [senate({**c, 'leanG': l, 'leanN': l, 'size': z or c['size']}, latest) for l, z in SCENARIO_LEANS]
     return ''.join(items), f'{race(min(ts))} to {race(max(ts))}'
 
@@ -129,7 +149,8 @@ def main() -> int:
     if (nxt, nxt_iso) != (A.get('next_update'), A.get('next_update_iso')):
         A['next_update'], A['next_update_iso'] = nxt, nxt_iso; changes.append(f'next update: {nxt}')
     # 3. link-preview card and tags (a new card whenever the numbers or the card design change)
-    races, rng = card_numbers(c, latest)
+    sf = site / 'data' / 'seats.json'
+    races, rng = card_numbers(c, latest, json.loads(sf.read_text()) if sf.exists() else None)
     card_name = f"card-{latest['through']}-{latest['counties']}-{CARD_DESIGN}-{'d' if after >= 0 else 'r'}{round(abs(after) * 10)}.png"
     card_missing = not a.no_card and not (site / 'og' / card_name).exists()
     if not changes and not card_missing:
