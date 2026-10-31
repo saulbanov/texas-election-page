@@ -149,6 +149,36 @@ p { margin: 0; max-width: 66ch; }
 .scen-note { font-size: 15px; min-height: 1.5em; }
 @media (max-width: 760px) { .chips { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
+/* framing, dials, steps, folds */
+.frame { font-size: 18px; line-height: 1.6; max-width: 70ch; }
+.frame .why { font: 600 13px/1 var(--mono); white-space: nowrap; }
+.opener { display: grid; gap: 12px; }
+.mix-title { font: 400 clamp(1.5rem, 4vw, 2.1rem)/1.05 var(--display); letter-spacing: 0.01em; text-transform: none; }
+.dial-label { font: 600 11px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.chips.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.behind { border-top: 3px solid var(--ink); padding-top: 18px; scroll-margin-top: 90px; }
+.stepper { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); gap: 24px; align-items: start; }
+.step-tabs { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 80px); }
+.step-tabs button { width: 100%; text-align: left; font: 13px/1.35 var(--mono); padding: 8px 10px; background: none; color: var(--ink); border: 0; border-left: 3px solid var(--rule); cursor: pointer; }
+.step-tabs button[aria-pressed="true"] { border-left-color: var(--gold); background: var(--gold-wash); font-weight: 600; }
+.step-panels { display: grid; gap: 14px; min-width: 0; }
+.step { display: grid; gap: 14px; }
+.step-head h3 { font: 400 clamp(1.6rem, 4vw, 2.2rem)/1.05 var(--display); text-transform: none; letter-spacing: 0.01em; margin-top: 4px; }
+.step-use { font: 14px/1.4 var(--mono); }
+.step-use b { font-weight: 600; }
+.step-nav { display: flex; justify-content: space-between; gap: 8px; }
+.step p, .step ul { max-width: 68ch; }
+.step .thesis { font: 400 1.5rem/1.1 var(--display); }
+details.fold { background: var(--paper); padding: 4px 16px; }
+details.fold > summary { cursor: pointer; padding: 12px 0; font: 600 13px/1.4 var(--mono); letter-spacing: 0.02em; }
+details.fold[open] > summary { border-bottom: 1px solid var(--rule); margin-bottom: 16px; }
+@media (max-width: 760px) {
+  .stepper { grid-template-columns: minmax(0, 1fr); }
+  .step-tabs { position: static; grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; }
+  .step-tabs button { border-left: 0; border-bottom: 3px solid var(--rule); white-space: nowrap; }
+  .step-tabs button[aria-pressed="true"] { border-bottom-color: var(--gold); }
+}
+
 /* three readings */
 .scen { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; align-items: start; }
 .scard { background: var(--paper); padding: 16px; display: grid; gap: 6px; min-width: 0; }
@@ -397,97 +427,13 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div class="lede">
       <span class="label" style="color:var(--gold-text)">A projection by Future Heist</span>
       <h2 id="h-stand">Who wins Texas&rsquo;s midterm races</h2>
-      <p class="assume"><b>The main assumption.</b> <span id="assume-line">The 2.3 million early voters who have never voted in a party primary, the no-primary voters, favor Democrats by 8.5 points. That is more than the 5.4 points they gave the Democrat in the 2024 Senate race, because elections since then have moved toward Democrats.</span></p>
+      <p class="frame">Texans have cast <button class="num" id="fr-votes" data-src="d11_votes">6.8 million</button> early votes in this midterm, <button class="num" id="fr-pct" data-src="vs2022">85%</button> of all the votes cast in 2022, a pace much closer to a presidential year. <span id="fr-two">Two-thirds</span> of these voters have voted in party primaries before, and they <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button> between the parties. The other <span id="fr-third">third</span>, <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> people, never have. So the race turns on how many <button class="num" data-src="d11_relgap">reliable Republicans</button> still vote on Tuesday and on how that <span id="fr-third2">third</span> breaks. <b>We assume they favor Democrats by <span id="fr-lean">8.5</span> points.</b> <a href="#step-4" class="why">Why we think so</a></p>
     </div>
-    <div class="verdict main" id="main-card">
-      <span class="label" id="main-label">Our central read for the U.S. Senate</span>
-      <div class="fig" id="env-fig"></div>
-      <div class="p" id="env-p"></div>
-    </div>
-    <div class="panel">
-      <h3 id="races-title">The other statewide races, in our central read</h3>
-      <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Projection</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
-    </div>
-    <div class="switch">
-      <div class="switch-head"><h3>Try another scenario</h3><span class="legend-src">&larr; Better for Republicans &middot; Better for Democrats &rarr;</span></div>
-      <div class="chips" id="scen-chips" role="group" aria-label="Scenarios"></div>
-      <p class="scen-note" id="scen-note"></p>
-      <p class="legend-src">Each scenario runs the same early vote through a different answer about the no-primary voters. Nothing caps Democrats at their 2018 level, and a blowout would not show in the turnout numbers before the votes are counted. <a href="#bench">Set up your own scenario</a>.</p>
-    </div>
-    <div class="card-quiet" id="read-log" hidden>
-      <span class="label">How our central read has moved</span>
-      <ul class="sched" id="read-log-list"></ul>
-    </div>
-  </section>
-
-  <!-- OUR READ -->
-  <section class="sec" aria-labelledby="h-read">
-    <div class="sec-head">
-      <span class="label" style="color:var(--gold-text)">Our read · Future Heist</span>
-      <h2 id="h-read">What drives the projection</h2>
-      <p class="legend-src"><span class="tag measured">Measured</span> from a filed source · <span class="tag derived">Derived</span> arithmetic on measured numbers · <span class="tag assumed">Assumed</span> our judgment</p>
-    </div>
-    <div class="read">
-      <div class="read-body">
-        <p class="thesis">This midterm is drawing presidential-year voters.</p>
-        <p><span class="tag measured">Measured</span> By Day 8, <button class="num" data-src="ryan_nh">311,466</button> people with no voting record at all had voted early, more than twice the 143,200 at the same point in 2022. About <button class="num" data-src="ryan_0x">1,019,882</button> early voters, one in five, had skipped both the 2018 and 2022 midterms.</p>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>Day 8 of early voting</th><th class="r">2026</th><th class="r">2022 midterm</th><th class="r">2024 presidential</th></tr></thead>
-          <tbody>
-            <tr><td>No voting history</td><td class="r">311,466</td><td class="r">143,200</td><td class="r">565,782</td></tr>
-            <tr><td>Never voted in a primary</td><td class="r">1,212,439</td><td class="r">711,477</td><td class="r">1,974,710</td></tr>
-            <tr><td><b>No primary history, total</b></td><td class="r"><b>1.52M</b></td><td class="r">0.85M</td><td class="r">2.54M</td></tr>
-          </tbody>
-        </table></div>
-        <p>The group is above the last midterm and below the last presidential year. Over a whole election, 2018 had 3.85M of these voters and 2022 had 3.06M. We expect about 4M, a little past 2018.</p>
-        <p><span class="tag measured">Measured</span> Ryan's 2018 report covers only the 15 largest counties, which allows one direct comparison at day 8. In those counties, Republican primary voters led in 2018, <button class="num" data-src="r18_15">32.5% to 29.4%</button>. In the same counties in 2026, Democratic primary voters lead, <button class="num" data-src="r26_15">41.5% to 26.3%</button>. Part of that swing is relabeling: Democratic primaries were small before 2018, and the record primaries since then moved many Democrats out of the no-primary group. The counts can't separate the two.</p>
-
-        <h3>Two groups that get confused</h3>
-        <p><span class="tag measured">Measured</span> Through <span id="rd-thru">Thursday</span>, <button class="num" id="rd-nh" data-src="d11_nh">468,536</button> early voters have no record of voting anywhere. Another <button class="num" id="rd-go" data-src="d11_go">1,836,085</button> have voted in general elections but never in a primary. Together they are <span id="rd-share">33.7%</span> of the early vote<span id="rd-day">, and 49% of Thursday's voters</span>.</p>
-
-        <h3>What the sources say about them</h3>
-        <ul class="plain">
-          <li><span class="tag measured">Measured</span> Ryan's definition: people who just turned 18, people new to Texas, and registered voters who have sat out recent elections.</li>
-          <li><span class="tag measured">Measured</span> The early electorate as a whole is younger (ages 18–29 up 4.2 points on 2022), more Hispanic (up 3.0 points, to 18.4%) and more female (women lead by <button class="num" data-src="d11_women">667,032</button>).</li>
-          <li><b>A gap.</b> No source on file breaks out the age, race or location of the no-primary voters themselves. The figures above describe all early voters.</li>
-        </ul>
-
-        <h3>What we assume</h3>
-        <p><span class="tag assumed">Assumed</span> They lean <b>D +5 to +12</b>, centered on D +8.5. Three things point that way. Hispanic polling this year runs D +10 to +18, the early electorate is younger and more female, and state legislative specials since January 2025 have averaged D +5.6. Two point the other way. In 2022 these voters leaned about R +4. In 2024 they split their tickets: about R +4 for president and <button class="num" data-src="lean24">D +5.4</button> for Senate. Ryan describes the group as "center and/or left" in general, which is a description and not a 2026 measurement.</p>
-
-        <h3>Why the polls might miss them</h3>
-        <p>Likely-voter screens filter out people without a voting record. In 2018 the final polls had Cruz ahead by 6 to 9 points; he won by 2.6. In 2020 and 2024, Texas polls missed the other way, underestimating Republicans.</p>
-
-        <h3>How it could be wilder than any recent year</h3>
-        <ul class="plain">
-          <li><b>Size.</b> At presidential scale, 5M of these voters, every point of lean is worth 50,000 votes instead of 40,000.</li>
-          <li><b>Lean.</b> It could run past our range either way. 2018 is not a ceiling: Hispanic polling this year runs as high as D +18, past anything in our central read. Trump's occasional voters pull the other way.</li>
-          <li><b>Splitting.</b> New voters skip down-ballot races more often, and Texas has no straight-ticket option. The Senate and the races below it can diverge.</li>
-        </ul>
-      </div>
-      <div class="aside">
-        <div class="card-quiet">
-          <span class="label">The weakest number on this page</span>
-          <span>The lean. It is assumed, nothing in the turnout data measures it, and it moves the Senate race about 3 points across its range. Everything in the turnout counts so far has moved it less than a point.</span>
-        </div>
-        <div class="card-quiet">
-          <span class="label">How we estimated 2024</span>
-          <span>From the 2024 early vote by county on the Secretary of State’s site, set against Ryan’s day-8 mix of 2024 early voters. Using a day-8 mix for the whole early vote makes it rough. The same method gives R +3.1 for 2022, close to the R +4 we use.</span>
-        </div>
-        <div class="card-quiet">
-          <span class="label">Who publishes this</span>
-          <span>Future Heist, a Texas-based organization that tells stories with data. <a href="#about">Read our statement</a>.</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHO HAS VOTED -->
-  <section class="sec opener" aria-labelledby="h-mix">
+  <section class="opener" aria-labelledby="h-mix">
     <div class="mix-head">
-      <span class="label">Who has voted early, by the party primary they last voted in</span>
-      <h2 id="h-mix" class="mix-title"><span id="mix-head">Democratic primary voters lead by</span> <span class="nowrap"><button class="num" id="mix-lead" data-src="d11_margin">45,173</button>.</span> In 2022 and 2024, Republicans led.</h2>
-      <p class="mix-sub"><button class="num" id="mix-votes" data-src="d11_votes">6,841,284</button> Texans have voted early through <span id="mix-thru">Thu., Oct. 29</span>, already <button class="num" id="mix-pct" data-src="vs2022">84%</button> of the whole 2022 vote.</p>
+      <span class="label">What the early vote shows</span>
+      <h3 id="h-mix" class="mix-title"><span id="mix-head">Democratic primary voters lead by</span> <span class="nowrap"><button class="num" id="mix-lead" data-src="d11_margin">45,173</button>.</span> In 2022 and 2024, Republicans led.</h3>
+      <p class="mix-sub" hidden><button class="num" id="mix-votes" data-src="d11_votes">6,841,284</button> Texans have voted early through <span id="mix-thru">Thu., Oct. 29</span>, already <button class="num" id="mix-pct" data-src="vs2022">84%</button> of the whole 2022 vote.</p>
     </div>
     <div class="mix-key" aria-hidden="true">
       <span><i class="sw d"></i>Last voted in a Democratic primary</span>
@@ -499,7 +445,29 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <p class="mix-note">This shows which primary people last voted in, not how they are voting now. The sand-colored middle decides the race.</p>
   </section>
 
-  <section class="row2" aria-label="Updates">
+    <div class="verdict main" id="main-card">
+      <span class="label" id="main-label">Our central read for the U.S. Senate</span>
+      <div class="fig" id="env-fig"></div>
+      <div class="p" id="env-p"></div>
+    </div>
+    <div class="panel">
+      <h3 id="races-title">The other statewide races, in our central read</h3>
+      <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Projection</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
+    </div>
+    <div class="switch">
+      <div class="switch-head"><h3>Try another scenario</h3><span class="legend-src">&larr; Better for Republicans &middot; Better for Democrats &rarr;</span></div>
+      <span class="dial-label">How the no-primary voters break</span>
+      <div class="chips" id="scen-chips" role="group" aria-label="How the no-primary voters break"></div>
+      <span class="dial-label">How many reliable Republicans vote on Tuesday</span>
+      <div class="chips three" id="ed-chips" role="group" aria-label="How many reliable Republicans vote on Tuesday"></div>
+      <p class="scen-note" id="scen-note"></p>
+      <p class="legend-src">Every scenario starts from the same early vote. <a href="#behind">How the projection works</a>, or <a href="#bench">set up your own</a>.</p>
+    </div>
+    <div class="card-quiet" id="read-log" hidden>
+      <span class="label">How our central read has moved</span>
+      <ul class="sched" id="read-log-list"></ul>
+    </div>
+    <div class="row2" aria-label="Updates">
     <div class="card-quiet" id="since">
       <span class="label">Since your last visit</span>
       <span id="since-body">Since Wednesday's complete post, 596,015 more Texans have voted early.</span>
@@ -511,6 +479,109 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
         <li><b>Sun., Nov. 1.</b> Late counties and mail ballots come in.</li>
         <li><b>Tue., Nov. 3.</b> Counties post Election Day check-ins through the afternoon. Results start after 7 p.m. CT, and after 8 p.m. in El Paso.</li>
       </ul>
+    </div>
+    </div>
+
+  </section>
+
+  <!-- BEHIND THE PROJECTION -->
+  <section class="sec behind" id="behind" aria-labelledby="h-behind">
+    <div class="sec-head">
+      <span class="label">For anyone who wants the details</span>
+      <h2 id="h-behind">Behind the projection</h2>
+      <p>The assumptions one at a time, the workbench, and every source. <span class="legend-src"><span class="tag measured">Measured</span> from a filed source &middot; <span class="tag assumed">Assumed</span> our judgment</span></p>
+    </div>
+    <div class="stepper">
+      <ol class="step-tabs" id="step-tabs">
+        <li><button type="button" data-go="1" aria-pressed="true">1. What turnout shows</button></li>
+        <li><button type="button" data-go="2" aria-pressed="false">2. Primary voters vote with their party</button></li>
+        <li><button type="button" data-go="3" aria-pressed="false">3. Reliable Republicans still to vote</button></li>
+        <li><button type="button" data-go="4" aria-pressed="false">4. How the no-primary voters break</button></li>
+        <li><button type="button" data-go="5" aria-pressed="false">5. How many of them vote</button></li>
+        <li><button type="button" data-go="6" aria-pressed="false">6. From the Senate to the other races</button></li>
+        <li><button type="button" data-go="7" aria-pressed="false">7. How sure we are</button></li>
+      </ol>
+      <div class="step-panels">
+      <section class="step" id="step-1" data-step="1">
+        <div class="step-head"><span class="label">Step 1 of 7</span><h3>What turnout shows</h3></div>
+        <div class="step-use"><span class="tag measured">Measured</span> <span>We use</span> <b>the counts as filed</b></div>
+        <p class="thesis">This midterm is drawing presidential-year voters.</p>
+        <p><span class="tag measured">Measured</span> By Day 8, <button class="num" data-src="ryan_nh">311,466</button> people with no voting record at all had voted early, more than twice the 143,200 at the same point in 2022. About <button class="num" data-src="ryan_0x">1,019,882</button> early voters, one in five, had skipped both the 2018 and 2022 midterms.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Day 8 of early voting</th><th class="r">2026</th><th class="r">2022 midterm</th><th class="r">2024 presidential</th></tr></thead>
+          <tbody>
+            <tr><td>No voting history</td><td class="r">311,466</td><td class="r">143,200</td><td class="r">565,782</td></tr>
+            <tr><td>Never voted in a primary</td><td class="r">1,212,439</td><td class="r">711,477</td><td class="r">1,974,710</td></tr>
+            <tr><td><b>No primary history, total</b></td><td class="r"><b>1.52M</b></td><td class="r">0.85M</td><td class="r">2.54M</td></tr>
+          </tbody>
+        </table></div>
+        <p>The group is above the last midterm and below the last presidential year. Over a whole election, 2018 had 3.85M of these voters and 2022 had 3.06M. We expect about 4M, a little past 2018.</p>
+        <p><span class="tag measured">Measured</span> Ryan's 2018 report covers only the 15 largest counties, which allows one direct comparison at day 8. In those counties, Republican primary voters led in 2018, <button class="num" data-src="r18_15">32.5% to 29.4%</button>. In the same counties in 2026, Democratic primary voters lead, <button class="num" data-src="r26_15">41.5% to 26.3%</button>. Part of that swing is relabeling. Democratic primaries were small before 2018, and the record primaries since then moved many Democrats out of the no-primary group. The counts can't separate the two.</p>
+
+        <h3>Two groups that get confused</h3>
+        <p><span class="tag measured">Measured</span> Through <span id="rd-thru">Thursday</span>, <button class="num" id="rd-nh" data-src="d11_nh">468,536</button> early voters have no record of voting anywhere. Another <button class="num" id="rd-go" data-src="d11_go">1,836,085</button> have voted in general elections but never in a primary. Together they are <span id="rd-share">33.7%</span> of the early vote<span id="rd-day">, and 49% of Thursday's voters</span>.</p>
+
+        <h3>What the sources say about them</h3>
+        <ul class="plain">
+          <li><span class="tag measured">Measured</span> Ryan defines them as people who just turned 18, people new to Texas, and registered voters who have sat out recent elections.</li>
+          <li><span class="tag measured">Measured</span> The early electorate as a whole is younger (ages 18–29 up 4.2 points on 2022), more Hispanic (up 3.0 points, to 18.4%) and more female (women lead by <button class="num" data-src="d11_women">667,032</button>).</li>
+          <li><b>A gap.</b> No source on file breaks out the age, race or location of the no-primary voters themselves. The figures above describe all early voters.</li>
+        </ul>
+
+      </section>
+      <section class="step" id="step-2" data-step="2" hidden>
+        <div class="step-head"><span class="label">Step 2 of 7</span><h3>Primary voters vote with their party</h3></div>
+        <div class="step-use"><span class="tag assumed">Assumed</span> <span>We use</span> <b>95% loyalty</b></div>
+        <p>About 95% of voters who have cast a party's primary ballot back that party's candidates in November. That is Ryan Data &amp; Research's rule of thumb, and it is why the primary-voter count matters. Each 100,000 votes of primary-voter lead is worth about 0.9 points.</p>
+        <p>So far the two parties' primary voters are close to even, <button class="num" data-src="d11_margin">within a percentage point</button> of each other. That is new. At the same point in 2022 Republican primary voters led by 436,528, and in 2024 by 794,322.</p>
+      </section>
+      <section class="step" id="step-3" data-step="3" hidden>
+        <div class="step-head"><span class="label">Step 3 of 7</span><h3>Reliable Republicans still to vote</h3></div>
+        <div class="step-use"><span class="tag assumed">Assumed</span> <span>We use</span> <b>R +200,000 on Election Day</b></div>
+        <p>More reliable Republicans than Democrats are still waiting to vote. Counting people who voted in three or four of the last four primaries and have not voted yet, Republicans lead by <button class="num" data-src="d11_relgap">about 170,000</button>. We assume Election Day adds a net 200,000 Republican primary voters, about that gap plus the usual Republican tilt of Election Day.</p>
+        <p>This is the number Tuesday afternoon tests. Heavy turnout in Republican-base counties would mean more; light turnout, less. The scenario dial above runs 100,000, 200,000 and 350,000.</p>
+      </section>
+      <section class="step" id="step-4" data-step="4" hidden>
+        <div class="step-head"><span class="label">Step 4 of 7</span><h3>How the no-primary voters break</h3></div>
+        <div class="step-use"><span class="tag assumed">Assumed</span> <span>We use</span> <b>D +8.5</b></div>
+        <p>This is the assumption the projection leans on most. We start from the one Texas measurement we have. In the 2024 Senate race, these voters favored the Democrat by about <button class="num" data-src="lean24">5.4 points</button>, while favoring Trump by about 4. We add part of the shift toward Democrats since then. State legislative specials since January 2025 have run about 5.6 points better for Democrats, and Univision measures Texas Hispanic voters about 11 points more Democratic than in 2024. That lands near D +8.5.</p>
+        <p>The case against it is that in 2022 these voters leaned about R +4, and the post-2024 shift is measured mostly outside Texas. The case for it is that this is a midterm under a Republican president, when the president's occasional voters tend to stay home, and the group is smaller and likelier to be committed voters than in 2024. Ryan describes these voters in general as "center and/or left."</p>
+        <div class="card-quiet">
+          <span class="label">The weakest number on this page</span>
+          <span>The lean. It is assumed, nothing in the turnout data measures it, and it moves the Senate race about 3 points across its range. Everything in the turnout counts so far has moved it less than a point.</span>
+        </div>
+        <div class="card-quiet">
+          <span class="label">How we estimated 2024</span>
+          <span>From the 2024 early vote by county on the Secretary of State’s site, set against Ryan’s day-8 mix of 2024 early voters. Using a day-8 mix for the whole early vote makes it rough. The same method gives R +3.1 for 2022, close to the R +4 we use.</span>
+        </div>
+      </section>
+      <section class="step" id="step-5" data-step="5" hidden>
+        <div class="step-head"><span class="label">Step 5 of 7</span><h3>How many of them vote</h3></div>
+        <div class="step-use"><span class="tag assumed">Assumed</span> <span>We use</span> <b>about 4 million</b></div>
+        <p>Over a whole election, 2018 had 3.85 million voters with no primary history and 2022 had 3.06 million. With <button class="num" data-src="d11_np">2.3 million</button> already in the early vote, we expect about 4 million, a little past 2018. Every point of their lean is worth about 40,000 votes at that size, and 50,000 at a presidential-year 5 million.</p>
+      </section>
+      <section class="step" id="step-6" data-step="6" hidden>
+        <div class="step-head"><span class="label">Step 6 of 7</span><h3>From the Senate to the other races</h3></div>
+        <div class="step-use"><span class="tag assumed">Assumed</span> <span>We use</span> <b>candidate adjustments and drop-off</b></div>
+        <p>Each statewide race starts from the Senate figure. Paxton runs about half a point behind a typical Republican, so a typical Democrat-versus-Republican race sits half a point less Democratic than the Senate. Each race then moves by its candidates' polling: Abbott runs about 2 points ahead, Goodwin about 1 ahead after halving, Middleton about 1 ahead. Agriculture has no general-election polling.</p>
+        <p>New voters skip races lower on the ballot more often, and Texas has no straight-ticket option, so the Lt. Governor, Attorney General and Agriculture races each lose 0.75 to 1 point for Democrats. The workbench also lets you set ticket-splitting.</p>
+      </section>
+      <section class="step" id="step-7" data-step="7" hidden>
+        <div class="step-head"><span class="label">Step 7 of 7</span><h3>How sure we are</h3></div>
+        <div class="step-use"><span class="tag assumed">Assumed</span> <span>We use</span> <b>a miss of about 2.3 points either way</b></div>
+        <p>The odds on this page assume the model can miss by about 2.3 points in either direction. A miss that size covers a lean anywhere from about D +3 to D +14. A 2022-style break is outside it.</p>
+        <h3>Why the polls might miss them</h3>
+        <p>Likely-voter screens filter out people without a voting record. In 2018 the final polls had Cruz ahead by 6 to 9 points; he won by 2.6. In 2020 and 2024, Texas polls missed the other way, underestimating Republicans.</p>
+
+        <h3>How it could be wilder than any recent year</h3>
+        <ul class="plain">
+          <li><b>Size.</b> At presidential scale, 5M of these voters, every point of lean is worth 50,000 votes instead of 40,000.</li>
+          <li><b>Lean.</b> It could run past our range either way. 2018 is not a ceiling: Hispanic polling this year runs as high as D +18, past anything in our central read. Trump's occasional voters pull the other way.</li>
+          <li><b>Splitting.</b> New voters skip down-ballot races more often, and Texas has no straight-ticket option. The Senate and the races below it can diverge.</li>
+        </ul>
+      </section>
+        <div class="step-nav"><button type="button" class="btn" id="step-prev">&larr; Back</button><button type="button" class="btn solid" id="step-next">Next &rarr;</button></div>
+      </div>
     </div>
   </section>
 
@@ -633,7 +704,9 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   </section>
 
   <!-- CHECKING OUR WORK -->
-  <section class="sec" aria-labelledby="h-check">
+  <details class="fold">
+    <summary>Checking our work. The counts, the thresholds set in advance, and every post we read.</summary>
+    <div class="sec">
     <div class="sec-head">
       <span class="label">Checking our work</span>
       <h2 id="h-check">The counts behind the read</h2>
@@ -666,7 +739,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div class="sec-head">
       <span class="label">The three measures</span>
       <h2 id="h-meas">Against the goalposts set before the data</h2>
-      <p>The thresholds were committed to a public repository before the data they judge arrived: the Friday lines at 9:50 p.m. Oct. 29 (<a class="mono" href="https://github.com/saulbanov/election-2026/commit/817b5fa">817b5fa</a>) and the 75% lines at 9:40 a.m. Oct. 30 (<a class="mono" href="https://github.com/saulbanov/election-2026/commit/40cecc0">40cecc0</a>). The solid needle shows the latest figure and the dashed one the complete post before it.</p>
+      <p>The thresholds were committed to a public repository before the data they judge arrived. The Friday lines went in at 9:50 p.m. Oct. 29 (<a class="mono" href="https://github.com/saulbanov/election-2026/commit/817b5fa">817b5fa</a>) and the 75% lines at 9:40 a.m. Oct. 30 (<a class="mono" href="https://github.com/saulbanov/election-2026/commit/40cecc0">40cecc0</a>). The solid needle shows the latest figure and the dashed one the complete post before it.</p>
     </div>
     <div class="measures">
       <div class="measure">
@@ -709,10 +782,13 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
   </section>
 
-  </section>
+      </div>
+  </details>
 
   <!-- LOG -->
-  <section class="sec" aria-labelledby="h-log">
+  <details class="fold">
+    <summary>Corrections and changes</summary>
+    <div class="sec">
     <div class="sec-head">
       <span class="label">Corrections and changes</span>
       <h2 id="h-log">What we got wrong, and when we changed it</h2>
@@ -726,7 +802,8 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
         <tr><td>Oct. 29–30</td><td>Earlier, the governor call moved from Abbott +3 to 6 to Abbott 0 to 3; the effect of the early margin was cut to about 1 point per 100,000 votes.</td></tr>
       </tbody>
     </table></div>
-  </section>
+      </div>
+  </details>
 
   <!-- ABOUT -->
   <section class="sec" id="about" aria-labelledby="h-about">
@@ -742,14 +819,17 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   </section>
 
   <!-- SOURCES -->
-  <section class="sec" aria-labelledby="h-src">
+  <details class="fold">
+    <summary>Every source file this page reads</summary>
+    <div class="sec">
     <div class="sec-head">
       <span class="label">Sources</span>
       <h2 id="h-src">Every file this page reads</h2>
       <p>Each file's fingerprint is the first 12 characters of its SHA-256, as recorded in the repo's manifest. Aggregate counts only; no individual voter records.</p>
     </div>
     <div class="tbl-wrap"><table id="srcs"><thead><tr><th>Source</th><th>Covers</th><th>Fingerprint</th></tr></thead><tbody></tbody></table></div>
-  </section>
+      </div>
+  </details>
 </div>
 
 <aside class="drawer" id="drawer" role="dialog" aria-labelledby="dr-title" hidden>
@@ -1251,35 +1331,72 @@ function main(D) {
     { t: 'Like 2018', sub: 'No-primary voters lean D +12: the 2018 Senate race, adjusted for how primary history was counted then.', lean: 12 },
     { t: 'A blowout', sub: 'No-primary voters lean D +16, and 5 million of them vote.', lean: 16, size: 5 }
   ];
-  const scenParts = sc => parts({ ...DEF, leanG: sc.lean, leanN: sc.lean, size: sc.size || DEF.size });
-  function showScenario(sc) {
-    const p = scenParts(sc), central = !!sc.mid;
-    setT('main-label', central ? 'Our central read for the U.S. Senate' : 'Scenario: ' + sc.t + ', for the U.S. Senate');
+  // Two dials: how the no-primary voters break (SCEN) and how many reliable Republicans vote Tuesday (EDS).
+  const EDS = [
+    { t: 'Fewer', sub: 'Republicans net 100,000 more primary voters than Democrats on Election Day.', ed: 100000 },
+    { t: 'As expected', sub: 'Republicans net 200,000 more primary voters than Democrats on Election Day.', ed: 200000, mid: true },
+    { t: 'More', sub: 'Republicans net 350,000 more primary voters than Democrats on Election Day.', ed: 350000 }
+  ];
+  const sel = { lean: SCEN.find(x => x.mid), ed: EDS.find(x => x.mid) };
+  const scenParts = (lv, edv) => parts({ ...DEF, leanG: lv.lean, leanN: lv.lean, size: lv.size || DEF.size, ed: edv.ed });
+  function paintChips(box, list, key, other) {
+    box.querySelectorAll('.chip-scen').forEach((btn, i) => {
+      const item = list[i], T = key === 'lean' ? scenParts(item, other).T : scenParts(other, item).T;
+      const v = btn.querySelector('b'); v.textContent = raceLine(T, 'Talarico', 'Paxton'); v.className = T >= 0 ? 'D' : 'R';
+      btn.style.borderTopColor = T >= 0 ? 'var(--dem)' : 'var(--rep)';
+      btn.setAttribute('aria-pressed', String(item === sel[key]));
+    });
+  }
+  function showScenario() {
+    const p = scenParts(sel.lean, sel.ed), central = !!(sel.lean.mid && sel.ed.mid);
+    setT('main-label', central ? 'Our central read for the U.S. Senate' : 'A scenario for the U.S. Senate');
     $('#env-fig').textContent = raceLine(p.T, 'Talarico', 'Paxton'); $('#env-fig').style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
     fillEnv($('#env-p'), p.T, central);
     if (!central) $('#env-p .envnote').textContent = 'This is one scenario, not our central read. The odds assume the model can miss by about ' + SIGMA + ' points either way.';
     fillRaces($('#races-top'), p, true, RACES.slice(1));
     setT('races-title', central ? 'The other statewide races, in our central read' : 'The other statewide races, in this scenario');
-    setT('scen-note', sc.sub);
+    setT('scen-note', sel.lean.sub + ' ' + sel.ed.sub);
     $('#main-card').classList.toggle('alt', !central);
-    $$('#scen-chips .chip-scen').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.k === sc.t)));
+    paintChips($('#scen-chips'), LEANS, 'lean', sel.ed); paintChips($('#ed-chips'), EDS, 'ed', sel.lean);
   }
-  function renderTop() {
-    const box = $('#scen-chips'); box.innerHTML = '';
-    SCEN.map(sc => ({ sc, T: scenParts(sc).T })).sort((x, y) => x.T - y.T).forEach(({ sc, T }) => {
-      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'chip-scen'; btn.dataset.k = sc.t;
-      btn.innerHTML = '<span></span><b></b>'; btn.querySelector('span').textContent = sc.t;
-      const v = btn.querySelector('b'); v.textContent = raceLine(T, 'Talarico', 'Paxton'); v.className = T >= 0 ? 'D' : 'R';
-      btn.style.borderTopColor = T >= 0 ? 'var(--dem)' : 'var(--rep)';
-      btn.addEventListener('click', () => showScenario(sc));
+  let LEANS = [];
+  function buildChips(box, list, key) {
+    box.innerHTML = '';
+    list.forEach(item => {
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'chip-scen';
+      btn.innerHTML = '<span></span><b></b>'; btn.querySelector('span').textContent = item.t;
+      btn.addEventListener('click', () => { sel[key] = item; showScenario(); });
       box.appendChild(btn);
     });
-    showScenario(SCEN.find(x => x.mid));
-    const L = AC.leanG, np = (C.no_primary / 1e6).toFixed(1);
-    setT('assume-line', 'The ' + np + ' million early voters who have never voted in a party primary, the no-primary voters, favor Democrats by ' + L + ' points. ' +
-      (L > 6 ? 'That is more than the 5.4 points they gave the Democrat in the 2024 Senate race, because elections since then have moved toward Democrats.'
-             : 'That is close to the 5.4 points they gave the Democrat in the 2024 Senate race.'));
   }
+  function renderTop() {
+    LEANS = SCEN.slice().sort((x, y) => scenParts(x, sel.ed).T - scenParts(y, sel.ed).T);
+    buildChips($('#scen-chips'), LEANS, 'lean'); buildChips($('#ed-chips'), EDS, 'ed');
+    showScenario();
+    // the framing paragraph's numbers
+    const shareNP = C.no_primary / C.votes, sharePrim = 1 - shareNP;
+    setT('fr-votes', (C.votes / 1e6).toFixed(1) + ' million'); setT('fr-pct', Math.round(100 * C.votes / 8095174) + '%');
+    const frac = x => Math.abs(x - 2 / 3) < 0.04 ? 'Two-thirds' : Math.abs(x - 0.6) < 0.03 ? 'Three in five' : Math.round(100 * x) + '%';
+    const fracL = x => Math.abs(x - 1 / 3) < 0.04 ? 'third' : Math.round(100 * x) + '%';
+    setT('fr-two', frac(sharePrim)); setT('fr-third', fracL(shareNP)); setT('fr-third2', fracL(shareNP) === 'third' ? 'third' : 'group');
+    const gapPct = Math.abs(C.primary_margin) / (C.dem_primary + C.gop_primary);
+    setT('fr-split', gapPct < 0.02 ? 'split almost evenly' : 'lean ' + (C.primary_margin > 0 ? 'Democratic' : 'Republican'));
+    setT('fr-np', (C.no_primary / 1e6).toFixed(1) + ' million'); setT('fr-lean', String(AC.leanG));
+  }
+  // the seven steps
+  (function stepper() {
+    const tabs = $$('#step-tabs button'), steps = $$('.step'); let cur = 1;
+    const go = n => { cur = Math.max(1, Math.min(steps.length, n));
+      steps.forEach(st => st.hidden = +st.dataset.step !== cur); tabs.forEach(t => t.setAttribute('aria-pressed', String(+t.dataset.go === cur)));
+      $('#step-prev').disabled = cur === 1; $('#step-next').disabled = cur === steps.length; };
+    tabs.forEach(t => t.addEventListener('click', () => go(+t.dataset.go)));
+    $('#step-prev').addEventListener('click', () => go(cur - 1)); $('#step-next').addEventListener('click', () => go(cur + 1));
+    // links like #step-4 open that step
+    document.addEventListener('click', e => { const a = e.target.closest('a[href^="#step-"]'); if (!a) return;
+      e.preventDefault(); go(+a.getAttribute('href').slice(6));
+      document.getElementById('behind').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); });
+    go(1);
+  })();
   const pressed = (sel, attr, v) => $$(sel).forEach(b => b.setAttribute('aria-pressed', String(parseFloat(b.dataset[attr]) === v)));
   function render() {
     const s = read(); const p = parts(s);
