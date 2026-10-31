@@ -82,6 +82,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .status b { color: var(--fh-red); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
 .status #st-page, .status #st-data, .status #st-next { color: var(--ink); }
 .status .live-dot { margin-top: 0; }
+.lede.after { margin-block: 32px 28px; }
 .phase-line { font: 600 14px/1.45 var(--mono); color: var(--gold-text); max-width: 70ch; }
 .sched { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
 
@@ -413,7 +414,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   <header class="mast">
     <div style="display:grid;gap:8px">
       <span class="stamp-fh">Future Heist</span>
-      <h1>Texas Early-Vote Ledger</h1>
+      <h1>Who wins Texas&rsquo;s midterm races</h1>
     </div>
 
   </header>
@@ -433,13 +434,6 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
 
   <!-- WHERE THE RACES STAND -->
   <section class="sec top" aria-labelledby="h-stand">
-    <div class="lede">
-      <span class="label" style="color:var(--gold-text)">A projection by Future Heist</span>
-      <h2 id="h-stand">Who wins Texas&rsquo;s midterm races</h2>
-      <p class="frame"><span id="fr-pace">Texans are voting at a pace usually seen only in presidential years.</span> They have cast <button class="num" id="fr-votes" data-src="d11_votes">6.8 million</button> early votes, <button class="num" id="fr-pct" data-src="vs2022">85%</button> of all the votes cast in 2022. Voters who have voted in party primaries <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button>, so the race turns on the <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> who never have. <b>We assume those voters favor <span id="fr-side">Democrats</span> by <span id="fr-lean">8.5</span> points.</b> <span id="fr-end">That puts Talarico narrowly ahead.</span> <a href="#step-4" class="why">Why we think so</a></p>
-      <p class="phase-line" id="live-text">Early voting ends today. When its final count posts, likely Saturday, this projection gets sharper.</p>
-    </div>
-
     <div class="verdict main" id="main-card">
       <span class="label" id="main-label">Our central read for the U.S. Senate</span>
       <div class="fig" id="env-fig"></div>
@@ -450,6 +444,8 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Projection</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
       <p class="legend-src"><a href="#step-6">Why each race differs from the Senate</a></p>
     </div>
+      <p class="phase-line" id="live-text">Early voting has ended. Its final count should post this evening.</p>
+
     <div class="switch">
       <div class="switch-head"><span class="label" style="color:var(--gold-text)">Your scenarios</span><h2>Try another scenario</h2><span class="legend-src"><span class="lg-wide">&larr; Better for Republicans &middot; Better for Democrats &rarr;</span><span class="lg-narrow">&uarr; More Republican &middot; More Democratic &darr;</span></span></div>
       <span class="dial-label">1. How the no-primary voters break &middot; <a href="#step-4">Where these come from</a></span>
@@ -547,6 +543,11 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
       </details>
     </div>
+    <div class="lede after">
+      <h2 id="h-stand">What the projection assumes</h2>
+      <p class="frame"><span id="fr-pace">Texans are voting at a pace usually seen only in presidential years.</span> They have cast <button class="num" id="fr-votes" data-src="d11_votes">6.8 million</button> early votes, <button class="num" id="fr-pct" data-src="vs2022">85%</button> of all the votes cast in 2022. Voters who have voted in party primaries <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button>, so the race turns on the <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> who never have. <b>We assume those voters favor <span id="fr-side">Democrats</span> by <span id="fr-lean">8.5</span> points.</b> <span id="fr-end">That puts Talarico narrowly ahead.</span> <a href="#step-4" class="why">Why we think so</a></p>
+    </div>
+
     <div class="card-quiet" id="read-log" hidden>
       <span class="label">How our central read has moved</span>
       <ul class="sched" id="read-log-list"></ul>
@@ -978,8 +979,10 @@ function main(D) {
     ? 'Polls close at 7 p.m. CT. Early votes are counted first, so the first returns lean Democratic.'
     : FINAL
       ? 'Early voting is over. Election Day turnout on Tuesday is the next thing that can move this projection.'
-      : (todayCT < '2026-10-30' ? 'Early voting ends Friday.' : todayCT === '2026-10-30' ? 'Early voting ends today.' : 'Early voting has ended.') +
-        ' When its final count posts, likely Saturday, this projection gets sharper.');
+      : todayCT < '2026-10-30' ? 'Early voting ends Friday. Its final count should post Saturday evening.'
+      : todayCT === '2026-10-30' ? 'Early voting ends today. Its final count should post Saturday evening.'
+      : todayCT === '2026-10-31' ? 'Early voting has ended. Its final count should post this evening.'
+      : 'Early voting has ended. Its final count has not posted yet.');
 
   // headline and the numbers in the text
   setT('mix-head', leader + ' primary voters lead by'); setT('mix-lead', fmt(Math.abs(lead))); $('#mix-lead').style.color = pcol(lead);
