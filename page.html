@@ -446,6 +446,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div class="panel">
       <h3 id="races-title">The other statewide races, in our central read</h3>
       <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Projection</th><th class="r">Odds</th></tr></thead><tbody id="races-top"></tbody></table></div>
+      <p class="legend-src"><a href="#step-6">Why each race differs from the Senate</a></p>
     </div>
     <div class="switch">
       <div class="switch-head"><h3>Try another scenario</h3><span class="legend-src">&larr; Better for Republicans &middot; Better for Democrats &rarr;</span></div>
@@ -1345,7 +1346,7 @@ function main(D) {
     $('#env-fig').textContent = raceLine(p.T, 'Talarico', 'Paxton'); $('#env-fig').style.color = p.T >= 0 ? 'var(--dem)' : 'var(--rep)';
     fillEnv($('#env-p'), p.T, central);
     if (!central) $('#env-p .envnote').textContent = 'This is one scenario, not our central read. The odds assume the model can miss by about ' + SIGMA + ' points either way.';
-    fillRaces($('#races-top'), p, true, RACES.slice(1));
+    fillRaces($('#races-top'), p, false, RACES.slice(1));
     setT('races-title', central ? 'The other statewide races, in our central read' : 'The other statewide races, in this scenario');
     setT('scen-note', sel.lean.sub + ' ' + sel.ed.sub);
     $('#main-card').classList.toggle('alt', !central);
