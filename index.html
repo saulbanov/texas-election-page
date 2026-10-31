@@ -409,7 +409,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <span class="stamp-fh">Future Heist</span>
       <h1>Texas Early-Vote Ledger</h1>
     </div>
-    <div class="meta">2026 general election, Nov. 3<br>Built from the election-2026 repo</div>
+
   </header>
 
   <div class="status" role="status" aria-label="When this was updated">
@@ -446,12 +446,9 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
     <div class="switch">
       <div class="switch-head"><h3>Try another scenario</h3><span class="legend-src">&larr; Better for Republicans &middot; Better for Democrats &rarr;</span></div>
-      <p class="dial-help">Our projection rests on two unknowns. Change either one and see what happens to the Senate race. Every scenario starts from the same early vote.</p>
-      <span class="dial-label">1. How the no-primary voters break</span>
-      <p class="dial-help small">Each choice is how these voters actually broke in a past Texas election, plus our read and a blowout. <a href="#step-4">Where these numbers come from</a></p>
+      <span class="dial-label">1. How the no-primary voters break &middot; <a href="#step-4">Where these come from</a></span>
       <div class="chips" id="scen-chips" role="group" aria-label="How the no-primary voters break"></div>
-      <span class="dial-label">2. How many reliable Republicans vote on Tuesday</span>
-      <p class="dial-help small">Net Republican primary voters added on Election Day. We expect about 200,000, roughly the Republicans' lead among reliable voters who have not voted yet. <a href="#step-3">Why</a></p>
+      <span class="dial-label">2. How many reliable Republicans vote on Tuesday &middot; <a href="#step-3">Why 200,000</a></span>
       <div class="chips three" id="ed-chips" role="group" aria-label="How many reliable Republicans vote on Tuesday"></div>
       <div class="scen-result" id="scen-result" aria-live="polite">
         <span class="label" id="scen-label">Your scenario for the U.S. Senate</span>
@@ -459,7 +456,89 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
         <p class="scen-note" id="scen-note"></p>
         <ul class="slist" id="scen-races"></ul>
       </div>
-      <p class="legend-src"><a href="#behind">How the projection works</a>, or <a href="#bench">set up your own scenario in the workbench</a>.</p>
+      <details class="fold bench-fold" id="bench-fold">
+        <summary>Adjust the numbers yourself</summary>
+    <div class="bench">
+      <form class="controls" id="bench" onsubmit="return false">
+        <div class="ctl assume">
+          <div class="ctl-top"><label for="leanG">General-election voters, never in a primary</label>
+            <span><input type="number" id="leanG" class="numin" min="-100" max="100" step="0.5" value="8.5" aria-label="Lean of general-only voters, positive is Democratic"> <output id="o-leanG"></output></span></div>
+          <input type="range" id="leanG_r" min="-40" max="40" step="0.5" value="8.5" aria-label="Lean of general-only voters">
+          <div class="presets"><button type="button" class="btn" data-g="100">All Democratic</button><button type="button" class="btn" data-g="0">Even</button><button type="button" class="btn" data-g="-100">All Republican</button></div>
+        </div>
+        <div class="ctl assume">
+          <div class="ctl-top"><label for="leanN">No voting history at all</label>
+            <span><input type="number" id="leanN" class="numin" min="-100" max="100" step="0.5" value="8.5" aria-label="Lean of voters with no history, positive is Democratic"> <output id="o-leanN"></output></span></div>
+          <input type="range" id="leanN_r" min="-40" max="40" step="0.5" value="8.5" aria-label="Lean of voters with no history">
+          <div class="presets"><button type="button" class="btn" data-n="100">All Democratic</button><button type="button" class="btn" data-n="0">Even</button><button type="button" class="btn" data-n="-100">All Republican</button></div>
+        </div>
+        <div class="ctl assume">
+          <div class="ctl-top"><label for="size">How many vote, both groups</label><output id="o-size"></output></div>
+          <input type="range" id="size" min="3" max="5.5" step="0.05" value="4">
+          <div class="presets" role="group" aria-label="Size presets">
+            <button type="button" class="btn" data-size="3.06">2022: 3.06M</button>
+            <button type="button" class="btn" data-size="3.85">2018: 3.85M</button>
+            <button type="button" class="btn" data-size="4">Our estimate: 4.0M</button>
+            <button type="button" class="btn" data-size="5">Presidential: 5.0M</button>
+          </div>
+        </div>
+        <div class="ctl assume">
+          <div class="ctl-top"><label for="split">Ticket-splitting below the Senate race</label><output id="o-split"></output></div>
+          <input type="range" id="split" min="-10" max="20" step="0.5" value="0">
+          <div class="presets"><button type="button" class="btn" data-split="0">None</button><button type="button" class="btn" data-split="5">Some</button><button type="button" class="btn" data-split="10">Heavy</button></div>
+        </div>
+        <div class="ctl">
+          <div class="ctl-top"><label for="early">Final early-vote primary margin</label><output id="o-early"></output></div>
+          <input type="range" id="early" min="-200000" max="150000" step="1000" value="30000">
+          <div class="presets" role="group" aria-label="Margin presets">
+            <button type="button" class="btn" id="wb-latest" data-early="45173">Latest: D +45,173</button>
+            <button type="button" class="btn" data-early="30000">Our est. after Friday</button>
+            <button type="button" class="btn" data-early="20000">Pre-set expectation</button>
+          </div>
+        </div>
+        <div class="ctl assume">
+          <div class="ctl-top"><label for="ed">Net Republican primary voters on Election Day</label><output id="o-ed"></output></div>
+          <input type="range" id="ed" min="0" max="400000" step="10000" value="200000">
+        </div>
+        <div class="ctl assume">
+          <div class="ctl-top"><label for="loyal">Primary voters who back their party</label><output id="o-loyal"></output></div>
+          <input type="range" id="loyal" min="90" max="99" step="1" value="95">
+        </div>
+        <div class="ctl assume">
+          <div class="ctl-top"><label for="total">Total votes</label><output id="o-total"></output></div>
+          <input type="range" id="total" min="9" max="11.5" step="0.1" value="10">
+        </div>
+        <div class="row-actions">
+          <button type="button" class="btn solid" id="reset">Reset to our read</button>
+          <button type="button" class="btn" id="pin">Pin for comparison</button>
+          <button type="button" class="btn" id="copy">Copy scenario as text</button>
+        </div>
+        <div class="toast" id="toast" role="status"></div>
+      </form>
+
+      <div class="out">
+        <div class="verdict">
+          <span class="label">U.S. Senate, this scenario</span>
+          <div class="fig" id="v-fig">Talarico +1.9</div>
+          <div class="p" id="v-p">~79% Talarico if the assumptions hold (±2.3-pt spread)</div>
+        </div>
+        <div class="panel">
+          <h3>Where the margin comes from</h3>
+          <div class="wf" id="wf" role="group" aria-label="Contribution of each group to the Senate margin"></div>
+        </div>
+        <div class="panel breakeven" id="be"></div>
+        <div class="panel">
+          <h3>Every statewide race</h3>
+          <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Margin</th><th class="r">Odds</th></tr></thead><tbody id="races"></tbody></table></div>
+          <p class="legend-src" id="leg"></p>
+        </div>
+        <div class="panel pins" id="pins-panel" hidden>
+          <h3>Pinned scenarios</h3>
+          <div class="tbl-wrap"><table><thead><tr><th>#</th><th class="r">Lean</th><th class="r">Size</th><th class="r">Early</th><th class="r">Senate</th><th class="r">Governor</th><th></th></tr></thead><tbody id="pins"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+      </details>
     </div>
     <div class="card-quiet" id="read-log" hidden>
       <span class="label">How our central read has moved</span>
@@ -478,21 +557,8 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
     <p class="mix-cap">At the same point in early voting, day 8. Bar length is the number of early voters.</p>
     <div class="mix" id="mix"></div>
-    <p class="mix-note">This shows which primary people last voted in, not how they are voting now. The sand-colored middle decides the race.</p>
+    <p class="mix-note">This shows which primary people last voted in, not how they are voting now.</p>
   </section>
-    <div class="row2" aria-label="Updates">
-    <div class="card-quiet" id="since">
-      <span class="label">Since your last visit</span>
-      <span id="since-body">Since Wednesday's complete post, 596,015 more Texans have voted early.</span>
-    </div>
-    <div class="card-quiet">
-      <span class="label">Update schedule</span>
-      <ul class="sched">
-        <li><b>Sat., Oct. 31, after 11 a.m. CT.</b> Data through Friday, the last day of early voting, arrives. The first post often covers only some counties, so we update once about 240 of 254 are in.</li>
-        <li><b>Sun., Nov. 1.</b> Late counties and mail ballots come in.</li>
-        <li><b>Tue., Nov. 3.</b> Counties post Election Day check-ins through the afternoon. Results start after 7 p.m. CT, and after 8 p.m. in El Paso.</li>
-      </ul>
-    </div>
     </div>
 
   </section>
@@ -520,26 +586,11 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
         <div class="step-use"><span class="tag measured">Measured</span> <span>We use</span> <b>the counts as filed</b></div>
         <p class="thesis">This midterm is drawing presidential-year voters.</p>
         <p><span class="tag measured">Measured</span> By Day 8, <button class="num" data-src="ryan_nh">311,466</button> people with no voting record at all had voted early, more than twice the 143,200 at the same point in 2022. About <button class="num" data-src="ryan_0x">1,019,882</button> early voters, one in five, had skipped both the 2018 and 2022 midterms.</p>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>Day 8 of early voting</th><th class="r">2026</th><th class="r">2022 midterm</th><th class="r">2024 presidential</th></tr></thead>
-          <tbody>
-            <tr><td>No voting history</td><td class="r">311,466</td><td class="r">143,200</td><td class="r">565,782</td></tr>
-            <tr><td>Never voted in a primary</td><td class="r">1,212,439</td><td class="r">711,477</td><td class="r">1,974,710</td></tr>
-            <tr><td><b>No primary history, total</b></td><td class="r"><b>1.52M</b></td><td class="r">0.85M</td><td class="r">2.54M</td></tr>
-          </tbody>
-        </table></div>
-        <p>The group is above the last midterm and below the last presidential year. Over a whole election, 2018 had 3.85M of these voters and 2022 had 3.06M. We expect about 4M, a little past 2018.</p>
         <p><span class="tag measured">Measured</span> Ryan's 2018 report covers only the 15 largest counties, which allows one direct comparison at day 8. In those counties, Republican primary voters led in 2018, <button class="num" data-src="r18_15">32.5% to 29.4%</button>. In the same counties in 2026, Democratic primary voters lead, <button class="num" data-src="r26_15">41.5% to 26.3%</button>. Part of that swing is relabeling. Democratic primaries were small before 2018, and the record primaries since then moved many Democrats out of the no-primary group. The counts can't separate the two.</p>
 
         <h3>Two groups that get confused</h3>
         <p><span class="tag measured">Measured</span> Through <span id="rd-thru">Thursday</span>, <button class="num" id="rd-nh" data-src="d11_nh">468,536</button> early voters have no record of voting anywhere. Another <button class="num" id="rd-go" data-src="d11_go">1,836,085</button> have voted in general elections but never in a primary. Together they are <span id="rd-share">33.7%</span> of the early vote<span id="rd-day">, and 49% of Thursday's voters</span>.</p>
 
-        <h3>What the sources say about them</h3>
-        <ul class="plain">
-          <li><span class="tag measured">Measured</span> Ryan defines them as people who just turned 18, people new to Texas, and registered voters who have sat out recent elections.</li>
-          <li><span class="tag measured">Measured</span> The early electorate as a whole is younger (ages 18–29 up 4.2 points on 2022), more Hispanic (up 3.0 points, to 18.4%) and more female (women lead by <button class="num" data-src="d11_women">667,032</button>).</li>
-          <li><b>A gap.</b> No source on file breaks out the age, race or location of the no-primary voters themselves. The figures above describe all early voters.</li>
-        </ul>
 
       </section>
       <section class="step" id="step-2" data-step="2" hidden>
@@ -586,118 +637,8 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
         <h3>Why the polls might miss them</h3>
         <p>Likely-voter screens filter out people without a voting record. In 2018 the final polls had Cruz ahead by 6 to 9 points; he won by 2.6. In 2020 and 2024, Texas polls missed the other way, underestimating Republicans.</p>
 
-        <h3>How it could be wilder than any recent year</h3>
-        <ul class="plain">
-          <li><b>Size.</b> At presidential scale, 5M of these voters, every point of lean is worth 50,000 votes instead of 40,000.</li>
-          <li><b>Lean.</b> It could run past our range either way. 2018 is not a ceiling: Hispanic polling this year runs as high as D +18, past anything in our central read. Trump's occasional voters pull the other way.</li>
-          <li><b>Splitting.</b> New voters skip down-ballot races more often, and Texas has no straight-ticket option. The Senate and the races below it can diverge.</li>
-        </ul>
       </section>
         <div class="step-nav"><button type="button" class="btn" id="step-prev">&larr; Back</button><button type="button" class="btn solid" id="step-next">Next &rarr;</button></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WORKBENCH -->
-  <section class="sec" id="bench-sec" aria-labelledby="h-bench">
-    <div class="sec-head">
-      <span class="label">Scenario workbench</span>
-      <h2 id="h-bench">Game it out</h2>
-      <p>Drag the assumptions and every race updates. This is the same rough model we use for the calls, not a forecast. Gold controls are assumptions; the others are counts you can set to a measured figure.</p>
-    </div>
-    <div class="bench">
-      <form class="controls" id="bench" onsubmit="return false">
-        <div class="ctl assume">
-          <span class="label" style="color:var(--gold-text)">How voters with no primary history vote</span>
-          <div class="presets" role="group" aria-label="Lean presets for both groups">
-            <button type="button" class="btn" data-both="8.5">Our central read</button>
-            <button type="button" class="btn" data-both="12">Like 2018</button>
-            <button type="button" class="btn" data-both="-4">Like 2022</button>
-            <button type="button" class="btn" data-both="16">A blowout</button>
-            <button type="button" class="btn" data-both="5.4">Like 2024 (Senate)</button>
-          </div>
-          <span class="hint">Applies to both groups below. 2018 adjusted for today's primary classification ran D +10 to +14; 2022 ran about R +4; the 2024 Senate race ran about D +5. Lean is the margin within the group: D +100 means every one of them votes Democratic.</span>
-        </div>
-        <div class="ctl assume">
-          <div class="ctl-top"><label for="leanG">General-election voters, never in a primary</label>
-            <span><input type="number" id="leanG" class="numin" min="-100" max="100" step="0.5" value="8.5" aria-label="Lean of general-only voters, positive is Democratic"> <output id="o-leanG"></output></span></div>
-          <input type="range" id="leanG_r" min="-40" max="40" step="0.5" value="8.5" aria-label="Lean of general-only voters">
-          <div class="presets"><button type="button" class="btn" data-g="100">All Democratic</button><button type="button" class="btn" data-g="0">Even</button><button type="button" class="btn" data-g="-100">All Republican</button></div>
-        </div>
-        <div class="ctl assume">
-          <div class="ctl-top"><label for="leanN">No voting history at all</label>
-            <span><input type="number" id="leanN" class="numin" min="-100" max="100" step="0.5" value="8.5" aria-label="Lean of voters with no history, positive is Democratic"> <output id="o-leanN"></output></span></div>
-          <input type="range" id="leanN_r" min="-40" max="40" step="0.5" value="8.5" aria-label="Lean of voters with no history">
-          <div class="presets"><button type="button" class="btn" data-n="100">All Democratic</button><button type="button" class="btn" data-n="0">Even</button><button type="button" class="btn" data-n="-100">All Republican</button></div>
-        </div>
-        <div class="ctl assume">
-          <div class="ctl-top"><label for="size">How many vote, both groups</label><output id="o-size"></output></div>
-          <input type="range" id="size" min="3" max="5.5" step="0.05" value="4">
-          <div class="presets" role="group" aria-label="Size presets">
-            <button type="button" class="btn" data-size="3.06">2022: 3.06M</button>
-            <button type="button" class="btn" data-size="3.85">2018: 3.85M</button>
-            <button type="button" class="btn" data-size="4">Our estimate: 4.0M</button>
-            <button type="button" class="btn" data-size="5">Presidential: 5.0M</button>
-          </div>
-          <span class="hint">Split 80/20 between the two groups, their mix in the early vote so far (<span id="wb-split">1,836,085 to 468,536</span>).</span>
-        </div>
-        <div class="ctl assume">
-          <div class="ctl-top"><label for="split">Ticket-splitting below the Senate race</label><output id="o-split"></output></div>
-          <input type="range" id="split" min="-10" max="20" step="0.5" value="0">
-          <div class="presets"><button type="button" class="btn" data-split="0">None</button><button type="button" class="btn" data-split="5">Some</button><button type="button" class="btn" data-split="10">Heavy</button></div>
-          <span class="hint">How much more Republican voters with no primary history are in the other statewide races than in the Senate race. 10 means a group that is D +8.5 for Talarico is R +1.5 for governor.</span>
-        </div>
-        <div class="ctl">
-          <div class="ctl-top"><label for="early">Final early-vote primary margin</label><output id="o-early"></output></div>
-          <input type="range" id="early" min="-200000" max="150000" step="1000" value="30000">
-          <div class="presets" role="group" aria-label="Margin presets">
-            <button type="button" class="btn" id="wb-latest" data-early="45173">Latest: D +45,173</button>
-            <button type="button" class="btn" data-early="30000">Our est. after Friday</button>
-            <button type="button" class="btn" data-early="20000">Pre-set expectation</button>
-          </div>
-          <span class="hint">Saturday's snapshot sets this. Each 100,000 is worth 0.9 points.</span>
-        </div>
-        <div class="ctl assume">
-          <div class="ctl-top"><label for="ed">Net Republican primary voters on Election Day</label><output id="o-ed"></output></div>
-          <input type="range" id="ed" min="0" max="400000" step="10000" value="200000">
-          <span class="hint">About the size of the Republican reliable reserve.</span>
-        </div>
-        <div class="ctl assume">
-          <div class="ctl-top"><label for="loyal">Primary voters who back their party</label><output id="o-loyal"></output></div>
-          <input type="range" id="loyal" min="90" max="99" step="1" value="95">
-        </div>
-        <div class="ctl assume">
-          <div class="ctl-top"><label for="total">Total votes</label><output id="o-total"></output></div>
-          <input type="range" id="total" min="9" max="11.5" step="0.1" value="10">
-        </div>
-        <div class="row-actions">
-          <button type="button" class="btn solid" id="reset">Reset to our read</button>
-          <button type="button" class="btn" id="pin">Pin for comparison</button>
-          <button type="button" class="btn" id="copy">Copy scenario as text</button>
-        </div>
-        <div class="toast" id="toast" role="status"></div>
-      </form>
-
-      <div class="out">
-        <div class="verdict">
-          <span class="label">U.S. Senate, this scenario</span>
-          <div class="fig" id="v-fig">Talarico +1.9</div>
-          <div class="p" id="v-p">~79% Talarico if the assumptions hold (±2.3-pt spread)</div>
-        </div>
-        <div class="panel">
-          <h3>Where the margin comes from</h3>
-          <div class="wf" id="wf" role="group" aria-label="Contribution of each group to the Senate margin"></div>
-        </div>
-        <div class="panel breakeven" id="be"></div>
-        <div class="panel">
-          <h3>Every statewide race</h3>
-          <div class="tbl-wrap"><table class="races"><thead><tr><th>Race</th><th class="r">Margin</th><th class="r">Odds</th></tr></thead><tbody id="races"></tbody></table></div>
-          <p class="legend-src" id="leg"></p>
-        </div>
-        <div class="panel pins" id="pins-panel" hidden>
-          <h3>Pinned scenarios</h3>
-          <div class="tbl-wrap"><table><thead><tr><th>#</th><th class="r">Lean</th><th class="r">Size</th><th class="r">Early</th><th class="r">Senate</th><th class="r">Governor</th><th></th></tr></thead><tbody id="pins"></tbody></table></div>
-        </div>
       </div>
     </div>
   </section>
@@ -723,7 +664,6 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div class="sec-head">
       <span class="label">Checking our work</span>
       <h2 id="h-check">The counts behind the read</h2>
-      <p>This section is for anyone checking our numbers. It holds the primary-voter count the model starts from, the thresholds we set before the data arrived, and every post we read.</p>
     </div>
   <nav class="phases" aria-label="Where the count stands">
     <div class="phase done"><b>Early vote</b><span>Oct. 19–30</span></div>
@@ -1159,7 +1099,8 @@ function main(D) {
     st.appendChild(tr);
   });
 
-  // ---------- since last visit ----------
+  // ---------- since last visit (only where the page has that card) ----------
+  if (document.getElementById('since-body')) {
   const key = C.through + '/' + C.counties;
   const seen = store.get('ledger.seen', null);
   if (seen && seen.key === key) {
@@ -1173,6 +1114,7 @@ function main(D) {
     }
   }
   store.set('ledger.seen', { key, label: dDay(C.through) + "'s post", votes: C.votes, margin: lead });
+  }
 
   // ---------- daily table ----------
   const days = C.daily.filter(d => d.voters > 0), peak = Math.max(...days.map(d => d.voters)); const dt = $('#daily tbody');
@@ -1316,6 +1258,7 @@ function main(D) {
       dd.append(b, document.createTextNode(' chance of winning.'));
     });
     line('Legislature', dd => { dd.textContent = legislatureRead(T); });
+    if (central) return;  // the top card carries no note; step 7 explains the odds
     const note = document.createElement('div'); note.className = 'envnote';
     note.textContent = (central ? 'This is our central case. ' : 'This is the scenario you set. ') + 'The odds assume the model can miss by about ' + SIGMA + ' points either way.';
     box.appendChild(note);
@@ -1377,6 +1320,9 @@ function main(D) {
       nm.textContent = R.race; bb.className = m >= 0 ? 'D' : 'R'; bb.textContent = raceLine(m, R.d, R.r); li.append(nm, bb); ul.appendChild(li);
     });
     $('#scen-result').classList.toggle('same', central);
+    // the folded workbench starts from the chosen scenario
+    setVal('leanG', sel.lean.lean); setVal('leanN', sel.lean.lean);
+    $('#size').value = sel.lean.size || DEF.size; $('#ed').value = sel.ed.ed; render();
     paintChips($('#scen-chips'), LEANS, 'lean', sel.ed); paintChips($('#ed-chips'), EDS, 'ed', sel.lean);
   }
   let LEANS = [];
