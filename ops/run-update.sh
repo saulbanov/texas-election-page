@@ -34,7 +34,8 @@ now_ct=${ELECTION_UPDATE_NOW:-$(TZ=America/Chicago date '+%F %H:%M')}  # overrid
 if [[ ! $now_ct < "2026-11-03 18:50" && $now_ct < "2026-11-04 12:00" ]]; then
   out=$(python3 $CODE/fetch_sos_results.py --repo $E --year 2026 --type G); rc=$?
   case $rc in
-    0) [[ $out == *'"new": true'* ]] && log "filed SOS results: $(print -r -- $out | tail -1 | cut -c1-160)" ;;
+    0) if [[ $out == *'"new": true'* ]]; then log "filed SOS results: $(print -r -- $out | tail -1 | cut -c1-160)"
+       else log "SOS results checked, nothing new: $(print -r -- $out | tail -1 | cut -c1-120)"; fi ;;
     3) log "SKIPPED SOS results - BrowserOS is not running at 127.0.0.1:9010; open BrowserOS" ;;
     4) log "SKIPPED SOS results - the results site shows a check in BrowserOS; clear it there: $out" ;;
     *) log "FAILED: fetch_sos_results rc=$rc $out" ;;
