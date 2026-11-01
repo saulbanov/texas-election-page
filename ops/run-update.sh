@@ -3,7 +3,8 @@
 # (ops/org.futureheist.election-update.plist); it fetches snapshots at most every 15 minutes and does nothing
 # outside Oct. 31 - Nov. 4. Election-night results reading is added here once built.
 #
-# 1. Acquire: fetch each Transparency USA snapshot from Oct. 30 through yesterday; file new ones in election-2026.
+# 1. Acquire: fetch each Transparency USA snapshot from Oct. 30 through today (a same-day report may post on
+#    Election Day); file new ones in election-2026.
 #    Also fetch the Secretary of State's county turnout files (Friday's early vote, Election Day) through BrowserOS.
 # 2. Analyze: rebuild election-2026's views; commit and push election-2026 if anything changed.
 # 3. Publish: mirror the views into the page, apply the pre-set rules, rebuild; commit and push the page.
@@ -54,8 +55,8 @@ fi
 stamp=$RT/.last-snapshot-run
 if [[ -f $stamp && $(( $(date +%s) - $(stat -f %m $stamp) )) -lt 840 ]]; then exit 0; fi
 touch $stamp
-d=2026-10-30; yesterday=$(TZ=America/Chicago date -v-1d +%F)
-while [[ ! $d > $yesterday ]]; do
+d=2026-10-30; last=$(TZ=America/Chicago date +%F)
+while [[ ! $d > $last ]]; do
   out=$(python3 $CODE/fetch_snapshot.py --repo $E --date $d); rc=$?
   [[ $rc == 0 || $rc == 2 ]] || log "FAILED: fetch $d rc=$rc"
   [[ $out == *'"new": true'* ]] && log "filed: $out"
