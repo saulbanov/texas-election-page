@@ -47,8 +47,10 @@ def main() -> None:
     head, body = src.split(SPLIT, 1)
     # Inline the data files as a fallback; the page fetches them fresh on load.
     data = {}
-    for name in ('latest', 'series', 'assumptions', 'seats'):
+    for name in ('latest', 'series', 'assumptions', 'seats', 'results'):
         f = ROOT / 'data' / f'{name}.json'
+        if name == 'results' and not f.exists():
+            continue  # election night only
         if not f.exists():
             raise SystemExit(f'missing data/{name}.json; run tools/update.py first')
         data[name] = json.loads(f.read_text(encoding='utf-8'))

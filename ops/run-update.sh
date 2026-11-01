@@ -29,6 +29,26 @@ if [[ $today < $start || $today > 2026-11-04 ]]; then log "outside the update wi
 for d in $CODE $E $S; do [[ -d $d ]] || { log "SKIPPED - no checkout at $d; run ops/deploy.sh"; exit 1; }; done
 for d in $E $S; do git -C $d pull -q --ff-only || { log "FAILED: git pull --ff-only in $d"; exit 1; }; done
 
+# 0. election night (Nov. 3, 6:50 p.m. CT, to Nov. 4, noon): read the state's returns on every run (every 3 minutes)
+now_ct=${ELECTION_UPDATE_NOW:-$(TZ=America/Chicago date '+%F %H:%M')}  # override only to test
+if [[ ! $now_ct < "2026-11-03 18:50" && $now_ct < "2026-11-04 12:00" ]]; then
+  out=$(python3 $CODE/fetch_sos_results.py --repo $E --year 2026 --type G); rc=$?
+  case $rc in
+    0) [[ $out == *'"new": true'* ]] && log "filed SOS results: $(print -r -- $out | tail -1 | cut -c1-160)" ;;
+    3) log "SKIPPED SOS results - BrowserOS is not running at 127.0.0.1:9010; open BrowserOS" ;;
+    4) log "SKIPPED SOS results - the results site shows a check in BrowserOS; clear it there: $out" ;;
+    *) log "FAILED: fetch_sos_results rc=$rc $out" ;;
+  esac
+  python3 $CODE/build_results_view.py --repo $E >/dev/null || log "FAILED: build_results_view"
+  if [[ -n $(git -C $E status --porcelain -- results) ]]; then
+    git -C $E add results \
+      && git -C $E commit -q -m "Election night: file SOS returns; results view" \
+      && git -C $E push -q && log "pushed election-2026 (results)" || log "FAILED: commit/push election-2026 results"
+    gh workflow run update.yml -R saulbanov/texas-election-page >/dev/null 2>&1 \
+      && log "started the GitHub publisher (results)" || log "FAILED: gh workflow run update.yml (results)"
+  fi
+fi
+
 # 1. acquire, at most every 15 minutes
 stamp=$RT/.last-snapshot-run
 if [[ -f $stamp && $(( $(date +%s) - $(stat -f %m $stamp) )) -lt 840 ]]; then exit 0; fi

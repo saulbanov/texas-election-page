@@ -194,6 +194,9 @@ details.fold[open] > summary { border-bottom: 1px solid var(--rule); margin-bott
 .ssub { font: 12px/1.4 var(--mono); color: var(--muted); }
 .ssub.sen { margin-top: 6px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 11px; }
 .sfig { font: 400 3.2rem/0.95 var(--display); letter-spacing: 0.01em; }
+.night { display: grid; gap: 8px; margin-top: 18px; padding: 16px 18px; background: var(--paper); border-left: 6px solid var(--fh-red); }
+.night .fig { font: 400 clamp(2.6rem, 9vw, 4rem)/0.95 var(--display); letter-spacing: 0.01em; }
+.night .p { display: grid; gap: 8px; }
 .slist { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; font: 13px/1.4 var(--mono); }
 .slist li { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--rule); padding-top: 4px; }
 .slist b { white-space: nowrap; }
@@ -432,6 +435,16 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
   </div>
 
 
+  <!-- ELECTION NIGHT: shown once the state posts returns (data/results.json, from election-2026/results/views/live.json) -->
+  <section class="night" id="night" aria-labelledby="h-night" hidden>
+    <span class="label" style="color:var(--fh-red)">Election night &middot; <span id="n-time"></span></span>
+    <h2 id="h-night">The count</h2>
+    <div class="fig" id="n-fig"></div>
+    <div class="p" id="n-lines"></div>
+    <ul class="slist" id="n-races"></ul>
+    <p class="legend-src" id="n-src"></p>
+  </section>
+
   <!-- WHERE THE RACES STAND -->
   <section class="sec top" aria-labelledby="h-stand">
     <div class="verdict main" id="main-card">
@@ -662,7 +675,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <div class="tell"><span class="when">Saturday</span><b>Final early margin</b><span>A finish of D +25,000 or better leans Talarico. Between R +50,000 and D +25,000, Talarico leads narrowly. Worse than R +150,000 leans Paxton.</span></div>
       <div class="tell"><span class="when">Sunday</span><b>Reliable-voter gap</b><span>Under 150,000 moves the read up a row; over 225,000 moves it down.</span></div>
       <div class="tell"><span class="when">Tuesday afternoon</span><b>Marker counties</b><span>Compare each county's Election Day check-ins with its own early vote. <span class="chip">Light &lt;30%</span> <span class="chip">Normal</span> <span class="chip">Heavy &gt;40%</span>. Heavy in Montgomery, Comal and Midland is the Republican comeback sign.</span></div>
-      <div class="tell"><span class="when">Tuesday night</span><b>The count</b><span>Polls close at 7 p.m. Central (8 in El Paso). The first results, usually within the hour, are early and mail votes only, which lean Democratic this year. If Talarico leads those by about 4 points or more, he likely holds on as Election Day votes come in through the night. A lead of 1 to 2 likely doesn't last.</span></div>
+      <div class="tell"><span class="when">Tuesday night</span><b>The count</b><span>Polls close at 7 p.m. Central (8 in El Paso). The first results, usually within the hour, are early and mail votes only, which lean Democratic this year. Big counties report first, so his early lead shrinks as small counties come in. If he leads the full early vote, every county in, by about 4 points or more, he likely holds on as Election Day votes come in through the night. A lead of 1 to 2 likely doesn't last.</span></div>
     </div>
   </section>
 
@@ -1363,10 +1376,46 @@ function main(D) {
       box.appendChild(btn);
     });
   }
+  // ---------- election night ----------
+  function renderNight(R) {
+    const sen = R && R.races && R.races.find(r => r.race === 'U.S. Senate');
+    if (!sen) return;
+    $('#night').hidden = false;
+    if (R.built) { const u = new Date(R.built); setT('n-time', DOW[u.getDay()] + ' ' + u.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Chicago' }).replace('AM', 'a.m.').replace('PM', 'p.m.')); }
+    const box = $('#n-lines'); box.innerHTML = '';
+    const line = (label, text) => { const row = document.createElement('div'); row.className = 'envline'; const dt = document.createElement('span'); dt.className = 'envlabel'; dt.textContent = label; const dd = document.createElement('span'); dd.textContent = text; row.append(dt, dd); box.appendChild(row); };
+    const fig = $('#n-fig');
+    if (!sen.all.total) {
+      fig.textContent = 'No returns yet'; fig.style.color = '';
+      line('When', 'Polls close at 7 p.m. Central, 8 in El Paso. Counties post early and mail votes first, usually within the hour.');
+    } else {
+      fig.textContent = raceLine(sen.all.margin, 'Talarico', 'Paxton'); fig.style.color = sen.all.margin >= 0 ? 'var(--dem)' : 'var(--rep)';
+      line('Counted', fmt(sen.all.total) + ' votes so far. ' + fmt(sen.precincts.reporting) + ' of ' + fmt(sen.precincts.total) + ' precincts have Election Day votes in.');
+      const e = sen.early;
+      line('Early vote', e.complete ? raceLine(e.margin, 'Talarico', 'Paxton') + ', with every county in.'
+        : raceLine(e.margin, 'Talarico', 'Paxton') + ' so far, with ' + Math.round(100 * sen.early_coverage) + '% of it in. Big counties report first, so this lead shrinks as small counties come in.');
+      if (!e.complete && e.projected_margin != null)
+        line('Full early vote', 'About ' + raceLine(e.projected_margin, 'Talarico', 'Paxton') + ', counting each county still out at its 2024 margin plus the swing so far.');
+      if (sen.implied_lean != null) {
+        const L = sen.implied_lean;
+        line('No-primary voters', 'Favor ' + (L >= 0 ? 'Democrats' : 'Republicans') + ' by ' + Math.abs(L).toFixed(1) + ' points, against our ' + AC.leanG + (sen.implied_lean_final ? '.' : '. This is a projection until every county’s early vote is in.'));
+        const T = scenParts({ lean: L }, EDS.find(x => x.mid)).T;
+        line('If Tuesday goes as we expect', raceLine(T, 'Talarico', 'Paxton') + ' at the finish, if Election Day adds the net 200,000 Republican primary voters we expect.'.replace('200,000', fmt(AC.ed)));
+      }
+    }
+    const ul = $('#n-races'); ul.innerHTML = '';
+    R.races.filter(r => r.race !== 'U.S. Senate' && r.all.total).forEach(r => {
+      const M = RACES.find(x => x.race === r.race); if (!M) return;
+      const li = document.createElement('li'), nm = document.createElement('span'), bb = document.createElement('b');
+      nm.textContent = M.short; bb.className = r.all.margin >= 0 ? 'D' : 'R'; bb.textContent = raceLine(r.all.margin, M.d, M.r); li.append(nm, bb); ul.appendChild(li);
+    });
+    setT('n-src', 'Returns from the Texas Secretary of State (version ' + R.election.version + '), read every few minutes. The early vote is the state’s early and mail count.');
+  }
+
   function renderTop() {
     LEANS = SCEN.slice().sort((x, y) => scenParts(x, sel.ed).T - scenParts(y, sel.ed).T);
     buildChips($('#scen-chips'), LEANS, 'lean'); buildChips($('#ed-chips'), EDS, 'ed');
-    showCentral(); showScenario();
+    showCentral(); showScenario(); renderNight(D.results);
     // the framing paragraph: every claim in it is written from the data
     const pct2022 = C.votes / 8095174;
     setT('fr-pace', pct2022 >= 0.75 ? 'Texans are voting at a pace usually seen only in presidential years' : 'Texans are voting at a faster pace than in the last midterm');
@@ -1500,8 +1549,8 @@ function main(D) {
     try { const r = await fetch('data/' + name + '?t=' + Date.now(), { cache: 'no-store', signal: ctl.signal }); return r.ok ? await r.json() : null; }
     catch (e) { return null; } finally { clearTimeout(t); }
   };
-  const [latest, series, assumptions, seats] = await Promise.all([get('latest.json'), get('series.json'), get('assumptions.json'), get('seats.json')]);
-  const D = latest && series && assumptions ? { latest, series, assumptions, seats: seats || (inline && inline.seats) } : inline;
+  const [latest, series, assumptions, seats, results] = await Promise.all([get('latest.json'), get('series.json'), get('assumptions.json'), get('seats.json'), get('results.json')]);
+  const D = latest && series && assumptions ? { latest, series, assumptions, seats: seats || (inline && inline.seats), results: results || (inline && inline.results) } : inline;
   document.documentElement.classList.remove('loading');
   if (D) main(D);
 })();

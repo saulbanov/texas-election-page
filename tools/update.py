@@ -118,6 +118,13 @@ def main() -> int:
         strip = lambda t: re.sub(r'"built": "[^"]*"', '', t or '')
         if strip(old) != strip(src):
             dst.write_text(src); changes.append(f'mirrored {name}')
+    # election night: the results view, once the state has posted 2026 returns (election-2026/results/views)
+    live = Path(a.election_repo).resolve() / 'results' / 'views' / 'live.json'
+    if live.exists():
+        src, dst = live.read_text(), data / 'results.json'
+        old = dst.read_text() if dst.exists() else None
+        if re.sub(r'"built": "[^"]*"', '', old or '') != re.sub(r'"built": "[^"]*"', '', src):
+            dst.write_text(src); changes.append('mirrored results.json')
     latest = json.loads((data / 'latest.json').read_text())['latest']
     if not latest:
         print('SKIPPED: no complete snapshot in the views yet'); return 0
