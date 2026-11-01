@@ -1,6 +1,6 @@
 {
  "by": "election-2026/tools/build_views.py",
- "built": "2026-11-01T01:09:24Z",
+ "built": "2026-11-01T12:44:07Z",
  "complete_threshold": 240,
  "latest": {
   "through": "2026-10-29",
@@ -619,5 +619,6 @@
    "sha256": "71247bedfdfd6acb8c47c61023fe93c884250fce3417d5a3394ee11a261743b4",
    "text": "general-2026/early-vote/sources/text/2026-10-30_transparency-usa_statewide-snapshot_229-counties_71247bed.txt"
   }
- }
+ },
+ "after_early": null
 }
