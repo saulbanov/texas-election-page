@@ -32,6 +32,20 @@ for d in $E $S; do git -C $d pull -q --ff-only || { log "FAILED: git pull --ff-o
 
 # 0. election night (Nov. 3, 6:50 p.m. CT, to Nov. 4, noon): read the state's returns on every run (every 3 minutes)
 now_ct=${ELECTION_UPDATE_NOW:-$(TZ=America/Chicago date '+%F %H:%M')}  # override only to test
+
+# 0a. Election Day (Nov. 3, 6 a.m. CT, to Nov. 4, noon): county turnout pages on every run (Travis, Tarrant, and
+#     Dallas through BrowserOS); saved as posted, for reading Election Day turnout before the count
+if [[ ! $now_ct < "2026-11-03 06:00" && $now_ct < "2026-11-04 12:00" ]]; then
+  out=$(python3 $CODE/fetch_county_turnout.py --repo $E); rc=$?
+  [[ $rc == 3 ]] && log "SKIPPED Dallas county turnout - BrowserOS is not running at 127.0.0.1:9010; open BrowserOS"
+  print -r -- "$out" | grep -q '"error"' && log "county turnout errors: $(print -r -- "$out" | grep '"error"' | tr '\n' ' ' | cut -c1-300)"
+  if print -r -- "$out" | grep -q '"new": true'; then
+    log "filed county turnout: $(print -r -- "$out" | grep '"new": true' | sed 's/.*"county": "\([^"]*\)", "label": "\([^"]*\)".*/\1 \2/' | tr '\n' ';')"
+    git -C $E add turnout/county \
+      && git -C $E commit -q -m "Election Day: file county turnout pages" \
+      && git -C $E push -q || log "FAILED: commit/push county turnout"
+  fi
+fi
 if [[ ! $now_ct < "2026-11-03 18:50" && $now_ct < "2026-11-04 12:00" ]]; then
   out=$(python3 $CODE/fetch_sos_results.py --repo $E --year 2026 --type G); rc=$?
   case $rc in
