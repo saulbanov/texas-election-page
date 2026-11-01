@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<script>(function(){var b='d44124473969';fetch('version.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){var u=new URL(location.href);if(v.build&&v.build!==b&&u.searchParams.get('v')!==v.build){u.searchParams.set('v',v.build);location.replace(u.href)}}).catch(function(){})})()</script>
+<script>(function(){var b='95c08d01131c';fetch('version.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){var u=new URL(location.href);if(v.build&&v.build!==b&&u.searchParams.get('v')!==v.build){u.searchParams.set('v',v.build);location.replace(u.href)}}).catch(function(){})})()</script>
 <title>Texas Early-Vote Ledger</title>
 <script>document.documentElement.classList.add("loading")</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1401,7 +1401,8 @@ function main(D) {
       line('When', 'Polls close at 7 p.m. Central, 8 in El Paso. Counties post early and mail votes first, usually within the hour.');
     } else {
       fig.textContent = raceLine(sen.all.margin, 'Talarico', 'Paxton'); fig.style.color = sen.all.margin >= 0 ? 'var(--dem)' : 'var(--rep)';
-      line('Counted', fmt(sen.all.total) + ' votes so far. ' + fmt(sen.precincts.reporting) + ' of ' + fmt(sen.precincts.total) + ' precincts have Election Day votes in.');
+      // the state's precinct count can read 0 even with votes in (its final files do), so count Election Day votes directly
+      line('Counted', fmt(sen.all.total) + ' votes so far, ' + fmt(Math.max(0, sen.election_day.total)) + ' of them cast on Election Day' + (sen.precincts.reporting ? '. ' + fmt(sen.precincts.reporting) + ' of ' + fmt(sen.precincts.total) + ' precincts have reported.' : '.'));
       const e = sen.early;
       line('Early vote', e.complete ? raceLine(e.margin, 'Talarico', 'Paxton') + ', with every county in.'
         : raceLine(e.margin, 'Talarico', 'Paxton') + ' so far, with ' + Math.round(100 * sen.early_coverage) + '% of it in. Big counties report first, so this lead shrinks as small counties come in.');
@@ -1412,6 +1413,24 @@ function main(D) {
         line('No-primary voters', 'Favor ' + (L >= 0 ? 'Democrats' : 'Republicans') + ' by ' + Math.abs(L).toFixed(1) + ' points, against our ' + AC.leanG + (sen.implied_lean_final ? '.' : '. This is a projection until every county’s early vote is in.'));
         const T = scenParts({ lean: L }, EDS.find(x => x.mid)).T;
         line('If Tuesday goes as we expect', raceLine(T, 'Talarico', 'Paxton') + ' at the finish, if Election Day adds the net 200,000 Republican primary voters we expect.'.replace('200,000', fmt(AC.ed)));
+      }
+      // Ticket gap: how far Talarico runs ahead of the rest of the Democratic ticket, against the gap the model
+      // builds in (Paxton's 0.5 plus each race's candidate adjustment and drop-off). The excess is Paxton-specific,
+      // Republicans crossing over or skipping the Senate race, which the implied lean above would otherwise absorb.
+      const useEarly = sen.early.complete, mOf = r => useEarly ? r.early.margin : r.all.margin;
+      const gaps = R.races.filter(r => r.race !== 'U.S. Senate' && mOf(r) != null && (useEarly ? r.early.total : r.all.total))
+        .map(r => { const M = RACES.find(x => x.race === r.race); return M ? { obs: mOf(sen) - mOf(r), exp: 0.5 + M.adj + M.drop } : null; }).filter(Boolean);
+      if (gaps.length >= 1 && mOf(sen) != null) {
+        const obs = gaps.reduce((a, g) => a + g.obs, 0) / gaps.length, exp = gaps.reduce((a, g) => a + g.exp, 0) / gaps.length, ex = obs - exp;
+        let txt = 'Talarico runs ' + Math.abs(obs).toFixed(1) + ' points ' + (obs >= 0 ? 'ahead of' : 'behind') + ' the rest of the Democratic ticket' + (useEarly ? ' in the early vote' : ' so far') + ', against the ' + exp.toFixed(1) + ' we build in. ';
+        txt += Math.abs(ex) < 0.5 ? 'That is about what we expected, so there is little sign of Paxton-specific crossover.'
+          : ex > 0 ? 'The extra ' + ex.toFixed(1) + ' points are Paxton-specific: Republicans crossing over or skipping the Senate race.'
+          : 'Paxton is running ' + (-ex).toFixed(1) + ' points better against the ticket than we expected.';
+        if (sen.implied_lean != null && Math.abs(ex) >= 0.5) {
+          const L2 = sen.implied_lean - 100 * ex / R.composition.np;
+          txt += ' Without that, the no-primary lean is about ' + (L2 >= 0 ? 'D +' : 'R +') + Math.abs(L2).toFixed(1) + '.';
+        }
+        line('Against the ticket', txt);
       }
     }
     const ul = $('#n-races'); ul.innerHTML = '';
