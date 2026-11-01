@@ -1,16 +1,16 @@
 <title>Texas Early-Vote Ledger</title>
 <script>document.documentElement.classList.add("loading")</script>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Future Heist’s live projection from the early vote. Our central read has Talarico +1.9 for the Senate, a 79% chance; scenarios run from Paxton +3.1 to Talarico +6.5. Updated as counts arrive, with every number sourced.">
+<meta name="description" content="Future Heist’s live projection from the early vote. Our central read has Paxton +0.2 for the Senate, a 54% chance; scenarios run from Paxton +3.1 to Talarico +6.5. Updated as counts arrive, with every number sourced.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Future Heist">
 <meta property="og:url" content="https://saulbanov.github.io/texas-election-page/">
 <meta property="og:title" content="Who wins Texas’s midterm races">
-<meta property="og:description" content="Future Heist’s live projection from the early vote. Our central read has Talarico +1.9 for the Senate, a 79% chance; scenarios run from Paxton +3.1 to Talarico +6.5. Updated as counts arrive, with every number sourced.">
-<meta property="og:image" content="https://saulbanov.github.io/texas-election-page/og/card-2026-10-29-251-g-d19.png">
+<meta property="og:description" content="Future Heist’s live projection from the early vote. Our central read has Paxton +0.2 for the Senate, a 54% chance; scenarios run from Paxton +3.1 to Talarico +6.5. Updated as counts arrive, with every number sourced.">
+<meta property="og:image" content="https://saulbanov.github.io/texas-election-page/og/card-2026-10-29-251-g-r2.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Who wins Texas’s midterm races. Our central read has Talarico +1.9 for the Senate, with the other statewide races beside it.">
+<meta property="og:image:alt" content="Who wins Texas’s midterm races. Our central read has Paxton +0.2 for the Senate, with the other statewide races beside it.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -478,14 +478,14 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <form class="controls" id="bench" onsubmit="return false">
         <div class="ctl assume">
           <div class="ctl-top"><label for="leanG">General-election voters, never in a primary</label>
-            <span><input type="number" id="leanG" class="numin" min="-100" max="100" step="0.5" value="8.5" aria-label="Lean of general-only voters, positive is Democratic"> <output id="o-leanG"></output></span></div>
-          <input type="range" id="leanG_r" min="-40" max="40" step="0.5" value="8.5" aria-label="Lean of general-only voters">
+            <span><input type="number" id="leanG" class="numin" min="-100" max="100" step="0.5" value="3.3" aria-label="Lean of general-only voters, positive is Democratic"> <output id="o-leanG"></output></span></div>
+          <input type="range" id="leanG_r" min="-40" max="40" step="0.5" value="3.3" aria-label="Lean of general-only voters">
           <div class="presets"><button type="button" class="btn" data-g="100">All Democratic</button><button type="button" class="btn" data-g="0">Even</button><button type="button" class="btn" data-g="-100">All Republican</button></div>
         </div>
         <div class="ctl assume">
           <div class="ctl-top"><label for="leanN">No voting history at all</label>
-            <span><input type="number" id="leanN" class="numin" min="-100" max="100" step="0.5" value="8.5" aria-label="Lean of voters with no history, positive is Democratic"> <output id="o-leanN"></output></span></div>
-          <input type="range" id="leanN_r" min="-40" max="40" step="0.5" value="8.5" aria-label="Lean of voters with no history">
+            <span><input type="number" id="leanN" class="numin" min="-100" max="100" step="0.5" value="3.3" aria-label="Lean of voters with no history, positive is Democratic"> <output id="o-leanN"></output></span></div>
+          <input type="range" id="leanN_r" min="-40" max="40" step="0.5" value="3.3" aria-label="Lean of voters with no history">
           <div class="presets"><button type="button" class="btn" data-n="100">All Democratic</button><button type="button" class="btn" data-n="0">Even</button><button type="button" class="btn" data-n="-100">All Republican</button></div>
         </div>
         <div class="ctl assume">
@@ -558,7 +558,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     </div>
     <div class="lede after">
       <h2 id="h-stand">What the projection assumes</h2>
-      <p class="frame"><span id="fr-pace">Texans are voting at a pace usually seen only in presidential years</span>, and voters with a primary record <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button>. <b>We assume the <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> with no primary record favor <span id="fr-side">Democrats</span> by <span id="fr-lean">8.5</span> points</b>&mdash;<a href="#step-4">and here&rsquo;s why</a>.</p>
+      <p class="frame"><span id="fr-pace">Texans are voting at a pace usually seen only in presidential years</span>, and voters with a primary record <button class="num" id="fr-split" data-src="d11_margin">split almost evenly</button>. <b>We assume the <button class="num" id="fr-np" data-src="d11_np">2.3 million</button> with no primary record favor <span id="fr-side">Democrats</span> by <span id="fr-lean">3.3</span> points</b>&mdash;<a href="#step-4">and here&rsquo;s why</a>.</p>
     </div>
 
     <div class="card-quiet" id="read-log" hidden>
@@ -628,8 +628,8 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       </section>
       <section class="step" id="step-4" data-step="4" hidden>
         <div class="step-head"><span class="label">Step 4 of 7</span><h3>How the no-primary voters break</h3></div>
-        <div class="step-use"><span class="tag assumed">Assumed</span> <span>We use</span> <b>D +8.5</b></div>
-        <p>This is the assumption the projection leans on most. We start from the one Texas measurement we have. In the 2024 Senate race, these voters favored the Democrat by about <button class="num" data-src="lean24">5.4 points</button>, while favoring Trump by about 4. We add part of the shift toward Democrats since then. State legislative specials since January 2025 have run about 5.6 points better for Democrats, and Univision measures Texas Hispanic voters about 11 points more Democratic than in 2024. That lands near D +8.5.</p>
+        <div class="step-use"><span class="tag assumed">Assumed</span> <span>We use</span> <b>D +3.3</b></div>
+        <p>This is the assumption the projection leans on most. We start from the one Texas measurement we have. Among early voters in the 2024 Senate race, these voters split almost evenly, favoring the Democrat by about <button class="num" data-src="lean24">0.2 points</button>, while favoring Trump by about 8. We add part of the shift toward Democrats since then, about 3 points. State legislative specials since January 2025 have run about 5.6 points better for Democrats, and Univision measures Texas Hispanic voters about 11 points more Democratic than in 2024, but neither measures these Texas voters directly. That lands near D +3.3.</p>
         <p>The case against it is that in 2022 these voters leaned about R +4, and the post-2024 shift is measured mostly outside Texas. The case for it is that this is a midterm under a Republican president, when the president's occasional voters tend to stay home, and the group is smaller and likelier to be committed voters than in 2024. Ryan describes these voters in general as "center and/or left."</p>
         <div class="card-quiet">
           <span class="label">The weakest number on this page</span>
@@ -637,7 +637,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
         </div>
         <div class="card-quiet">
           <span class="label">How we estimated 2024</span>
-          <span>From the 2024 early vote by county on the Secretary of State’s site, set against Ryan’s day-8 mix of 2024 early voters. Using a day-8 mix for the whole early vote makes it rough. The same method gives R +3.1 for 2022, close to the R +4 we use.</span>
+          <span>From the 2024 early vote by county on the Secretary of State’s site, set against Ryan’s day-12 mix of 2024 early voters, close to the whole early vote. Until Nov. 1 we used his day-8 mix, which gave D +5.4 and put our central lean at D +8.5. The same method gives D +2.3 among 2022’s early voters, against about R +3 for all 2022 voters, so early voters with no primary history lean more Democratic than the group as a whole.</span>
         </div>
       </section>
       <section class="step" id="step-5" data-step="5" hidden>
@@ -672,7 +672,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
       <h2 id="h-tells">The tells, in order</h2>
     </div>
     <div class="tells">
-      <div class="tell"><span class="when">Saturday</span><b>Final early margin</b><span>A finish of D +25,000 or better leans Talarico. Between R +50,000 and D +25,000, Talarico leads narrowly. Worse than R +150,000 leans Paxton.</span></div>
+      <div class="tell"><span class="when">Saturday</span><b>Final early margin</b><span>A finish of D +25,000 or better leans Talarico. Between R +50,000 and D +25,000, Talarico leads narrowly. Worse than R +150,000 leans Paxton. We set these lines on Oct. 29 under our earlier D +8.5 lean; at the corrected D +3.3, each reads about 2 points more Republican.</span></div>
       <div class="tell"><span class="when">Sunday</span><b>Reliable-voter gap</b><span>Under 150,000 moves the read up a row; over 225,000 moves it down.</span></div>
       <div class="tell"><span class="when">Tuesday afternoon</span><b>Marker counties</b><span>Compare each county's Election Day check-ins with its own early vote. <span class="chip">Light &lt;30%</span> <span class="chip">Normal</span> <span class="chip">Heavy &gt;40%</span>. Heavy in Montgomery, Comal and Midland is the Republican comeback sign.</span></div>
       <div class="tell"><span class="when">Tuesday night</span><b>The count</b><span>Polls close at 7 p.m. Central (8 in El Paso). The first results, usually within the hour, are early and mail votes only, which lean Democratic this year. Big counties report first, so his early lead shrinks as small counties come in. If he leads the full early vote, every county in, by about 4 points or more, he likely holds on as Election Day votes come in through the night. A lead of 1 to 2 likely doesn't last.</span></div>
@@ -771,6 +771,7 @@ input[type="range"] { width: 100%; accent-color: var(--gold); }
     <div class="tbl-wrap"><table>
       <thead><tr><th style="width:110px">Date</th><th>Change</th></tr></thead>
       <tbody>
+        <tr><td>Nov. 1</td><td>Our central lean for voters with no primary history dropped from D +8.5 to D +3.3, and the Senate projection from Talarico +1.9 to about even. The lean starts from how this group voted in the 2024 Senate race. We had estimated that at D +5.4 from Ryan Data &amp; Research&rsquo;s day-8 mix of 2024 early voters; his day-12 mix, close to the whole early vote, puts it at D +0.2. We kept the same added shift, about 3 points. The &ldquo;Like 2024&rdquo; scenario changed to match.</td></tr>
         <tr><td>Oct. 30</td><td>The 2022-style risk now names its lean, R +4, and the shift it produces, about 5 points toward Republicans. It first said "slightly Republican" and 3.5 points.</td></tr>
         <tr><td>Oct. 30</td><td>For Wednesday's margin, the snapshot PDF gives D +59,707. We first used D +59,761 from an earlier version of the web page.</td></tr>
         <tr><td>Oct. 30</td><td>Senate confidence revised from about 55/45 to 70–75%, after reviewing evidence that 2024's shift among occasional voters has reversed. Committed 9:40 a.m. (<a class="mono" href="https://github.com/saulbanov/election-2026/commit/40cecc0">40cecc0</a>), before Thursday's data posted.</td></tr>
@@ -829,6 +830,7 @@ function main(D) {
     tusa11: { name: 'Transparency USA statewide snapshot', covers: 'Thru Thu. Oct. 29 · as of Oct. 30, 12:52 p.m. CT · 244 of 254 counties', path: 'sources/reports/2026-10-29_transparency-usa_statewide-snapshot_244-counties.pdf', sha: '2f91da9a4442' },
     tusa11p: { name: 'Transparency USA statewide snapshot (partial, superseded)', covers: 'Thru Thu. Oct. 29 · as of Oct. 30, 10:37 a.m. CT · 95 of 254 counties', path: 'sources/reports/2026-10-29_transparency-usa_statewide-snapshot_95-counties.pdf', sha: 'd45c1252b68d' },
     tusa10: { name: 'Transparency USA statewide snapshot', covers: 'Thru Wed. Oct. 28 · as of Oct. 29, 8:51 p.m. CT · 247 of 254 counties', path: 'sources/reports/2026-10-28_transparency-usa_statewide-snapshot.pdf', sha: 'bde98d1c2e38' },
+    ryan12: { name: 'Ryan Data & Research, Early Voting Report: Texas, Day 12', covers: 'Early voting nearly complete, with 2022 and 2024 same-day comparisons', path: 'sources/reports/2026-11-01_ryan-data-research_day12-report.pdf', sha: '46e50034f378' },
     ryan8: { name: 'Ryan Data & Research, Early Voting Report: Texas, Day 8', covers: 'Thru Mon. Oct. 26, with 2022 and 2024 same-day comparisons', path: 'sources/reports/2026-10-26_ryan-data-research_day8-report.pdf', sha: 'fbf1b864f372' },
     ryan18: { name: 'Ryan Data & Research, 2018 General Election Early Voting Analysis', covers: 'Oct. 30, 2018 · through day 8 · 15 largest counties only (Travis one day behind)', path: 'sources/reports/2018-10-29_ryan-data-research_day8-15-counties.pdf', sha: 'dd2ee306db93' },
     sos24: { name: 'Texas Secretary of State election results, 2024 general', covers: 'Every county and race, with early and total votes per candidate (election 49664, version 1012)', path: '../../results/sources/49664/v1012/County.json', sha: 'see results/sources/MANIFEST.jsonl' },
@@ -860,9 +862,9 @@ function main(D) {
     mix_18f: { title: 'All 2018 voters by last primary', val: 'R +1,162,255', file: 'ryan8', page: '2018 Share of Vote (whole election)',
       math: 'Democratic: 1,583,969 + 103,474 = 1,687,443\nRepublican: 2,751,482 + 98,216 = 2,849,698\nNever in a primary: 2,795,595 + 1,054,029 = 3,849,624\nResult: Cruz +2.6, as cited in election-2026 analysis.md; the official canvass is not filed in the repo.',
       cite: 'Among all 2018 Texas voters, Republican primary voters outnumbered Democratic ones by 1,162,255, yet Cruz won by only 2.6 points (Ryan Data & Research).' },
-    lean24: { title: 'No-primary voters in 2024, Senate race (estimate)', val: 'D +5.4', file: 'sos24', page: 'U. S. SENATOR, early votes (EV) summed over 254 counties',
-      math: 'Allred minus Cruz among 9,075,933 early votes: \u22129.3%\nRyan day-8 mix of 2024 early voters: D 23.2%, R 36.0%, no primary 40.9%\nLean = (\u22129.3 \u2212 0.9 \u00d7 (23.2 \u2212 36.0)) \u00f7 40.9 = +5.4\nSame method, president: \u22124.0. Same method, 2022 governor (whole electorate): \u22123.1.\nRough: the day-8 mix stands in for the whole early vote.',
-      cite: 'By a rough estimate from county early-vote results and Ryan Data & Research turnout data, Texans with no primary history leaned about D +5 in the 2024 Senate race and about R +4 in the presidential race.' },
+    lean24: { title: 'No-primary voters in 2024, Senate race (estimate)', val: 'D +0.2', file: 'sos24', page: 'U. S. SENATOR, early votes (EV) summed over 254 counties; mix from ryan12, 2026 vs. 2024 / 2022 Comparison, 2024 column',
+      math: 'Allred minus Cruz among 9,075,933 early votes: \u22129.3%\nRyan day-12 mix of 2024 early voters: D 21.1%, R 31.6%, no primary 47.3%\nLean = (\u22129.3 \u2212 0.9 \u00d7 (21.1 \u2212 31.6)) \u00f7 47.3 = +0.2\nSame method, president: \u22127.9. Same method, 2022 governor, early voters: +2.3.\nThe day-8 mix used until Nov. 1 (no primary 40.9%) gave +5.4.',
+      cite: 'By an estimate from county early-vote results and Ryan Data & Research turnout data, Texas early voters with no primary history split about evenly in the 2024 Senate race and favored Trump by about 8 points.' },
     r18_15: { title: '2018, 15 largest counties, day 8', val: 'R 32.5% · D 29.4%', file: 'ryan18', page: 'p. 1, Early Voters by Previous Election History',
       math: 'Republican: 31.5% (R, no D) + 1.0% (mixed, last R) = 32.5%\nDemocratic: 27.7% (D, no R) + 1.7% (mixed, last D) = 29.4%\nNo primary history: 28.6% + 9.5% = 38.1%\n15 counties only; 2,823,784 early votes.',
       cite: 'In the 15 largest Texas counties at day 8 of early voting in 2018, voters with Republican primary history made up 32.5% of early voters and those with Democratic history 29.4% (Ryan Data & Research).' },
@@ -1017,7 +1019,7 @@ function main(D) {
     const row = lead >= 25000 ? 'Lean Talarico (+1 to +3), with the governor a toss-up leaning Abbott'
       : lead >= -50000 ? 'Lean Talarico narrowly (0 to +2), with the governor leaning Abbott'
       : lead >= -150000 ? 'a toss-up for the Senate, with the governor likely Abbott' : 'Lean Paxton, with the governor Abbott';
-    setT('ms-margin-note', 'Early voting is over. On the Saturday table set in advance, a final margin of ' + mtxt(lead) + ' reads as ' + row + ', before the adjustments below.');
+    setT('ms-margin-note', 'Early voting is over. On the Saturday table set in advance, a final margin of ' + mtxt(lead) + ' reads as ' + row + ', before the adjustments below. That table was set under our earlier D +8.5 lean; at the corrected ' + leanTxt(AC.leanG) + ' each row reads about 2 points more Republican.');
   } else {
     const r = lead > 45000 ? 'above the Friday line of D +45,000, a slight nudge toward Talarico' : lead >= 25000 ? 'between D +25,000 and D +45,000, on trend' : 'below D +25,000, a slight nudge toward Paxton';
     setT('ms-margin-note', 'Through ' + thru + ' the margin is ' + r + '. The main read comes when early voting ends.');
@@ -1316,7 +1318,7 @@ function main(D) {
   // Three readings side by side: the 2022 lean, our central read, the 2018 lean.
   const SCEN = [
     { t: 'Like 2022', tag: 'R +4 \u00b7 2022 governor\u2019s race', sub: 'No-primary voters lean R +4, as they did in the 2022 governor\u2019s race.', lean: -4 },
-    { t: 'Like 2024', tag: 'D +5.4 \u00b7 2024 Senate race', sub: 'No-primary voters lean D +5.4, as they did in the 2024 Senate race (a rough estimate; for president they leaned R +4).', lean: 5.4 },
+    { t: 'Like 2024', tag: 'D +0.2 \u00b7 2024 Senate race', sub: 'No-primary voters lean D +0.2, as early voters in this group did in the 2024 Senate race (for president they leaned R +8).', lean: 0.2 },
     { t: 'Our central read', tag: leanTxt(AC.leanG) + ' \u00b7 2024 plus the shift since', sub: 'No-primary voters lean ' + leanTxt(AC.leanG) + ', our central read. That is the 2024 Senate figure plus part of the shift toward Democrats since.', lean: AC.leanG, mid: true },
     { t: 'Like 2018', tag: 'D +12 \u00b7 2018 Senate race, adjusted', sub: 'No-primary voters lean D +12, as in the 2018 Senate race once adjusted for how primary history was counted then.', lean: 12 },
     { t: 'Regime change', tag: 'D +16, with 5 million voting', sub: 'No-primary voters lean D +16, past any recent year, and 5 million of them vote.', lean: 16, size: 5 }

@@ -41,7 +41,7 @@ RACES = [('Governor', 'Hinojosa', 'Abbott', 2, 0), ('Lt. Governor', 'Goodwin', '
          ('Attorney General', 'Johnson', 'Middleton', 1, 0.75), ('Agriculture', 'Tucker', 'Sheets', 0, 1),
          ('Railroad Comm.', 'Rosenthal', 'French', 0, 1)]
 LEG = (0, 1)  # Texas House and Senate seats: the Agriculture adjustment and drop-off, as on the page
-SCENARIO_LEANS = [(-4, None), (5.4, None), (8.5, None), (12, None), (16, 5.0)]
+SCENARIO_LEANS = [(-4, None), (0.2, None), ('central', None), (12, None), (16, 5.0)]  # 'central' = the lean in data/assumptions.json
 
 
 def seat_counts(t: float, seats: dict) -> dict:
@@ -70,7 +70,7 @@ def card_numbers(c: dict, latest: dict, seats=None) -> tuple:
             d = n[ch] - seats['seats_before'][ch]['D']
             sign = '+' if d >= 0 else '\u2212'
             items.append(f'<li><span>{name}</span><b style="color:var(--dem)">{n[ch]} Dems ({sign}{abs(d)})</b></li>')
-    ts = [senate({**c, 'leanG': l, 'leanN': l, 'size': z or c['size']}, latest) for l, z in SCENARIO_LEANS]
+    ts = [senate({**c, 'leanG': c['leanG'] if l == 'central' else l, 'leanN': c['leanN'] if l == 'central' else l, 'size': z or c['size']}, latest) for l, z in SCENARIO_LEANS]
     return ''.join(items), f'{race(min(ts))} to {race(max(ts))}'
 
 

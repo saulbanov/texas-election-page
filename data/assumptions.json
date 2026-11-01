@@ -1,7 +1,7 @@
 {
  "central": {
-  "leanG": 8.5,
-  "leanN": 8.5,
+  "leanG": 3.3,
+  "leanN": 3.3,
   "size": 4.0,
   "early": 30000,
   "basis": "estimate",
@@ -13,8 +13,13 @@
   "adj": 0.0
  },
  "hand_set": "leanG, leanN and adj_ed are set by hand; tools/update.py logs every change it makes to the rest.",
- "page_updated": "2026-11-01T07:49-06:00",
+ "page_updated": "2026-11-01T13:18-06:00",
  "next_update": "When Friday's count is complete",
  "next_update_iso": "2026-10-31T18:00:00-05:00",
- "log": []
+ "log": [
+  {
+   "at": "2026-11-01T13:18-06:00",
+   "text": "Central no-primary lean set by hand from D +8.5 to D +3.3 (Saul, Nov. 1). The base, the 2024 Senate early-vote lean, recomputes to D +0.2 with Ryan's day-12 mix (was D +5.4 from the day-8 mix); the added shift stays about 3 points."
+  }
+ ]
 }
