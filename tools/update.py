@@ -90,7 +90,9 @@ def md(iso: str) -> str:
 def next_update(latest: dict, now: dt.datetime) -> tuple[str, str]:
     if latest['through'] < FINAL_DAY:
         # every report this cycle posted the next day between about 2 and 10 p.m., most after 8
-        return 'Sat., Oct. 31, after 6 p.m. CT', '2026-10-31T18:00:00-05:00'
+        if now < dt.datetime(2026, 10, 31, 18, tzinfo=CT):
+            return 'Sat., Oct. 31, after 6 p.m. CT', '2026-10-31T18:00:00-05:00'
+        return "When Friday's count is complete", '2026-10-31T18:00:00-05:00'
     if now.date() <= dt.date(2026, 11, 1):
         return 'Sun., Nov. 1, after 6 p.m. CT', '2026-11-01T18:00:00-06:00'
     return 'Tue., Nov. 3, through the day', '2026-11-03T12:00:00-06:00'

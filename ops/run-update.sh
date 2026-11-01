@@ -19,6 +19,7 @@ log() { print -r -- "$(TZ=America/Chicago date '+%Y-%m-%d %H:%M:%S CT') $*"; }
 # Auth probe (runs even outside the window): touch $RT/PROBE to test pushes from launchd without changing anything.
 if [[ -f $RT/PROBE ]]; then
   for d in $E $S; do git -C $d push --dry-run -q 2>&1 && log "probe: push auth OK in $d" || log "probe: push FAILED in $d"; done
+  gh auth status -h github.com >/dev/null 2>&1 && log "probe: gh auth OK (can start the publisher)" || log "probe: gh auth FAILED"
   rm -f $RT/PROBE
 fi
 
@@ -55,6 +56,11 @@ if [[ -n $(git -C $E status --porcelain -- general-2026/early-vote turnout) ]]; 
   git -C $E add general-2026/early-vote/sources general-2026/early-vote/views turnout \
     && git -C $E commit -q -m "Scheduled: file new snapshot or SOS turnout; views through $thru" \
     && git -C $E push -q && log "pushed election-2026 ($thru)" || { log "FAILED: commit/push election-2026"; exit 1; }
+  # GitHub runs the scheduled publisher only every few hours, so start it now that there is new data
+  if [[ ${ELECTION_UPDATE_FETCH_ONLY:-0} == 1 ]]; then
+    gh workflow run update.yml -R saulbanov/texas-election-page >/dev/null 2>&1 \
+      && log "started the GitHub publisher" || log "FAILED: gh workflow run update.yml (the page waits for GitHub's own schedule)"
+  fi
 fi
 
 # 3. publish (skipped when GitHub Actions publishes the page; the plist sets ELECTION_UPDATE_FETCH_ONLY=1)
