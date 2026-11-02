@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<script>(function(){var b='c77c7d832b72';fetch('version.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){var u=new URL(location.href);if(v.build&&v.build!==b&&u.searchParams.get('v')!==v.build){u.searchParams.set('v',v.build);location.replace(u.href)}}).catch(function(){})})()</script>
+<script>(function(){var b='1725d06d2afe';fetch('version.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){var u=new URL(location.href);if(v.build&&v.build!==b&&u.searchParams.get('v')!==v.build){u.searchParams.set('v',v.build);location.replace(u.href)}}).catch(function(){})})()</script>
 <title>Texas Early-Vote Ledger</title>
 <script>document.documentElement.classList.add("loading")</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1309,7 +1309,12 @@ function main(D) {
     });
     const n = seats(p);
     if (n) { line('Texas House', dd => { dd.textContent = chamberLine('house', n.house); }); line('Texas Senate', dd => { dd.textContent = chamberLine('senate', n.senate); }); }
-    if (central) return;  // the top card carries no note; step 7 explains the odds
+    if (central) {
+      // The same count with nothing taken from polls: the 2024 Senate lean (D +0.2), no Paxton penalty.
+      const np = parts({ ...DEF, leanG: 0.2, leanN: 0.2 }).T - PAX;
+      line('No polls', dd => { dd.textContent = 'Using only past results, with no polls, ' + (np >= 0 ? 'Talarico' : 'Paxton') + ' wins by ' + Math.abs(np).toFixed(1) + '.'; });
+      return;
+    }  // the top card carries no note; step 7 explains the odds
     const note = document.createElement('div'); note.className = 'envnote';
     note.textContent = (central ? 'This is our central case. ' : 'This is the scenario you set. ') + 'The odds assume the model can miss by about ' + SIGMA + ' points either way.';
     box.appendChild(note);
