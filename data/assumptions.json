@@ -10,16 +10,21 @@
   "total": 10.0,
   "adj_gap": 0.0,
   "adj_ed": 0.0,
-  "adj": 0.0
+  "adj": 0.0,
+  "paxton": 4.0
  },
- "hand_set": "leanG, leanN and adj_ed are set by hand; tools/update.py logs every change it makes to the rest.",
- "page_updated": "2026-11-01T13:18-06:00",
+ "hand_set": "leanG, leanN, adj_ed and paxton are set by hand; tools/update.py logs every change it makes to the rest.",
+ "page_updated": "2026-11-02T08:52-06:00",
  "next_update": "When Friday's count is complete",
  "next_update_iso": "2026-10-31T18:00:00-05:00",
  "log": [
   {
    "at": "2026-11-01T13:18-06:00",
    "text": "Central no-primary lean set by hand from D +8.5 to D +3.3 (Saul, Nov. 1). The base, the 2024 Senate early-vote lean, recomputes to D +0.2 with Ryan's day-12 mix (was D +5.4 from the day-8 mix); the added shift stays about 3 points."
+  },
+  {
+   "at": "2026-11-02T08:52-06:00",
+   "text": "Paxton penalty set by hand from 0.5 to 4.0 points (Saul, Nov. 2). Final NYT/Siena Texas poll (Siena, Nov. 1): Talarico 50-43, Hinojosa 48-47, a 6-point Senate-governor gap; Abbott's own edge is 2. Down-ballot races unchanged."
   }
  ]
 }

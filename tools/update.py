@@ -32,7 +32,8 @@ def senate(c: dict, latest: dict) -> float:
     g_share = latest['general_only'] / latest['no_primary']
     k = 2 * c['loyal'] / 100 - 1
     lean = g_share * c['leanG'] + (1 - g_share) * c['leanN']
-    return 100 * (k * (c['early'] - c['ed']) + c['size'] * 1e6 * lean / 100) / (c['total'] * 1e6) + c.get('adj', 0)
+    # the arithmetic gives the Senate margin with a 0.5 Paxton penalty; a larger penalty adds the difference
+    return 100 * (k * (c['early'] - c['ed']) + c['size'] * 1e6 * lean / 100) / (c['total'] * 1e6) + c.get('adj', 0) + (c.get('paxton', 0.5) - 0.5)
 
 
 CARD_DESIGN = 'g'  # bump when og/card.template.html changes, so the card gets a new file name
@@ -44,9 +45,9 @@ LEG = (0, 1)  # Texas House and Senate seats: the Agriculture adjustment and dro
 SCENARIO_LEANS = [(-4, None), (0.2, None), ('central', None), (12, None), (16, 5.0)]  # 'central' = the lean in data/assumptions.json
 
 
-def seat_counts(t: float, seats: dict) -> dict:
+def seat_counts(t: float, seats: dict, pax: float = 0.5) -> dict:
     """Democratic seats in each chamber, the page's seats() in Python (data/seats.json from tx-district-intel)."""
-    shift = (t - 0.5) - LEG[0] - LEG[1] - seats['statewide_2024_senate']['d_margin']
+    shift = (t - pax) - LEG[0] - LEG[1] - seats['statewide_2024_senate']['d_margin']
     n = {'house': 0, 'senate': seats['senate_not_up']['D']}
     for x in seats['districts']:
         if x['chamber'] == 'senate' and not x['up']:
@@ -61,11 +62,11 @@ def card_numbers(c: dict, latest: dict, seats=None) -> tuple:
     t = senate(c, latest)
     items = []
     for name, d, r, adj, drop in RACES:
-        m = (t - 0.5) - adj - drop
+        m = (t - c.get('paxton', 0.5)) - adj - drop
         who, col = (d, 'dem') if m >= 0 else (r, 'rep')
         items.append(f'<li><span>{name}</span><b style="color:var(--{col})">{who} +{abs(m):.1f}</b></li>')
     if seats:
-        n = seat_counts(t, seats)
+        n = seat_counts(t, seats, c.get('paxton', 0.5))
         for name, ch in (('Texas House', 'house'), ('Texas Senate', 'senate')):
             d = n[ch] - seats['seats_before'][ch]['D']
             sign = '+' if d >= 0 else '\u2212'
