@@ -89,6 +89,9 @@ def md(iso: str) -> str:
 
 
 def next_update(latest: dict, now: dt.datetime) -> tuple[str, str]:
+    # Election Day: whether or not Friday's report ever completes, the next new numbers are the state's returns
+    if now >= dt.datetime(2026, 11, 3, tzinfo=CT):
+        return 'Tue., Nov. 3, after 7 p.m. CT', '2026-11-03T19:00:00-06:00'
     if latest['through'] < FINAL_DAY:
         # every report this cycle posted the next day between about 2 and 10 p.m., most after 8
         if now < dt.datetime(2026, 10, 31, 18, tzinfo=CT):
