@@ -1,7 +1,7 @@
 {
  "by": "election-2026/tools/build_views.py",
- "built": "2026-11-02T16:40:46Z",
- "complete_threshold": 240,
+ "built": "2026-11-03T20:38:17Z",
+ "complete_threshold": 230,
  "snapshots": [
   {
    "through": "2026-10-28",
@@ -2262,7 +2262,7 @@
      "voters": 847806
     }
    ],
-   "complete": false,
+   "complete": true,
    "source": {
     "path": "general-2026/early-vote/sources/reports/2026-10-30_transparency-usa_statewide-snapshot_234-counties.pdf",
     "sha256": "e23653cd3ad9ec202d1c3d141f7da0cbac0f8f8208cc8d98243e0693f7de7a40",

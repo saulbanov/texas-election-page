@@ -3,18 +3,18 @@
   "leanG": 3.3,
   "leanN": 3.3,
   "size": 4.0,
-  "early": 30000,
-  "basis": "estimate",
+  "early": 24763,
+  "basis": "measured",
   "ed": 200000,
   "loyal": 95,
   "total": 10.0,
-  "adj_gap": 0.0,
+  "adj_gap": 0.4,
   "adj_ed": 0.0,
-  "adj": 0.0,
+  "adj": 0.4,
   "paxton": 4.0
  },
  "hand_set": "leanG, leanN, adj_ed and paxton are set by hand; tools/update.py logs every change it makes to the rest.",
- "page_updated": "2026-11-03T14:37-06:00",
+ "page_updated": "2026-11-03T14:38-06:00",
  "next_update": "Tue., Nov. 3, after 7 p.m. CT",
  "next_update_iso": "2026-11-03T19:00:00-06:00",
  "log": [
@@ -25,6 +25,10 @@
   {
    "at": "2026-11-02T08:52-06:00",
    "text": "Paxton penalty set by hand from 0.5 to 4.0 points (Saul, Nov. 2). Final NYT/Siena Texas poll (Siena, Nov. 1): Talarico 50-43, Hinojosa 48-47, a 6-point Senate-governor gap; Abbott's own edge is 2. Down-ballot races unchanged."
+  },
+  {
+   "at": "2026-11-03T14:38-06:00",
+   "text": "Nov. 3: the final early-vote margin, D +24,763 through Oct. 30, replaced our estimate of D +30,000; the reliable-voter gap of 142,995 added 0.4 points. Our Senate read moved from Talarico +3.3 to Talarico +3.6."
   }
  ]
 }
