@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<script>(function(){var b='e2ba68e09ed4';fetch('version.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){var u=new URL(location.href);if(v.build&&v.build!==b&&u.searchParams.get('v')!==v.build){u.searchParams.set('v',v.build);location.replace(u.href)}}).catch(function(){})})()</script>
+<script>(function(){var b='2682c0de7180';fetch('version.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){var u=new URL(location.href);if(v.build&&v.build!==b&&u.searchParams.get('v')!==v.build){u.searchParams.set('v',v.build);location.replace(u.href)}}).catch(function(){})})()</script>
 <title>Texas Early-Vote Ledger</title>
 <script>document.documentElement.classList.add("loading")</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1463,6 +1463,16 @@ function main(D) {
       });
       line('Texas House', 'Democrats lead in ' + H.D + ' of 150 seats and Republicans in ' + H.R + (H.out ? ', with no votes counted yet in ' + H.out : '') + (H.tie ? ' and ' + H.tie + ' tied' : '') + '. A majority takes 76, and Democrats hold 62 now.'
         + (H.flip ? ' ' + H.flip + ' of the Democratic leads are in districts Republicans carried in 2024' + (H.flipClose ? ', ' + H.flipClose + ' of them by less than 5 points.' : '.') : ''));
+    }
+    // The seat model on tonight's returns. Its districts move like Agriculture and Railroad Commission (no candidate
+    // adjustment, the same 1-point drop-off), so their counted margin sets the shift from 2024 directly.
+    const dn = ['Agriculture', 'Railroad Commission'].map(n => R.races.find(r => r.race === n)).filter(r => r && r.all.total);
+    if (D.seats && dn.length) {
+      const S = D.seats, m = dn.reduce((a, r) => a + r.all.margin, 0) / dn.length, m24 = S.statewide_2024_senate.d_margin;
+      const won = shift => S.districts.filter(x => x.chamber === 'house' && (!x.r_cand || (x.d_cand && x.base + shift > 0))).length;
+      const bases = S.districts.filter(x => x.chamber === 'house' && x.r_cand && x.d_cand && x.base <= 0).map(x => x.base).sort((a, b) => b - a);
+      const thr = -bases[76 - won(0) - 1] + m24, mt = v => (v >= 0 ? 'D +' : 'R +') + Math.abs(v).toFixed(1);
+      line('Seat model', 'Our model moves each House district like the Agriculture and Railroad Commission races, which ' + (m >= 0 ? 'Democrats' : 'Republicans') + ' lead by an average of ' + Math.abs(m).toFixed(1) + ' points so far. At that margin Democrats win ' + won(m - m24) + ' seats. They reach 76 if those races finish at ' + mt(thr) + ' or better.');
     }
     const ul = $('#n-races'); ul.innerHTML = '';
     R.races.filter(r => r.race !== 'U.S. Senate' && r.all.total).forEach(r => {
