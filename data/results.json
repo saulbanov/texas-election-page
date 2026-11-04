@@ -3,12 +3,12 @@
  "election": {
   "id": "53815",
   "name": "2026 NOVEMBER GENERAL ELECTION",
-  "updated": "11/04/2026 10:02 AM"
+  "updated": "11/04/2026 11:29 AM"
  },
  "sources": [
   {
-   "file": "results/sources/53815/html/2026-11-04T160659Z.html",
-   "sha256": "9c1a026e3f858f59e670c0a63a7520807e8ea19a3cd0391e61e56c437bfbc75e",
+   "file": "results/sources/53815/html/2026-11-04T173517Z.html",
+   "sha256": "e0583d61258dad0d6cca9e1618f16a67e9b5bef797a15507aaf9d3da600cc6bb",
    "note": "electionresults.sos.state.tx.us/results.html as served: statewide totals, no county or early split"
   }
  ],
@@ -1156,5 +1156,5 @@
    "polling_reporting_pct": 100.0
   }
  ],
- "built": "2026-11-04T16:06:59Z"
+ "built": "2026-11-04T17:35:17Z"
 }
