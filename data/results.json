@@ -3,12 +3,12 @@
  "election": {
   "id": "53815",
   "name": "2026 NOVEMBER GENERAL ELECTION",
-  "updated": "11/04/2026 09:00 AM"
+  "updated": "11/04/2026 10:02 AM"
  },
  "sources": [
   {
-   "file": "results/sources/53815/html/2026-11-04T150304Z.html",
-   "sha256": "4d9f0cb1ad752f462ec5e44f80088929d6a4c65528d3e0a76aaa48b8631153f4",
+   "file": "results/sources/53815/html/2026-11-04T160659Z.html",
+   "sha256": "9c1a026e3f858f59e670c0a63a7520807e8ea19a3cd0391e61e56c437bfbc75e",
    "note": "electionresults.sos.state.tx.us/results.html as served: statewide totals, no county or early split"
   }
  ],
@@ -26,10 +26,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 5405050,
-    "r": 4227281,
-    "total": 9826039,
-    "margin": 11.99
+    "d": 5410057,
+    "r": 4228924,
+    "total": 9832765,
+    "margin": 12.01
    },
    "polling_reporting_pct": 99.0
   },
@@ -40,10 +40,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 5193921,
-    "r": 4499756,
-    "total": 9844349,
-    "margin": 7.05
+    "d": 5198441,
+    "r": 4501544,
+    "total": 9850726,
+    "margin": 7.07
    },
    "polling_reporting_pct": 99.0
   },
@@ -54,10 +54,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 5047844,
-    "r": 4460440,
-    "total": 9765973,
-    "margin": 6.01
+    "d": 5052275,
+    "r": 4462209,
+    "total": 9772297,
+    "margin": 6.04
    },
    "polling_reporting_pct": 99.0
   },
@@ -68,10 +68,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 5097551,
-    "r": 4478131,
-    "total": 9739939,
-    "margin": 6.36
+    "d": 5102010,
+    "r": 4479898,
+    "total": 9746226,
+    "margin": 6.38
    },
    "polling_reporting_pct": 99.0
   },
@@ -82,10 +82,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 4956880,
-    "r": 4514324,
-    "total": 9668625,
-    "margin": 4.58
+    "d": 4961035,
+    "r": 4516235,
+    "total": 9674770,
+    "margin": 4.6
    },
    "polling_reporting_pct": 99.0
   },
@@ -96,10 +96,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 5067280,
-    "r": 4402487,
-    "total": 9656311,
-    "margin": 6.88
+    "d": 5071715,
+    "r": 4404157,
+    "total": 9662492,
+    "margin": 6.91
    },
    "polling_reporting_pct": 99.0
   }
@@ -982,72 +982,72 @@
   },
   {
    "id": "HD-126",
-   "d": 33872,
-   "r": 33589,
-   "total": 67461,
+   "d": 33976,
+   "r": 33711,
+   "total": 67687,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-127",
-   "d": 40578,
-   "r": 38722,
-   "total": 79300,
+   "d": 40664,
+   "r": 38810,
+   "total": 79474,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-128",
-   "d": 23336,
-   "r": 31184,
-   "total": 54520,
+   "d": 23389,
+   "r": 31245,
+   "total": 54634,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-129",
-   "d": 36526,
-   "r": 37389,
-   "total": 73915,
+   "d": 36659,
+   "r": 37491,
+   "total": 74150,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-130",
-   "d": 32954,
-   "r": 46575,
-   "total": 79529,
+   "d": 33032,
+   "r": 46688,
+   "total": 79720,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-131",
-   "d": 36145,
-   "r": 6183,
-   "total": 42328,
+   "d": 36238,
+   "r": 6200,
+   "total": 42438,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-132",
-   "d": 45367,
-   "r": 38966,
-   "total": 84333,
+   "d": 45498,
+   "r": 39065,
+   "total": 84563,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-133",
-   "d": 31242,
-   "r": 35404,
-   "total": 66646,
+   "d": 31391,
+   "r": 35546,
+   "total": 66937,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-134",
-   "d": 59445,
-   "r": 29615,
-   "total": 89060,
+   "d": 59810,
+   "r": 29712,
+   "total": 89522,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-135",
-   "d": 37647,
-   "r": 18232,
-   "total": 55879,
+   "d": 37727,
+   "r": 18267,
+   "total": 55994,
    "polling_reporting_pct": 100.0
   },
   {
@@ -1059,102 +1059,102 @@
   },
   {
    "id": "HD-137",
-   "d": 18174,
-   "r": 7646,
-   "total": 25820,
+   "d": 18225,
+   "r": 7682,
+   "total": 25907,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-138",
-   "d": 34105,
-   "r": 31593,
-   "total": 65698,
+   "d": 34242,
+   "r": 31713,
+   "total": 65955,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-139",
-   "d": 43700,
-   "r": 12133,
-   "total": 55833,
+   "d": 43818,
+   "r": 12168,
+   "total": 55986,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-140",
-   "d": 24184,
-   "r": 5587,
-   "total": 29771,
+   "d": 24239,
+   "r": 5602,
+   "total": 29841,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-141",
-   "d": 31345,
-   "r": 4716,
-   "total": 36061,
+   "d": 31457,
+   "r": 4722,
+   "total": 36179,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-142",
-   "d": 39634,
-   "r": 9350,
-   "total": 48984,
+   "d": 39716,
+   "r": 9373,
+   "total": 49089,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-143",
-   "d": 27039,
-   "r": 7730,
-   "total": 34769,
+   "d": 27101,
+   "r": 7743,
+   "total": 34844,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-144",
-   "d": 26164,
-   "r": 11049,
-   "total": 37213,
+   "d": 26214,
+   "r": 11077,
+   "total": 37291,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-145",
-   "d": 43198,
-   "r": 12515,
-   "total": 55713,
+   "d": 43345,
+   "r": 12532,
+   "total": 55877,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-146",
-   "d": 42601,
-   "r": 8683,
-   "total": 51284,
+   "d": 42782,
+   "r": 8714,
+   "total": 51496,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-147",
-   "d": 50457,
-   "r": 9408,
-   "total": 59865,
+   "d": 50601,
+   "r": 9432,
+   "total": 60033,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-148",
-   "d": 32097,
-   "r": 15319,
-   "total": 47416,
+   "d": 32202,
+   "r": 15360,
+   "total": 47562,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-149",
-   "d": 28701,
-   "r": 13185,
-   "total": 41886,
+   "d": 28799,
+   "r": 13232,
+   "total": 42031,
    "polling_reporting_pct": 100.0
   },
   {
    "id": "HD-150",
-   "d": 34678,
-   "r": 33849,
-   "total": 68527,
+   "d": 34766,
+   "r": 33935,
+   "total": 68701,
    "polling_reporting_pct": 100.0
   }
  ],
- "built": "2026-11-04T15:03:04Z"
+ "built": "2026-11-04T16:06:59Z"
 }
