@@ -3,12 +3,12 @@
  "election": {
   "id": "53815",
   "name": "2026 NOVEMBER GENERAL ELECTION",
-  "updated": "11/03/2026 08:45 PM"
+  "updated": "11/03/2026 08:48 PM"
  },
  "sources": [
   {
-   "file": "results/sources/53815/html/2026-11-04T024838Z.html",
-   "sha256": "0d2aab2d8ff338da2ae06659c4494972c9a83243bfdc8ed3c57b36f5ce95238e",
+   "file": "results/sources/53815/html/2026-11-04T025452Z.html",
+   "sha256": "b42fced7a365746cd3797a302d5fed11c467ddc55b4c38e9c68eb5edd02b5300",
    "note": "electionresults.sos.state.tx.us/results.html as served: statewide totals, no county or early split"
   }
  ],
@@ -26,13 +26,83 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 3022908,
-    "r": 2263810,
-    "total": 5375605,
-    "margin": 14.12
+    "d": 3369982,
+    "r": 2491085,
+    "total": 5958280,
+    "margin": 14.75
+   },
+   "polling_reporting_pct": 10.0
+  },
+  {
+   "race": "Governor",
+   "d_name": "GINA HINOJOSA",
+   "r_name": "GREG ABBOTT (I)",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 3253214,
+    "r": 2636714,
+    "total": 5967003,
+    "margin": 10.33
+   },
+   "polling_reporting_pct": 10.0
+  },
+  {
+   "race": "Lt. Governor",
+   "d_name": "VIKKI GOODWIN",
+   "r_name": "DAN PATRICK (I)",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 3177968,
+    "r": 2614513,
+    "total": 5926146,
+    "margin": 9.51
+   },
+   "polling_reporting_pct": 10.0
+  },
+  {
+   "race": "Attorney General",
+   "d_name": "NATHAN JOHNSON",
+   "r_name": "MAYES MIDDLETON",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 3205295,
+    "r": 2622084,
+    "total": 5910345,
+    "margin": 9.87
+   },
+   "polling_reporting_pct": 10.0
+  },
+  {
+   "race": "Agriculture",
+   "d_name": "CLAYTON TUCKER",
+   "r_name": "NATE SHEETS",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 3113330,
+    "r": 2656799,
+    "total": 5871677,
+    "margin": 7.78
+   },
+   "polling_reporting_pct": 10.0
+  },
+  {
+   "race": "Railroad Commission",
+   "d_name": "JON ROSENTHAL",
+   "r_name": "BO FRENCH",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 3190569,
+    "r": 2578180,
+    "total": 5865796,
+    "margin": 10.44
    },
    "polling_reporting_pct": 10.0
   }
  ],
- "built": "2026-11-04T02:48:38Z"
+ "built": "2026-11-04T02:54:53Z"
 }
