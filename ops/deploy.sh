@@ -21,6 +21,7 @@ git -C $ELECTION show HEAD:tools/build_views.py   > $RT/code/build_views.py
 git -C $ELECTION show HEAD:tools/fetch_sos_results.py > $RT/code/fetch_sos_results.py
 git -C $ELECTION show HEAD:tools/fetch_sos_turnout.py > $RT/code/fetch_sos_turnout.py
 git -C $ELECTION show HEAD:tools/build_results_view.py > $RT/code/build_results_view.py
+git -C $ELECTION show HEAD:tools/fetch_sos_html_results.py > $RT/code/fetch_sos_html_results.py
 git -C $ELECTION show HEAD:tools/fetch_county_turnout.py > $RT/code/fetch_county_turnout.py
 git -C $SITE show HEAD:tools/update.py           > $RT/code/update.py
 git -C $SITE show HEAD:build.py                  > $RT/code/build.py

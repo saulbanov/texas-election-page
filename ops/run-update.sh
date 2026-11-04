@@ -55,6 +55,9 @@ if [[ ! $now_ct < "2026-11-03 18:50" && $now_ct < "2026-11-04 12:00" ]]; then
     4) log "SKIPPED SOS results - the results site shows a check in BrowserOS; clear it there: $out" ;;
     *) log "FAILED: fetch_sos_results rc=$rc $out" ;;
   esac
+  # 2026: the state posts returns on a new statewide page (electionresults.sos.state.tx.us); the old app lists nothing after 2024
+  out=$(python3 $CODE/fetch_sos_html_results.py --repo $E) || log "FAILED: fetch_sos_html_results $out"
+  [[ $out == *'"new": true'* ]] && log "filed SOS results page: $out"
   python3 $CODE/build_results_view.py --repo $E >/dev/null || log "FAILED: build_results_view"
   if [[ -n $(git -C $E status --porcelain -- results) ]]; then
     git -C $E add results \

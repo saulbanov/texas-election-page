@@ -1020,7 +1020,7 @@ function main(D) {
     const row = lead >= 25000 ? 'Lean Talarico (+1 to +3), with the governor a toss-up leaning Abbott'
       : lead >= -50000 ? 'Lean Talarico narrowly (0 to +2), with the governor leaning Abbott'
       : lead >= -150000 ? 'a toss-up for the Senate, with the governor likely Abbott' : 'Lean Paxton, with the governor Abbott';
-    setT('ms-margin-note', 'Early voting is over. On the Saturday table set in advance, a final margin of ' + mtxt(lead) + ' reads as ' + row + ', before the adjustments below. That table was set under earlier assumptions (a D +8.5 lean and a 0.5-point Paxton penalty); with today\u2019s (' + leanTxt(AC.leanG) + ' and ' + PAX + ' points), each row reads about 1.4 points more Democratic.');
+    setT('ms-margin-note', 'Early voting is over. On the Saturday table set in advance, a final margin of ' + mtxt(lead) + ' reads as ' + row + ', before the adjustments below. That table was set under earlier assumptions (a D +8.5 lean and a 0.5-point Paxton penalty); with today\u2019s (' + leanTxt(D.assumptions.central.leanG) + ' and ' + (D.assumptions.central.paxton != null ? D.assumptions.central.paxton : 0.5) + ' points), each row reads about 1.4 points more Democratic.');
   } else {
     const r = lead > 45000 ? 'above the Friday line of D +45,000, a slight nudge toward Talarico' : lead >= 25000 ? 'between D +25,000 and D +45,000, on trend' : 'below D +25,000, a slight nudge toward Paxton';
     setT('ms-margin-note', 'Through ' + thru + ' the margin is ' + r + '. The main read comes when early voting ends.');
@@ -1257,7 +1257,8 @@ function main(D) {
     return { a, b, cG, cN, total, k, sizeG, sizeN, splitPts, T: 100 * (a + b + cG + cN) / total + ADJ + (PAX - 0.5) };
   }
   const raceMargin = (p, R) => R.adj === null ? p.T : (p.T - PAX) - R.adj - R.drop - p.splitPts;
-  const leanTxt = v => Math.abs(v) < 0.05 ? 'Even' : (v > 0 ? 'D +' : 'R +') + Math.abs(v).toFixed(1).replace(/\.0$/, '');
+  // a declaration, so it is hoisted: the early-vote note above calls it before this line runs
+  function leanTxt(v) { return Math.abs(v) < 0.05 ? 'Even' : (v > 0 ? 'D +' : 'R +') + Math.abs(v).toFixed(1).replace(/\.0$/, ''); }
   const mTxt = m => (m >= 0 ? 'D +' : 'R +') + fmt(Math.abs(m));
   function raceLine(m, d, r) { const a = Math.abs(m); if (a < 0.05) return 'Even'; return (m > 0 ? d : r) + ' +' + a.toFixed(1); }
   // Lean both groups would need (same lean) for a target Senate margin.
@@ -1401,6 +1402,10 @@ function main(D) {
       line('When', 'Polls close at 7 p.m. Central, 8 in El Paso. Counties post early and mail votes first, usually within the hour.');
     } else {
       fig.textContent = raceLine(sen.all.margin, 'Talarico', 'Paxton'); fig.style.color = sen.all.margin >= 0 ? 'var(--dem)' : 'var(--rep)';
+      // 2026: the state's statewide page has totals and polling locations reporting, but no early split
+      if (!sen.early) {
+        line('Counted', fmt(sen.all.total) + ' votes so far, with ' + sen.polling_reporting_pct + '% of polling locations reporting. Counties post early and mail votes first, and those lean Democratic this year, so this lead shrinks as Election Day votes come in.');
+      } else {
       // the state's precinct count can read 0 even with votes in (its final files do), so count Election Day votes directly
       line('Counted', fmt(sen.all.total) + ' votes so far, ' + fmt(Math.max(0, sen.election_day.total)) + ' of them cast on Election Day' + (sen.precincts.reporting ? '. ' + fmt(sen.precincts.reporting) + ' of ' + fmt(sen.precincts.total) + ' precincts have reported.' : '.'));
       const e = sen.early;
@@ -1433,6 +1438,7 @@ function main(D) {
         }
         line('Against the ticket', txt);
       }
+      }
     }
     const ul = $('#n-races'); ul.innerHTML = '';
     R.races.filter(r => r.race !== 'U.S. Senate' && r.all.total).forEach(r => {
@@ -1440,7 +1446,8 @@ function main(D) {
       const li = document.createElement('li'), nm = document.createElement('span'), bb = document.createElement('b');
       nm.textContent = M.short; bb.className = r.all.margin >= 0 ? 'D' : 'R'; bb.textContent = raceLine(r.all.margin, M.d, M.r); li.append(nm, bb); ul.appendChild(li);
     });
-    setT('n-src', 'Returns from the Texas Secretary of State (version ' + R.election.version + '), read every few minutes. The early vote is the state’s early and mail count.');
+    setT('n-src', R.election.version != null ? 'Returns from the Texas Secretary of State (version ' + R.election.version + '), read every few minutes. The early vote is the state’s early and mail count.'
+      : 'Returns from the Texas Secretary of State’s results page (updated ' + R.election.updated + '), read every few minutes.');
   }
 
   function renderTop() {
