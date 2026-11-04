@@ -3,12 +3,12 @@
  "election": {
   "id": "53815",
   "name": "2026 NOVEMBER GENERAL ELECTION",
-  "updated": "11/03/2026 07:43 PM"
+  "updated": "11/03/2026 07:50 PM"
  },
  "sources": [
   {
-   "file": "results/sources/53815/html/2026-11-04T014840Z.html",
-   "sha256": "a143861146a329986f1cf71fd87b2ff9bc97a523519f5b2822575ba6ee58ba62",
+   "file": "results/sources/53815/html/2026-11-04T015457Z.html",
+   "sha256": "41db4c51549f274d5e1ec1adab4c6d636a559ba3ff84f6f2068d1735538aef6e",
    "note": "electionresults.sos.state.tx.us/results.html as served: statewide totals, no county or early split"
   }
  ],
@@ -26,83 +26,13 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 423049,
-    "r": 461266,
-    "total": 900353,
-    "margin": -4.24
-   },
-   "polling_reporting_pct": 2.0
-  },
-  {
-   "race": "Governor",
-   "d_name": "GINA HINOJOSA",
-   "r_name": "GREG ABBOTT (I)",
-   "early": null,
-   "election_day": null,
-   "all": {
-    "d": 390800,
-    "r": 479198,
-    "total": 882084,
-    "margin": -10.02
-   },
-   "polling_reporting_pct": 2.0
-  },
-  {
-   "race": "Lt. Governor",
-   "d_name": "VIKKI GOODWIN",
-   "r_name": "DAN PATRICK (I)",
-   "early": null,
-   "election_day": null,
-   "all": {
-    "d": 381113,
-    "r": 476949,
-    "total": 878064,
-    "margin": -10.91
-   },
-   "polling_reporting_pct": 2.0
-  },
-  {
-   "race": "Attorney General",
-   "d_name": "NATHAN JOHNSON",
-   "r_name": "MAYES MIDDLETON",
-   "early": null,
-   "election_day": null,
-   "all": {
-    "d": 381898,
-    "r": 479936,
-    "total": 874775,
-    "margin": -11.21
-   },
-   "polling_reporting_pct": 2.0
-  },
-  {
-   "race": "Agriculture",
-   "d_name": "CLAYTON TUCKER",
-   "r_name": "NATE SHEETS",
-   "early": null,
-   "election_day": null,
-   "all": {
-    "d": 372172,
-    "r": 482925,
-    "total": 870392,
-    "margin": -12.72
-   },
-   "polling_reporting_pct": 2.0
-  },
-  {
-   "race": "Railroad Commission",
-   "d_name": "JON ROSENTHAL",
-   "r_name": "BO FRENCH",
-   "early": null,
-   "election_day": null,
-   "all": {
-    "d": 379578,
-    "r": 475302,
-    "total": 869297,
-    "margin": -11.01
+    "d": 452797,
+    "r": 530192,
+    "total": 1001196,
+    "margin": -7.73
    },
    "polling_reporting_pct": 2.0
   }
  ],
- "built": "2026-11-04T01:48:40Z"
+ "built": "2026-11-04T01:54:57Z"
 }
