@@ -3,12 +3,12 @@
  "election": {
   "id": "53815",
   "name": "2026 NOVEMBER GENERAL ELECTION",
-  "updated": "11/03/2026 08:10 PM"
+  "updated": "11/03/2026 08:19 PM"
  },
  "sources": [
   {
-   "file": "results/sources/53815/html/2026-11-04T021706Z.html",
-   "sha256": "afaa0faa1aeb6ebd28c437d47d388d6c65b7923ab85b78c6e1381429883f086d",
+   "file": "results/sources/53815/html/2026-11-04T022323Z.html",
+   "sha256": "0823fd0fbb9333498a21a6e8e3e9831c01772ff467840e79767e6724a30ec4d0",
    "note": "electionresults.sos.state.tx.us/results.html as served: statewide totals, no county or early split"
   }
  ],
@@ -26,10 +26,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 1220788,
-    "r": 1023616,
-    "total": 2283587,
-    "margin": 8.63
+    "d": 1362687,
+    "r": 1101912,
+    "total": 2507968,
+    "margin": 10.4
    },
    "polling_reporting_pct": 5.0
   },
@@ -40,10 +40,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 1173704,
-    "r": 1080026,
-    "total": 2284790,
-    "margin": 4.1
+    "d": 1311649,
+    "r": 1164582,
+    "total": 2510562,
+    "margin": 5.86
    },
    "polling_reporting_pct": 5.0
   },
@@ -54,10 +54,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 1148433,
-    "r": 1071307,
-    "total": 2271464,
-    "margin": 3.4
+    "d": 1278786,
+    "r": 1152476,
+    "total": 2489325,
+    "margin": 5.07
    },
    "polling_reporting_pct": 5.0
   },
@@ -68,10 +68,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 1157748,
-    "r": 1075107,
-    "total": 2265615,
-    "margin": 3.65
+    "d": 1291103,
+    "r": 1155040,
+    "total": 2482797,
+    "margin": 5.48
    },
    "polling_reporting_pct": 5.0
   },
@@ -82,10 +82,10 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 1126294,
-    "r": 1087273,
-    "total": 2253154,
-    "margin": 1.73
+    "d": 1257541,
+    "r": 1166435,
+    "total": 2469050,
+    "margin": 3.69
    },
    "polling_reporting_pct": 5.0
   },
@@ -96,13 +96,13 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 1151221,
-    "r": 1061082,
-    "total": 2250691,
-    "margin": 4.0
+    "d": 1282993,
+    "r": 1139728,
+    "total": 2466294,
+    "margin": 5.81
    },
    "polling_reporting_pct": 5.0
   }
  ],
- "built": "2026-11-04T02:17:06Z"
+ "built": "2026-11-04T02:23:23Z"
 }
