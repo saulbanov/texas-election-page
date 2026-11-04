@@ -1,0 +1,108 @@
+{
+ "by": "election-2026/tools/build_results_view.py",
+ "election": {
+  "id": "53815",
+  "name": "2026 NOVEMBER GENERAL ELECTION",
+  "updated": "10/14/2026 07:34 AM"
+ },
+ "sources": [
+  {
+   "file": "results/sources/53815/html/2026-11-04T010444Z.html",
+   "sha256": "ca0a6cddbef89b4d0af39edb70ae9fc917d5d109c6c27698e64d342cce14a2f5",
+   "note": "electionresults.sos.state.tx.us/results.html as served: statewide totals, no county or early split"
+  }
+ ],
+ "composition": {
+  "d": 32.14,
+  "r": 31.82,
+  "np": 36.04
+ },
+ "loyal": 95,
+ "races": [
+  {
+   "race": "U.S. Senate",
+   "d_name": "JAMES TALARICO",
+   "r_name": "KEN PAXTON",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 0,
+    "r": 0,
+    "total": 0,
+    "margin": null
+   },
+   "polling_reporting_pct": 0.0
+  },
+  {
+   "race": "Governor",
+   "d_name": "GINA HINOJOSA",
+   "r_name": "GREG ABBOTT (I)",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 0,
+    "r": 0,
+    "total": 0,
+    "margin": null
+   },
+   "polling_reporting_pct": 0.0
+  },
+  {
+   "race": "Lt. Governor",
+   "d_name": "VIKKI GOODWIN",
+   "r_name": "DAN PATRICK (I)",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 0,
+    "r": 0,
+    "total": 0,
+    "margin": null
+   },
+   "polling_reporting_pct": 0.0
+  },
+  {
+   "race": "Attorney General",
+   "d_name": "NATHAN JOHNSON",
+   "r_name": "MAYES MIDDLETON",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 0,
+    "r": 0,
+    "total": 0,
+    "margin": null
+   },
+   "polling_reporting_pct": 0.0
+  },
+  {
+   "race": "Agriculture",
+   "d_name": "CLAYTON TUCKER",
+   "r_name": "NATE SHEETS",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 0,
+    "r": 0,
+    "total": 0,
+    "margin": null
+   },
+   "polling_reporting_pct": 0.0
+  },
+  {
+   "race": "Railroad Commission",
+   "d_name": "JON ROSENTHAL",
+   "r_name": "BO FRENCH",
+   "early": null,
+   "election_day": null,
+   "all": {
+    "d": 0,
+    "r": 0,
+    "total": 0,
+    "margin": null
+   },
+   "polling_reporting_pct": 0.0
+  }
+ ],
+ "built": "2026-11-04T01:04:44Z"
+}
