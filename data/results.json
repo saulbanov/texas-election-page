@@ -3,12 +3,12 @@
  "election": {
   "id": "53815",
   "name": "2026 NOVEMBER GENERAL ELECTION",
-  "updated": "11/03/2026 09:09 PM"
+  "updated": "11/03/2026 09:33 PM"
  },
  "sources": [
   {
-   "file": "results/sources/53815/html/2026-11-04T031347Z.html",
-   "sha256": "43f88592f148997aac8c438ea3e04f09063880498b312d945e5bd023ef0c5327",
+   "file": "results/sources/53815/html/2026-11-04T033554Z.html",
+   "sha256": "c5a45734f2826f78cbe863f9fc78c4f41842ec5b4a334f8bba0078511c155454",
    "note": "electionresults.sos.state.tx.us/results.html as served: statewide totals, no county or early split"
   }
  ],
@@ -26,12 +26,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 3438406,
-    "r": 2620787,
-    "total": 6161434,
-    "margin": 13.27
+    "d": 3492893,
+    "r": 2756636,
+    "total": 6356843,
+    "margin": 11.58
    },
-   "polling_reporting_pct": 14.0
+   "polling_reporting_pct": 20.0
   },
   {
    "race": "Governor",
@@ -40,12 +40,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 3318625,
-    "r": 2771443,
-    "total": 6170565,
-    "margin": 8.87
+    "d": 3370817,
+    "r": 2912199,
+    "total": 6366790,
+    "margin": 7.2
    },
-   "polling_reporting_pct": 14.0
+   "polling_reporting_pct": 20.0
   },
   {
    "race": "Lt. Governor",
@@ -54,12 +54,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 3243217,
-    "r": 2752131,
-    "total": 6134294,
-    "margin": 8.01
+    "d": 3292262,
+    "r": 2892865,
+    "total": 6329061,
+    "margin": 6.31
    },
-   "polling_reporting_pct": 14.0
+   "polling_reporting_pct": 20.0
   },
   {
    "race": "Attorney General",
@@ -68,12 +68,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 3271095,
-    "r": 2760435,
-    "total": 6117945,
-    "margin": 8.35
+    "d": 3320722,
+    "r": 2902046,
+    "total": 6312447,
+    "margin": 6.63
    },
-   "polling_reporting_pct": 14.0
+   "polling_reporting_pct": 20.0
   },
   {
    "race": "Agriculture",
@@ -82,12 +82,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 3178064,
-    "r": 2795002,
-    "total": 6078458,
-    "margin": 6.3
+    "d": 3226428,
+    "r": 2931723,
+    "total": 6267439,
+    "margin": 4.7
    },
-   "polling_reporting_pct": 14.0
+   "polling_reporting_pct": 20.0
   },
   {
    "race": "Railroad Commission",
@@ -96,21 +96,21 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 3255955,
-    "r": 2715319,
-    "total": 6071948,
-    "margin": 8.9
+    "d": 3304653,
+    "r": 2851640,
+    "total": 6260473,
+    "margin": 7.24
    },
-   "polling_reporting_pct": 14.0
+   "polling_reporting_pct": 20.0
   }
  ],
  "house": [
   {
    "id": "HD-1",
-   "d": 8623,
-   "r": 20371,
-   "total": 28994,
-   "polling_reporting_pct": 16.0
+   "d": 14228,
+   "r": 35120,
+   "total": 49348,
+   "polling_reporting_pct": 62.0
   },
   {
    "id": "HD-2",
@@ -128,17 +128,17 @@
   },
   {
    "id": "HD-4",
-   "d": 25997,
-   "r": 32955,
-   "total": 58952,
-   "polling_reporting_pct": 3.0
+   "d": 26896,
+   "r": 36154,
+   "total": 63050,
+   "polling_reporting_pct": 41.0
   },
   {
    "id": "HD-5",
-   "d": 7413,
-   "r": 22993,
-   "total": 30406,
-   "polling_reporting_pct": 41.0
+   "d": 10210,
+   "r": 34750,
+   "total": 44960,
+   "polling_reporting_pct": 47.0
   },
   {
    "id": "HD-6",
@@ -149,24 +149,24 @@
   },
   {
    "id": "HD-7",
-   "d": 10690,
-   "r": 19279,
-   "total": 29969,
-   "polling_reporting_pct": 3.0
+   "d": 13248,
+   "r": 24237,
+   "total": 37485,
+   "polling_reporting_pct": 43.0
   },
   {
    "id": "HD-8",
-   "d": 8493,
-   "r": 26338,
-   "total": 34831,
-   "polling_reporting_pct": 36.0
+   "d": 10476,
+   "r": 35006,
+   "total": 45482,
+   "polling_reporting_pct": 70.0
   },
   {
    "id": "HD-9",
-   "d": 10267,
-   "r": 25324,
-   "total": 35591,
-   "polling_reporting_pct": 19.0
+   "d": 10413,
+   "r": 25682,
+   "total": 36095,
+   "polling_reporting_pct": 22.0
   },
   {
    "id": "HD-10",
@@ -184,17 +184,17 @@
   },
   {
    "id": "HD-12",
-   "d": 16722,
-   "r": 35992,
-   "total": 52714,
-   "polling_reporting_pct": 23.0
+   "d": 19180,
+   "r": 42922,
+   "total": 62102,
+   "polling_reporting_pct": 38.0
   },
   {
    "id": "HD-13",
-   "d": 13938,
-   "r": 25194,
-   "total": 39132,
-   "polling_reporting_pct": 17.0
+   "d": 14294,
+   "r": 26728,
+   "total": 41022,
+   "polling_reporting_pct": 24.0
   },
   {
    "id": "HD-14",
@@ -219,10 +219,10 @@
   },
   {
    "id": "HD-17",
-   "d": 19623,
-   "r": 22836,
-   "total": 42459,
-   "polling_reporting_pct": 12.0
+   "d": 20561,
+   "r": 26066,
+   "total": 46627,
+   "polling_reporting_pct": 34.0
   },
   {
    "id": "HD-18",
@@ -233,10 +233,10 @@
   },
   {
    "id": "HD-19",
-   "d": 13229,
-   "r": 37119,
-   "total": 50348,
-   "polling_reporting_pct": 1.0
+   "d": 14422,
+   "r": 41796,
+   "total": 56218,
+   "polling_reporting_pct": 5.0
   },
   {
    "id": "HD-20",
@@ -310,17 +310,17 @@
   },
   {
    "id": "HD-30",
-   "d": 678,
-   "r": 2529,
-   "total": 3207,
-   "polling_reporting_pct": 0.0
+   "d": 10297,
+   "r": 26095,
+   "total": 36392,
+   "polling_reporting_pct": 47.0
   },
   {
    "id": "HD-31",
    "d": 9546,
    "r": 11587,
    "total": 21133,
-   "polling_reporting_pct": 30.0
+   "polling_reporting_pct": 36.0
   },
   {
    "id": "HD-32",
@@ -331,10 +331,10 @@
   },
   {
    "id": "HD-33",
-   "d": 32777,
-   "r": 39827,
-   "total": 72604,
-   "polling_reporting_pct": 5.0
+   "d": 33379,
+   "r": 41379,
+   "total": 74758,
+   "polling_reporting_pct": 8.0
   },
   {
    "id": "HD-34",
@@ -401,16 +401,16 @@
   },
   {
    "id": "HD-43",
-   "d": 7547,
-   "r": 10819,
-   "total": 18366,
-   "polling_reporting_pct": 15.0
+   "d": 7837,
+   "r": 11335,
+   "total": 19172,
+   "polling_reporting_pct": 27.0
   },
   {
    "id": "HD-44",
-   "d": 0,
-   "r": 0,
-   "total": 0,
+   "d": 1678,
+   "r": 3394,
+   "total": 5072,
    "polling_reporting_pct": 0.0
   },
   {
@@ -471,10 +471,10 @@
   },
   {
    "id": "HD-53",
-   "d": 8497,
-   "r": 26243,
-   "total": 34740,
-   "polling_reporting_pct": 28.0
+   "d": 14547,
+   "r": 36592,
+   "total": 51139,
+   "polling_reporting_pct": 31.0
   },
   {
    "id": "HD-54",
@@ -513,17 +513,17 @@
   },
   {
    "id": "HD-59",
-   "d": 7282,
-   "r": 13624,
-   "total": 20906,
+   "d": 11518,
+   "r": 29033,
+   "total": 40551,
    "polling_reporting_pct": 31.0
   },
   {
    "id": "HD-60",
-   "d": 15379,
-   "r": 52810,
-   "total": 68189,
-   "polling_reporting_pct": 18.0
+   "d": 15985,
+   "r": 55457,
+   "total": 71442,
+   "polling_reporting_pct": 38.0
   },
   {
    "id": "HD-61",
@@ -576,10 +576,10 @@
   },
   {
    "id": "HD-68",
-   "d": 5407,
-   "r": 25657,
-   "total": 31064,
-   "polling_reporting_pct": 28.0
+   "d": 7326,
+   "r": 37101,
+   "total": 44427,
+   "polling_reporting_pct": 79.0
   },
   {
    "id": "HD-69",
@@ -597,17 +597,17 @@
   },
   {
    "id": "HD-71",
-   "d": 11935,
-   "r": 30470,
-   "total": 42405,
-   "polling_reporting_pct": 25.0
+   "d": 12296,
+   "r": 32621,
+   "total": 44917,
+   "polling_reporting_pct": 41.0
   },
   {
    "id": "HD-72",
    "d": 2097,
    "r": 8628,
    "total": 10725,
-   "polling_reporting_pct": 33.0
+   "polling_reporting_pct": 48.0
   },
   {
    "id": "HD-73",
@@ -618,10 +618,10 @@
   },
   {
    "id": "HD-74",
-   "d": 8738,
-   "r": 4367,
-   "total": 13105,
-   "polling_reporting_pct": 8.0
+   "d": 11846,
+   "r": 6697,
+   "total": 18543,
+   "polling_reporting_pct": 9.0
   },
   {
    "id": "HD-75",
@@ -667,24 +667,24 @@
   },
   {
    "id": "HD-81",
-   "d": 7415,
-   "r": 14529,
-   "total": 21944,
+   "d": 7598,
+   "r": 15087,
+   "total": 22685,
    "polling_reporting_pct": 84.0
   },
   {
    "id": "HD-82",
-   "d": 9197,
-   "r": 23866,
-   "total": 33063,
-   "polling_reporting_pct": 7.0
+   "d": 9365,
+   "r": 24338,
+   "total": 33703,
+   "polling_reporting_pct": 83.0
   },
   {
    "id": "HD-83",
    "d": 1804,
    "r": 7882,
    "total": 9686,
-   "polling_reporting_pct": 28.0
+   "polling_reporting_pct": 30.0
   },
   {
    "id": "HD-84",
@@ -695,31 +695,31 @@
   },
   {
    "id": "HD-85",
-   "d": 5322,
-   "r": 14193,
-   "total": 19515,
+   "d": 7606,
+   "r": 20951,
+   "total": 28557,
    "polling_reporting_pct": 12.0
   },
   {
    "id": "HD-86",
-   "d": 12758,
-   "r": 37983,
-   "total": 50741,
-   "polling_reporting_pct": 58.0
+   "d": 12788,
+   "r": 38273,
+   "total": 51061,
+   "polling_reporting_pct": 67.0
   },
   {
    "id": "HD-87",
-   "d": 9268,
-   "r": 19580,
-   "total": 28848,
-   "polling_reporting_pct": 43.0
+   "d": 9658,
+   "r": 21620,
+   "total": 31278,
+   "polling_reporting_pct": 58.0
   },
   {
    "id": "HD-88",
-   "d": 5852,
-   "r": 23322,
-   "total": 29174,
-   "polling_reporting_pct": 35.0
+   "d": 5980,
+   "r": 23783,
+   "total": 29763,
+   "polling_reporting_pct": 43.0
   },
   {
    "id": "HD-89",
@@ -1156,5 +1156,5 @@
    "polling_reporting_pct": 0.0
   }
  ],
- "built": "2026-11-04T03:23:23Z"
+ "built": "2026-11-04T03:35:54Z"
 }
