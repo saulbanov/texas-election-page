@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<script>(function(){var b='71fbf4acb0c7';fetch('version.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){var u=new URL(location.href);if(v.build&&v.build!==b&&u.searchParams.get('v')!==v.build){u.searchParams.set('v',v.build);location.replace(u.href)}}).catch(function(){})})()</script>
+<script>(function(){var b='15835991ec05';fetch('version.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){var u=new URL(location.href);if(v.build&&v.build!==b&&u.searchParams.get('v')!==v.build){u.searchParams.set('v',v.build);location.replace(u.href)}}).catch(function(){})})()</script>
 <title>Texas Early-Vote Ledger</title>
 <script>document.documentElement.classList.add("loading")</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1448,6 +1448,21 @@ function main(D) {
         line('Against the ticket', txt);
       }
       }
+    }
+    // Texas House: who leads each district now (a seat with one major party on the ballot goes to it), and how many
+    // of the Democratic leads are in districts Republicans carried in 2024 (seats.json base), with how many are close
+    if (R.house && R.house.length && sen.all.total) {
+      const base = Object.fromEntries((D.seats ? D.seats.districts : []).map(x => [x.id, x.base]));
+      const H = { D: 0, R: 0, out: 0, tie: 0, flip: 0, flipClose: 0 };
+      R.house.forEach(h => {
+        if (h.r == null) { H.D++; return; } if (h.d == null) { H.R++; return; }
+        if (!h.d && !h.r) { H.out++; return; }
+        if (h.d === h.r) { H.tie++; return; }
+        const m = 100 * (h.d - h.r) / (h.d + h.r); H[m > 0 ? 'D' : 'R']++;
+        if (m > 0 && base[h.id] < 0) { H.flip++; if (m < 5) H.flipClose++; }
+      });
+      line('Texas House', 'Democrats lead in ' + H.D + ' of 150 seats and Republicans in ' + H.R + (H.out ? ', with no votes counted yet in ' + H.out : '') + (H.tie ? ' and ' + H.tie + ' tied' : '') + '. A majority takes 76, and Democrats hold 62 now.'
+        + (H.flip ? ' ' + H.flip + ' of the Democratic leads are in districts Republicans carried in 2024' + (H.flipClose ? ', ' + H.flipClose + ' of them by less than 5 points.' : '.') : ''));
     }
     const ul = $('#n-races'); ul.innerHTML = '';
     R.races.filter(r => r.race !== 'U.S. Senate' && r.all.total).forEach(r => {
