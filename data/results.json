@@ -3,12 +3,12 @@
  "election": {
   "id": "53815",
   "name": "2026 NOVEMBER GENERAL ELECTION",
-  "updated": "10/14/2026 07:34 AM"
+  "updated": "11/03/2026 07:21 PM"
  },
  "sources": [
   {
-   "file": "results/sources/53815/html/2026-11-04T010444Z.html",
-   "sha256": "ca0a6cddbef89b4d0af39edb70ae9fc917d5d109c6c27698e64d342cce14a2f5",
+   "file": "results/sources/53815/html/2026-11-04T012327Z.html",
+   "sha256": "124e08e0e7dd6e02f4eaeca3625ed32acb9fec2c648ca8e8604592a39d648d67",
    "note": "electionresults.sos.state.tx.us/results.html as served: statewide totals, no county or early split"
   }
  ],
@@ -26,12 +26,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 0,
-    "r": 0,
-    "total": 0,
-    "margin": null
+    "d": 16675,
+    "r": 30820,
+    "total": 48581,
+    "margin": -29.12
    },
-   "polling_reporting_pct": 0.0
+   "polling_reporting_pct": 1.0
   },
   {
    "race": "Governor",
@@ -40,12 +40,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 0,
-    "r": 0,
-    "total": 0,
-    "margin": null
+    "d": 16178,
+    "r": 31885,
+    "total": 48760,
+    "margin": -32.21
    },
-   "polling_reporting_pct": 0.0
+   "polling_reporting_pct": 1.0
   },
   {
    "race": "Lt. Governor",
@@ -54,12 +54,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 0,
-    "r": 0,
-    "total": 0,
-    "margin": null
+    "d": 15469,
+    "r": 32005,
+    "total": 48486,
+    "margin": -34.1
    },
-   "polling_reporting_pct": 0.0
+   "polling_reporting_pct": 1.0
   },
   {
    "race": "Attorney General",
@@ -68,12 +68,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 0,
-    "r": 0,
-    "total": 0,
-    "margin": null
+    "d": 15516,
+    "r": 32127,
+    "total": 48272,
+    "margin": -34.41
    },
-   "polling_reporting_pct": 0.0
+   "polling_reporting_pct": 1.0
   },
   {
    "race": "Agriculture",
@@ -82,12 +82,12 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 0,
-    "r": 0,
-    "total": 0,
-    "margin": null
+    "d": 15275,
+    "r": 31970,
+    "total": 47999,
+    "margin": -34.78
    },
-   "polling_reporting_pct": 0.0
+   "polling_reporting_pct": 1.0
   },
   {
    "race": "Railroad Commission",
@@ -96,13 +96,13 @@
    "early": null,
    "election_day": null,
    "all": {
-    "d": 0,
-    "r": 0,
-    "total": 0,
-    "margin": null
+    "d": 15329,
+    "r": 31943,
+    "total": 47971,
+    "margin": -34.63
    },
-   "polling_reporting_pct": 0.0
+   "polling_reporting_pct": 1.0
   }
  ],
- "built": "2026-11-04T01:04:44Z"
+ "built": "2026-11-04T01:23:27Z"
 }
